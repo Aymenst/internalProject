@@ -29,7 +29,7 @@ public interface StaffMapper{
      * @return StaffDto
      */
     @Mapping(target = "cityName", ignore=true)
-    @Mapping(target = "level", ignore=true)
+    @Mapping(target = "levelId", ignore=true)
     StaffDto addRequestToDto(StaffAddrequest staffAddrequest);
 
     /**
