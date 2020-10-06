@@ -1,6 +1,7 @@
 package org.techniu.isbackend.service;
 
 import org.springframework.http.ResponseEntity;
+import org.techniu.isbackend.dto.model.CityDto;
 import org.techniu.isbackend.entity.City;
 import org.techniu.isbackend.entity.Country;
 import org.techniu.isbackend.entity.StateCountry;
@@ -11,6 +12,6 @@ public interface CityService {
     City saveCity(Country country, StateCountry stateCountry, City city);
     City updateCity(String cityId, City city);
     ResponseEntity<?> deleteCity(String cityId);
-    List<City> getAllCity();
+    List<CityDto> getAllCity();
     List<City> getAllCityByState(String stateId);
 }

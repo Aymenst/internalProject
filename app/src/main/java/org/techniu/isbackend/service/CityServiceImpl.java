@@ -2,14 +2,23 @@ package org.techniu.isbackend.service;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.techniu.isbackend.dto.model.CityDto;
+import org.techniu.isbackend.dto.model.StaffDto;
 import org.techniu.isbackend.entity.City;
 import org.techniu.isbackend.entity.Country;
+import org.techniu.isbackend.entity.Staff;
 import org.techniu.isbackend.entity.StateCountry;
+import org.techniu.isbackend.exception.EntityType;
+import org.techniu.isbackend.exception.ExceptionType;
+import org.techniu.isbackend.exception.MainException;
 import org.techniu.isbackend.repository.CityRepository;
 import org.techniu.isbackend.repository.CountryRepository;
 import org.techniu.isbackend.repository.StateCountryRepository;
-
+import java.util.Optional;
+import java.util.ArrayList;
 import java.util.List;
+import static org.techniu.isbackend.exception.ExceptionType.*;
+import static org.techniu.isbackend.exception.ExceptionType.ENTITY_NOT_FOUND;
 @Service
 public class CityServiceImpl implements CityService{
     private CityRepository cityRepository;
@@ -23,11 +32,31 @@ public class CityServiceImpl implements CityService{
     @Override
     public City saveCity(Country country, StateCountry stateCountry, City city) {
         // save country if note existe
-       Country country1=countryRepository.save(country);
+        Country country1;
+        StateCountry stateCountry1;
+        StateCountry city1;
+        Optional<Country> country2 = Optional.ofNullable(countryRepository.getByCountryName(country.getCountryName()));
+        if (country2.isPresent()) {
+             country1= country2.get();
+        }
+        else {
+             country1=countryRepository.save(country);
+        }
         // save state if note existe
-        StateCountry stateCountry1=stateCountryRepository.save(stateCountry.setCountry(country1));
+        Optional<StateCountry> stateCountry2 = Optional.ofNullable(stateCountryRepository.getByStateName(stateCountry.getStateName()));
+        if (stateCountry2.isPresent()) {
+            stateCountry1= stateCountry2.get();
+        }
+        else {
+            stateCountry1=stateCountryRepository.save(stateCountry);
+        }
+        StateCountry stateCountry3=stateCountryRepository.save(stateCountry1.setCountry(country1));
         // save state if note existe
-        return cityRepository.save(city.setStateCountry(stateCountry1));
+        Optional<City> city2 = Optional.ofNullable(cityRepository.findCityByCityName(city.getCityName()));
+        if (city2.isPresent()) {
+            throw exception(DUPLICATE_ENTITY);
+        }
+        return cityRepository.save(city.setStateCountry(stateCountry3));
     }
 
     @Override
@@ -44,13 +73,35 @@ public class CityServiceImpl implements CityService{
     }
 
     @Override
-    public List<City> getAllCity() {
-        return cityRepository.findAll();
+    public List<CityDto> getAllCity() {
+         List<City> cities = cityRepository.findAll();
+        // Create a list of all staff dto
+        ArrayList<CityDto> cityDtos = new ArrayList<>();
+        for (City city : cities) {
+            CityDto cityDto=new CityDto()
+                    .setCountryName(city.getStateCountry().getCountry().getCountryName())
+                    .setCountryCode(city.getStateCountry().getCountry().getCountryCode())
+                    .setPhonePrefix(city.getStateCountry().getCountry().getPhonePrefix())
+                    .setStateName(city.getStateCountry().getStateName())
+                    .setCityName(city.getCityName());
+            cityDtos.add(cityDto);
+        }
+        return cityDtos;
     }
 
     @Override
     public List<City> getAllCityByState(String stateId) {
         StateCountry stateCountry = stateCountryRepository.findById(stateId).get();
         return cityRepository.findAllByStateCountry(stateCountry);
+    }
+    /**
+     * Returns a new RuntimeException
+     *
+     * @param exceptionType exceptionType
+     * @param args  args
+     * @return RuntimeException
+     */
+    private RuntimeException exception(ExceptionType exceptionType, String... args) {
+        return MainException.throwException(EntityType.City, exceptionType, args);
     }
 }

@@ -1,11 +1,14 @@
 package org.techniu.isbackend.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.techniu.isbackend.Response;
 import org.techniu.isbackend.controller.request.CityAddrequest;
+import org.techniu.isbackend.dto.model.CityDto;
+import org.techniu.isbackend.dto.model.StaffDto;
 import org.techniu.isbackend.entity.City;
 import org.techniu.isbackend.entity.Country;
 import org.techniu.isbackend.entity.StateCountry;
@@ -13,6 +16,8 @@ import org.techniu.isbackend.exception.validation.MapValidationErrorService;
 import org.techniu.isbackend.service.CityService;
 
 import javax.validation.Valid;
+
+import java.util.List;
 
 import static org.techniu.isbackend.exception.EntityType.City;
 import static org.techniu.isbackend.exception.ExceptionType.ADDED;
@@ -53,6 +58,10 @@ public class CityController {
         city.setCityName(cityAddrequest.getCityName());
         cityService.saveCity(country,stateCountry,city);
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(City, ADDED)), HttpStatus.OK);
+    }
+    @RequestMapping(path = "all",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<CityDto> getStaff(){
+        return cityService.getAllCity();
     }
 
 
