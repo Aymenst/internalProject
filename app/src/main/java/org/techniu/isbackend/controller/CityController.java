@@ -25,6 +25,7 @@ import static org.techniu.isbackend.exception.MainException.getMessageTemplate;
 
 @RestController
 @RequestMapping("/api/city")
+@CrossOrigin("*")
 public class CityController {
     private final CityService cityService;
     private final MapValidationErrorService mapValidationErrorService;
@@ -45,6 +46,7 @@ public class CityController {
     @PostMapping("/add")
     public ResponseEntity add(@RequestBody @Valid CityAddrequest cityAddrequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) return mapValidationErrorService.mapValidationService(bindingResult);
+        System.out.println(cityAddrequest);
         //country
         Country country = new Country();
         country.setCountryName(cityAddrequest.getCountryName());
