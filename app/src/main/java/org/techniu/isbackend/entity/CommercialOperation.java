@@ -34,9 +34,9 @@ public class CommercialOperation implements Serializable {
     @DBRef
     private ClientContact decisionMakerContact;
     @DBRef
-    private CommercialOperationState state;
-    @DBRef
-    private CommercialOperationState subState;
+    private CommercialOperationStatus state;
+    /*@DBRef
+    private CommercialOperationState subState;*/
     @DBRef
     private ClientContact personCloseOfDecisionMakerContact;
     @DBRef

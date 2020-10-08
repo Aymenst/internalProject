@@ -12,7 +12,7 @@ public interface StaffMapper{
     /**
      * Map dto to model
      *
-     * @param staffDto clientDto
+     * @param staffDto staffDto
      * @return Staff
      */
     @Mapping(source = "staffId", target="_id")

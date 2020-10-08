@@ -46,7 +46,6 @@ public class CityController {
     @PostMapping("/add")
     public ResponseEntity add(@RequestBody @Valid CityAddrequest cityAddrequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) return mapValidationErrorService.mapValidationService(bindingResult);
-        System.out.println(cityAddrequest);
         //country
         Country country = new Country();
         country.setCountryName(cityAddrequest.getCountryName());
@@ -61,10 +60,4 @@ public class CityController {
         cityService.saveCity(country,stateCountry,city);
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(City, ADDED)), HttpStatus.OK);
     }
-    @RequestMapping(path = "all",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<CityDto> getStaff(){
-        return cityService.getAllCity();
-    }
-
-
 }
