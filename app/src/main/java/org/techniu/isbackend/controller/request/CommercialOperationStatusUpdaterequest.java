@@ -5,6 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotBlank;
+
+import static org.techniu.isbackend.exception.ValidationConstants.COMMERCIALOPERATIONSTATUS_NAME_NOT_BLANK;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -12,6 +16,7 @@ import lombok.experimental.Accessors;
 
 public class CommercialOperationStatusUpdaterequest {
     private String commercialOperationStatusId;
+    @NotBlank(message = COMMERCIALOPERATIONSTATUS_NAME_NOT_BLANK)
     private String name;
     private String percentage;
     private String description;
