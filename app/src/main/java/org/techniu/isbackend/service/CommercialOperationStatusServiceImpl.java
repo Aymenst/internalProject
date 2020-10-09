@@ -31,18 +31,34 @@ public class CommercialOperationStatusServiceImpl implements CommercialOperation
         // save country if note existe
         commercialOperationStatusDto.setName(commercialOperationStatusDto.getName().toLowerCase());
 
-        List<CommercialOperationStatus> CommercialOperationStatus = commercialOperationStatusRepository.findByName(commercialOperationStatusDto.getName());
         if (commercialOperationStatusDto.getName().contains(" ")) {
              throw exception(CODE_SHOULD_NOT_CONTAIN_SPACES);
         }
-        for (CommercialOperationStatus commercialOperationStatus : CommercialOperationStatus) {
-            if(commercialOperationStatus.getName().equals(commercialOperationStatusDto.getName().toLowerCase())){
-                throw exception(DUPLICATE_ENTITY);
-            }
+        Optional<CommercialOperationStatus>  commercialOperationStatus= Optional.ofNullable(commercialOperationStatusRepository.findByName(commercialOperationStatusDto.getName()));
+        if (commercialOperationStatus.isPresent()) {
+            throw exception(DUPLICATE_ENTITY);
         }
         return commercialOperationStatusRepository.save(commercialOperationStatusMapper.dtoToModel(commercialOperationStatusDto));
     }
 
+    @Override
+    public CommercialOperationStatus update(CommercialOperationStatusDto commercialOperationStatusDto) {
+        // save country if note existe
+        commercialOperationStatusDto.setName(commercialOperationStatusDto.getName().toLowerCase());
+        if (commercialOperationStatusDto.getName().contains(" ")) {
+            throw exception(CODE_SHOULD_NOT_CONTAIN_SPACES);
+        }
+       Optional<CommercialOperationStatus> commercialOperationStatus1 = Optional.ofNullable(commercialOperationStatusRepository.findBy_id(commercialOperationStatusDto.getCommercialOperationStatusId()));
+        if (!commercialOperationStatus1.isPresent()) {
+            throw exception(ExceptionType.ENTITY_NOT_FOUND);
+        }
+        Optional<CommercialOperationStatus> commercialOperationStatus2 = Optional.ofNullable(commercialOperationStatusRepository.findByName(commercialOperationStatusDto.getName()));
+
+        if (commercialOperationStatus2.isPresent() && !(commercialOperationStatus1.get().getName().equals(commercialOperationStatusDto.getName())) ) {
+            throw exception(DUPLICATE_ENTITY);
+        }
+        return commercialOperationStatusRepository.save(commercialOperationStatusMapper.dtoToModel(commercialOperationStatusDto));
+    }
 
     @Override
     public List<CommercialOperationStatusDto> getAll() {

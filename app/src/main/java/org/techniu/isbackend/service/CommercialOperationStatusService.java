@@ -12,4 +12,5 @@ import java.util.List;
 public interface CommercialOperationStatusService {
     CommercialOperationStatus save(CommercialOperationStatusDto commercialOperationStatusDto);
     List<CommercialOperationStatusDto> getAll();
+    CommercialOperationStatus update(CommercialOperationStatusDto commercialOperationStatusDto);
 }
