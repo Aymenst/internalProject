@@ -113,6 +113,9 @@ public class ValidationConstants {
     public final static String DEPARTMENT_CODE_NOT_BLANK = "department.code.not.blank";
     public final static String DEPARTMENT_UPDATE_date_NOT_BLANK = "department.updateDate.not.blank";
     public final static String DEPARTMENT_CREATION_date_NOT_BLANK = "department.creationDate.not.blank";
+    //Internal Project
+    //Action
+    public final static String COMMERCIALOPERATIONSTATUS_NAME_NOT_BLANK = "operation status name can not be blank";
 
 
     // Static messages, do not modify them
@@ -323,7 +326,9 @@ public class ValidationConstants {
         // Department
        // getKeyValueTranslation(Department, "department").forEach(backendTranslation::putIfAbsent);
         backendTranslation.put(DEPARTMENT_CODE_NOT_BLANK, getNotBlankValue(DEPARTMENT_CODE_NOT_BLANK));
-
+        //internal project
+        backendTranslation.put(COMMERCIALOPERATIONSTATUS_NAME_NOT_BLANK, getNotBlankValue(COMMERCIALOPERATIONSTATUS_NAME_NOT_BLANK));
+        // commercialProject
         return backendTranslation;
     }
 
