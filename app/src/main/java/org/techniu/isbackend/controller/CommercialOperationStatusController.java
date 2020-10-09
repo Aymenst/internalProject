@@ -20,6 +20,7 @@ import java.util.List;
 import static org.techniu.isbackend.exception.EntityType.CommercialOperationStatus;
 import static org.techniu.isbackend.exception.ExceptionType.ADDED;
 import static org.techniu.isbackend.exception.ExceptionType.UPDATED;
+import static org.techniu.isbackend.exception.ExceptionType.DELETED;
 import static org.techniu.isbackend.exception.MainException.getMessageTemplate;
 
 @RestController
@@ -53,6 +54,17 @@ public class CommercialOperationStatusController {
         commercialOperationStatusService.update(commercialOperationStatusMapper.updateRequestToDto(commercialOperationStatusUpdaterequest));
         return new ResponseEntity<Response>(Response.ok().setPayload(
                 getMessageTemplate(CommercialOperationStatus, UPDATED)), HttpStatus.OK);
+    }
+
+    /**
+     * Handles the incoming DELETE API "/commercialOperationStatus/delete"
+     *
+     * @param id action delete request
+     */
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity delete(@PathVariable String id) {
+        commercialOperationStatusService.remove(id);
+        return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(CommercialOperationStatus, DELETED)), HttpStatus.OK);
     }
 
     /**

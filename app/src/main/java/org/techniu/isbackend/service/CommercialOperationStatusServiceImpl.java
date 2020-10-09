@@ -9,10 +9,7 @@ import org.techniu.isbackend.exception.EntityType;
 import org.techniu.isbackend.exception.ExceptionType;
 import org.techniu.isbackend.exception.MainException;
 import org.techniu.isbackend.repository.CommercialOperationStatusRepository;
-import static org.techniu.isbackend.exception.EntityType.*;
-import org.techniu.isbackend.exception.EntityType;
-import org.techniu.isbackend.exception.ExceptionType;
-import org.techniu.isbackend.exception.MainException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +24,7 @@ public class CommercialOperationStatusServiceImpl implements CommercialOperation
         this.commercialOperationStatusRepository = commercialOperationStatusRepository;
     }
     @Override
-    public CommercialOperationStatus save(CommercialOperationStatusDto commercialOperationStatusDto) {
+    public void save(CommercialOperationStatusDto commercialOperationStatusDto) {
         // save country if note existe
         commercialOperationStatusDto.setName(commercialOperationStatusDto.getName().toLowerCase());
 
@@ -38,11 +35,11 @@ public class CommercialOperationStatusServiceImpl implements CommercialOperation
         if (commercialOperationStatus.isPresent()) {
             throw exception(DUPLICATE_ENTITY);
         }
-        return commercialOperationStatusRepository.save(commercialOperationStatusMapper.dtoToModel(commercialOperationStatusDto));
+        commercialOperationStatusRepository.save(commercialOperationStatusMapper.dtoToModel(commercialOperationStatusDto));
     }
 
     @Override
-    public CommercialOperationStatus update(CommercialOperationStatusDto commercialOperationStatusDto) {
+    public void update(CommercialOperationStatusDto commercialOperationStatusDto) {
         // save country if note existe
         commercialOperationStatusDto.setName(commercialOperationStatusDto.getName().toLowerCase());
         if (commercialOperationStatusDto.getName().contains(" ")) {
@@ -57,7 +54,7 @@ public class CommercialOperationStatusServiceImpl implements CommercialOperation
         if (commercialOperationStatus2.isPresent() && !(commercialOperationStatus1.get().getName().equals(commercialOperationStatusDto.getName())) ) {
             throw exception(DUPLICATE_ENTITY);
         }
-        return commercialOperationStatusRepository.save(commercialOperationStatusMapper.dtoToModel(commercialOperationStatusDto));
+         commercialOperationStatusRepository.save(commercialOperationStatusMapper.dtoToModel(commercialOperationStatusDto));
     }
 
     @Override
@@ -73,6 +70,21 @@ public class CommercialOperationStatusServiceImpl implements CommercialOperation
         }
         return commercialOperationStatusDtos;
     }
+    /**
+     * delete Action
+     *
+     * @param id - id
+     */
+    @Override
+    public void remove(String id) {
+        Optional<CommercialOperationStatus> action = Optional.ofNullable(commercialOperationStatusRepository.findBy_id(id));
+        // If CommercialOperationStatus doesn't exists
+        if (!action.isPresent()) {
+            throw exception(ENTITY_NOT_FOUND);
+        }
+        commercialOperationStatusRepository.deleteById(id);
+    }
+
 
     /**
      * Returns a new RuntimeException
