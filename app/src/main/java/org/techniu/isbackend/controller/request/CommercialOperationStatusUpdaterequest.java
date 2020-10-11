@@ -8,7 +8,7 @@ import lombok.experimental.Accessors;
 import javax.validation.constraints.NotBlank;
 
 import static org.techniu.isbackend.exception.ValidationConstants.COMMERCIALOPERATIONSTATUS_NAME_NOT_BLANK;
-
+import static org.techniu.isbackend.exception.ValidationConstants.COMMERCIALOPERATIONSTATUS_PERCENTAGE_NOT_BLANK;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,6 +18,7 @@ public class CommercialOperationStatusUpdaterequest {
     private String commercialOperationStatusId;
     @NotBlank(message = COMMERCIALOPERATIONSTATUS_NAME_NOT_BLANK)
     private String name;
+    @NotBlank(message = COMMERCIALOPERATIONSTATUS_PERCENTAGE_NOT_BLANK)
     private String percentage;
     private String description;
 }

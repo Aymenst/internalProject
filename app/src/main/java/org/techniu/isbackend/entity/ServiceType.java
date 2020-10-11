@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 public class ServiceType {
     @Id
-    private String serviceTypeId;
+    private String _id;
     private String name;
     private String description;
 }

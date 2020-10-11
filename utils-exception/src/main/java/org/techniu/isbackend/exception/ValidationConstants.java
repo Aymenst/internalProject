@@ -114,8 +114,11 @@ public class ValidationConstants {
     public final static String DEPARTMENT_UPDATE_date_NOT_BLANK = "department.updateDate.not.blank";
     public final static String DEPARTMENT_CREATION_date_NOT_BLANK = "department.creationDate.not.blank";
     //Internal Project
-    //Action
+    //CommercialOperationStatus
     public final static String COMMERCIALOPERATIONSTATUS_NAME_NOT_BLANK = "operation status name can not be blank";
+    public final static String COMMERCIALOPERATIONSTATUS_PERCENTAGE_NOT_BLANK = "operation status percentage can not be blank";
+    //ServiceType
+    public final static String SERVICETYPE_NAME_NOT_BLANK = "service type name can not be blank";
 
 
     // Static messages, do not modify them
@@ -327,7 +330,13 @@ public class ValidationConstants {
        // getKeyValueTranslation(Department, "department").forEach(backendTranslation::putIfAbsent);
         backendTranslation.put(DEPARTMENT_CODE_NOT_BLANK, getNotBlankValue(DEPARTMENT_CODE_NOT_BLANK));
         //internal project
+        //COMMERCIALOPERATIONSTATUS
         backendTranslation.put(COMMERCIALOPERATIONSTATUS_NAME_NOT_BLANK, getNotBlankValue(COMMERCIALOPERATIONSTATUS_NAME_NOT_BLANK));
+        backendTranslation.put(COMMERCIALOPERATIONSTATUS_PERCENTAGE_NOT_BLANK, getNotBlankValue(COMMERCIALOPERATIONSTATUS_PERCENTAGE_NOT_BLANK));
+        //SERVICETYPE
+        backendTranslation.put(SERVICETYPE_NAME_NOT_BLANK, getNotBlankValue(SERVICETYPE_NAME_NOT_BLANK));
+
+
         // commercialProject
         return backendTranslation;
     }

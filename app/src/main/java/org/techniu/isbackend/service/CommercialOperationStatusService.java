@@ -14,7 +14,7 @@ public interface CommercialOperationStatusService {
      */
     void save(CommercialOperationStatusDto commercialOperationStatusDto);
     /**
-     * all ActionsDto
+     * all CommercialOperationStatusDto
      *
      * @return List commercialOperationStatusDto
      */
