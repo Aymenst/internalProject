@@ -8,6 +8,7 @@ import org.techniu.isbackend.service.CountryConfigService;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api")
 @CrossOrigin("*")
 public class CountryConfigController {
     private CountryConfigService countryConfigService;

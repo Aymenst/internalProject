@@ -19,7 +19,7 @@ import java.util.List;
 @Builder
 public class StateCountry{
     @Id
-    private String stateCountryId;
+    private String _id;
     private String stateName;
     @DBRef
     private Country country;

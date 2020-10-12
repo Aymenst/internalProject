@@ -10,5 +10,5 @@ public interface StateCountryRepository extends MongoRepository<StateCountry, St
 
     StateCountry getByStateName(String countryName);
 
-    List<StateCountry> findAllByCountry(Country country);
+    List<StateCountry> findAllByCountry_CountryId(String id);
 }

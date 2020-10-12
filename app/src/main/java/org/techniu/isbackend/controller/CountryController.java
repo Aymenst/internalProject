@@ -10,6 +10,7 @@ import org.techniu.isbackend.service.CountryService;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/county")
 @CrossOrigin("*")
 public class CountryController {
     private CountryService countryService;
@@ -32,5 +33,6 @@ public class CountryController {
         System.out.println(name);
         return countryService.getCountryByName(name);
     }
+
 
 }

@@ -8,6 +8,7 @@ import org.techniu.isbackend.service.ClientService;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api")
 @CrossOrigin("*")
 public class ClientController {
     private ClientService clientService;

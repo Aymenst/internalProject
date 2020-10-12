@@ -13,7 +13,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SectorConfig implements Serializable {
-    @Id
+   /* @Id
     private String sectorConfigId;
     @DBRef
     private Sector primarySector;
@@ -22,5 +22,12 @@ public class SectorConfig implements Serializable {
     @DBRef
     private Sector thirdSector;
     @DBRef
-    private Staff staff;
+    private Staff staff;*/
+   @Id
+   private String sectorConfigId;
+    private String primarySector;
+    private String secondarySector;
+    private String thirdSector;
+    @DBRef
+    private Leader leader;
 }
