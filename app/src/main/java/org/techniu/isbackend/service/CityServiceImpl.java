@@ -1,9 +1,13 @@
 package org.techniu.isbackend.service;
 
+import org.mapstruct.factory.Mappers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.techniu.isbackend.dto.mapper.CityMapper;
+import org.techniu.isbackend.dto.mapper.StateCountryMapper;
 import org.techniu.isbackend.dto.model.CityDto;
 import org.techniu.isbackend.dto.model.StaffDto;
+import org.techniu.isbackend.dto.model.StateCountryDto;
 import org.techniu.isbackend.entity.City;
 import org.techniu.isbackend.entity.Country;
 import org.techniu.isbackend.entity.Staff;
@@ -24,6 +28,7 @@ public class CityServiceImpl implements CityService{
     private CityRepository cityRepository;
     private CountryRepository countryRepository;
     private StateCountryRepository stateCountryRepository;
+    private final CityMapper cityMapper = Mappers.getMapper(CityMapper.class);
     CityServiceImpl(CityRepository cityRepository, StateCountryRepository stateCountryRepository,CountryRepository countryRepository) {
         this.cityRepository = cityRepository;
         this.countryRepository = countryRepository;
@@ -90,9 +95,17 @@ public class CityServiceImpl implements CityService{
     }
 
     @Override
-    public List<City> getAllCityByState(String stateId) {
-        StateCountry stateCountry = stateCountryRepository.findById(stateId).get();
-        return cityRepository.findAllByStateCountry(stateCountry);
+    public List<CityDto> getAllCitiesByState(String id) {
+        // Get all actions
+        List<City> citiesStates = cityRepository.findAllByStateCountry__id(id);
+        // Create a list of all actions dto
+        ArrayList<CityDto> citiesStateDtos = new ArrayList<>();
+
+        for (City city : citiesStates) {
+            CityDto cityDto=cityMapper.modelToDto(city);
+            citiesStateDtos.add(cityDto);
+        }
+        return citiesStateDtos;
     }
     /**
      * Returns a new RuntimeException

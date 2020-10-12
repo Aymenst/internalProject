@@ -13,5 +13,5 @@ public interface CityService {
     City updateCity(String cityId, City city);
     ResponseEntity<?> deleteCity(String cityId);
     List<CityDto> getAllCity();
-    List<City> getAllCityByState(String stateId);
+    List<CityDto> getAllCitiesByState(String stateId);
 }

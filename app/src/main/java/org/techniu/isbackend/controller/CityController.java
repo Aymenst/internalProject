@@ -60,4 +60,9 @@ public class CityController {
         cityService.saveCity(country,stateCountry,city);
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(City, ADDED)), HttpStatus.OK);
     }
+
+    @RequestMapping(method = RequestMethod.GET, value = "citiesByState/{id}")
+    public ResponseEntity getStateCities(@PathVariable String id){
+        return new ResponseEntity<Response>(Response.ok().setPayload(cityService.getAllCitiesByState(id)), HttpStatus.OK);
+    }
 }

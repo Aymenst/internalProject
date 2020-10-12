@@ -22,7 +22,7 @@ public class StateCountryController {
 
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/{id}")
+    @RequestMapping(method = RequestMethod.GET, value = "statesByCountry/{id}")
     public ResponseEntity getCountyState(@PathVariable String id){
         return new ResponseEntity<Response>(Response.ok().setPayload(stateCountryService.getAllState(id)), HttpStatus.OK);
     }
