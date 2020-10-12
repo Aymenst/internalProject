@@ -7,6 +7,7 @@ import org.techniu.isbackend.service.SectorService;
 
 import java.util.List;
 @RestController
+@RequestMapping("/api")
 @CrossOrigin("*")
 public class SectorController {
     private SectorService sectorService;

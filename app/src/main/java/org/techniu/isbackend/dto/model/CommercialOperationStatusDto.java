@@ -17,6 +17,7 @@ public class CommercialOperationStatusDto {
 
     private String commercialOperationStatusId;
     private String name;
+    private String code;
     private String percentage;
     private String description;
 }

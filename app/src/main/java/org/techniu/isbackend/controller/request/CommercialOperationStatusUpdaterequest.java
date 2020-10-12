@@ -18,6 +18,7 @@ public class CommercialOperationStatusUpdaterequest {
     private String commercialOperationStatusId;
     @NotBlank(message = COMMERCIALOPERATIONSTATUS_NAME_NOT_BLANK)
     private String name;
+    private String code;
     @NotBlank(message = COMMERCIALOPERATIONSTATUS_PERCENTAGE_NOT_BLANK)
     private String percentage;
     private String description;

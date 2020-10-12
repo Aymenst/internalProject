@@ -38,7 +38,7 @@ public class SectorServiceImpl implements SectorService {
     public List<Sector> getSectorByPrimary(String name) {
         Sector s = sectorRepository.findByName(name);
         if (s != null) {
-            return sectorRepository.findByPrimary(s);
+            return sectorRepository.findByParent(s);
         } else {
             throw new ExceptionMessage("Cannot get Sector");
         }

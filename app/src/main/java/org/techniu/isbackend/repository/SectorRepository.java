@@ -8,7 +8,7 @@ import java.util.List;
 public interface SectorRepository  extends MongoRepository<Sector, String> {
     Sector findByName(String name);
 
-    List<Sector> findByPrimary(Sector s);
+    List<Sector> findByParent(Sector s);
 
     List<Sector> findByType(String type);
 }

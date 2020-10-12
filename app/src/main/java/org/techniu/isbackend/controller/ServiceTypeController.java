@@ -19,7 +19,7 @@ import static org.techniu.isbackend.exception.ExceptionType.*;
 import static org.techniu.isbackend.exception.MainException.getMessageTemplate;
 
 @RestController
-@RequestMapping("/api/serviceType")
+@RequestMapping("/api/commercialServiceType")
 @CrossOrigin("*")
 public class ServiceTypeController {
     private final ServiceTypeService serviceTypeService;

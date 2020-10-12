@@ -38,7 +38,8 @@ public class CommercialOperationStatusController {
     @PostMapping("/add")
     public ResponseEntity add(@RequestBody @Valid CommercialOperationStatusAddrequest commercialOperationStatusAddrequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) return mapValidationErrorService.mapValidationService(bindingResult);
-        // Save staff
+        // Save CommercialOperationStatus
+        System.out.println(commercialOperationStatusMapper.addRequestToDto(commercialOperationStatusAddrequest));
         commercialOperationStatusService.save(commercialOperationStatusMapper.addRequestToDto(commercialOperationStatusAddrequest));
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(CommercialOperationStatus, ADDED)), HttpStatus.OK);
     }

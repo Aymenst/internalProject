@@ -18,6 +18,7 @@ public class CommercialOperationStatus{
     @Id
     private String _id;
     private String name;
+    private String code;
     private String percentage;
     private String description;
     //private CommercialOperationState parent;

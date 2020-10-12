@@ -19,5 +19,5 @@ public class Sector implements Serializable {
     private String description;
     private String type;
     @DBRef
-    private Sector primary;
+    private Sector parent;
 }
