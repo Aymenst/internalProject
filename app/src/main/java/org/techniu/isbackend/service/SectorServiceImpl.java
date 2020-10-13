@@ -46,6 +46,8 @@ public class SectorServiceImpl implements SectorService {
 
     @Override
     public List<Sector> getSectorByType(String type) {
+        System.out.println(type);
+        System.out.println(sectorRepository.findByType(type));
         return sectorRepository.findByType(type);
     }
 }

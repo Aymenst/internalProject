@@ -1,17 +1,19 @@
 package org.techniu.isbackend.service;
 
+import org.mapstruct.factory.Mappers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.techniu.isbackend.entity.Address;
-import org.techniu.isbackend.entity.City;
-import org.techniu.isbackend.entity.Client;
-import org.techniu.isbackend.entity.Staff;
+import org.techniu.isbackend.dto.mapper.ClientMapper;
+import org.techniu.isbackend.dto.model.ClientDto;
+import org.techniu.isbackend.dto.model.CommercialOperationStatusDto;
+import org.techniu.isbackend.entity.*;
 import org.techniu.isbackend.repository.AddressRepository;
 import org.techniu.isbackend.repository.CityRepository;
 import org.techniu.isbackend.repository.ClientRepository;
 import org.techniu.isbackend.repository.StaffRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +26,7 @@ public class ClientServiceImpl implements ClientService{
     private AddressService addressService;
     private StaffService  staffService;
     private StaffRepository staffRepository;
+    private final ClientMapper clientMapper = Mappers.getMapper(ClientMapper.class);
     ClientServiceImpl(ClientRepository clientRepository, AddressRepository addressRepository, AddressService addressService,StaffService  staffService,
                       StaffRepository staffRepository,CityRepository cityRepository) {
         this.clientRepository = clientRepository;
@@ -80,8 +83,17 @@ public class ClientServiceImpl implements ClientService{
     }
 
     @Override
-    public List<Client> getAllClient() {
-        return clientRepository.findAll();
+    public List<ClientDto> getAllClient() {
+        // Get all actions
+        List<Client> clients = clientRepository.findAll();
+        // Create a list of all actions dto
+        ArrayList<ClientDto> clientsDtos = new ArrayList<>();
+
+        for (Client client : clients) {
+            ClientDto clientDto=clientMapper.modelToDto(client);
+            clientsDtos.add(clientDto);
+        }
+        return clientsDtos;
     }
 
     @Override

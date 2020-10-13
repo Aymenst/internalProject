@@ -46,16 +46,19 @@ public class ClientController {
         clientService.saveClient(clientMapper.dtoToModel(clientMapper.addRequestToDto(clientAddRequest)),address,clientAddRequest.getCityId(),clientAddRequest.getAssistantCommercial(),clientAddRequest.getResponsibleCommercial());
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(Client, ADDED)), HttpStatus.OK);
     }
-/*
-    @RequestMapping(path = "client",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Client saveClient(@RequestBody Client client){
-        return clientService.saveClient(client) ;
-    }*/
 
+    /**
+     * display all client GET API "/api/client"
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/all")
+    public ResponseEntity allClients() {
+        return new ResponseEntity<Response>(Response.ok().setPayload(clientService.getAllClient()), HttpStatus.OK);
+    }
+/*
     @RequestMapping(path = "clients",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Client> getClients(){
         return clientService.getAllClient();
-    }
+    }*/
 
     @RequestMapping(path = "clients-by-country/{country}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Client> getClientsByCountry(@PathVariable(value = "country") String country){
