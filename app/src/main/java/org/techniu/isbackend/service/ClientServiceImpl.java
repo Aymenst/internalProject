@@ -92,6 +92,8 @@ public class ClientServiceImpl implements ClientService{
         for (Client client : clients) {
             ClientDto clientDto=clientMapper.modelToDto(client);
             clientsDtos.add(clientDto);
+            clientDto.setCity(client.getAddress().getCity().getCityName());
+            clientDto.setCountry(client.getAddress().getCity().getStateCountry().getCountry().getCountryName());
         }
         return clientsDtos;
     }

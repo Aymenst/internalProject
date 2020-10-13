@@ -31,6 +31,8 @@ public class ClientDto {
     private String phone;
     private String email;
     private String cityId;
+    private String city;
+    private String country;
     private String addressName;
     private String postCode;
 }
