@@ -56,11 +56,11 @@ public class ClientServiceImpl implements ClientService{
             code = country + "-" + len;
             client.setCode(code);
         }
-        Staff AssistantCommercial = staffRepository.findBy_id(AssistantCommercialId);
-        Staff responsibleCommercial = staffRepository.findBy_id(responsibleCommercialId);
-        client.setAddress(addressService.saveAddress(address.setCity(city)));
-        client.setAssistantCommercial(AssistantCommercial);
-        client.setResponsibleCommercial(responsibleCommercial);
+        ///Staff AssistantCommercial = staffRepository.findBy_id(AssistantCommercialId);
+       // Staff responsibleCommercial = staffRepository.findBy_id(responsibleCommercialId);
+       // client.setAddress(addressService.saveAddress(address.setCity(city)));
+       ///client.setAssistantCommercial(AssistantCommercial);
+       ///client.setResponsibleCommercial(responsibleCommercial);
         clientRepository.save(client);
     }
 
