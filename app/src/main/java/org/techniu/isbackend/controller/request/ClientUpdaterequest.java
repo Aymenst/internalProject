@@ -24,4 +24,9 @@ public class ClientUpdaterequest {
     private String cityId;
     private String addressName;
     private String postCode;
+
+    private String sector1;
+    private String sector2;
+    private String sector3;
+    private String sectorLeader;
 }

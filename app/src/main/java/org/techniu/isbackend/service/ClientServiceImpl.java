@@ -39,6 +39,7 @@ public class ClientServiceImpl implements ClientService{
     }
     @Override
     public void saveClient(Client client,Address address,String cityId,String AssistantCommercialId,String responsibleCommercialId) {
+        System.out.println(client);
         int len = this.getAllClient().size();
         String code;
         City city=cityRepository.findCityBy_id(cityId);

@@ -29,4 +29,9 @@ public class Client implements Serializable {
     private String email;
     @DBRef
     private Address address;
+
+    private String sector1;
+    private String sector2;
+    private String sector3;
+    private String sectorLeader;
 }
