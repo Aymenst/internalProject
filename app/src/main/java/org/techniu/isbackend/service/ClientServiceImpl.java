@@ -8,13 +8,11 @@ import org.techniu.isbackend.dto.mapper.ClientMapper;
 import org.techniu.isbackend.dto.model.ClientDto;
 import org.techniu.isbackend.dto.model.CommercialOperationStatusDto;
 import org.techniu.isbackend.entity.*;
-import org.techniu.isbackend.repository.AddressRepository;
-import org.techniu.isbackend.repository.CityRepository;
-import org.techniu.isbackend.repository.ClientRepository;
-import org.techniu.isbackend.repository.StaffRepository;
+import org.techniu.isbackend.repository.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,8 +24,10 @@ public class ClientServiceImpl implements ClientService{
     private AddressService addressService;
     private StaffService  staffService;
     private StaffRepository staffRepository;
+    private CountryConfigRepository countryConfigRepository;
     private final ClientMapper clientMapper = Mappers.getMapper(ClientMapper.class);
     ClientServiceImpl(ClientRepository clientRepository, AddressRepository addressRepository, AddressService addressService,StaffService  staffService,
+                      CountryConfigRepository countryConfigRepository,
                       StaffRepository staffRepository,CityRepository cityRepository) {
         this.clientRepository = clientRepository;
         this.addressRepository = addressRepository;
@@ -35,6 +35,7 @@ public class ClientServiceImpl implements ClientService{
         this.staffRepository = staffRepository;
         this.cityRepository = cityRepository;
         this.staffService = staffService;
+        this.countryConfigRepository = countryConfigRepository;
     }
     @Override
     public void saveClient(Client client,Address address,String cityId,String AssistantCommercialId,String responsibleCommercialId) {
@@ -58,9 +59,10 @@ public class ClientServiceImpl implements ClientService{
         }
         ///Staff AssistantCommercial = staffRepository.findBy_id(AssistantCommercialId);
        // Staff responsibleCommercial = staffRepository.findBy_id(responsibleCommercialId);
-       // client.setAddress(addressService.saveAddress(address.setCity(city)));
+       client.setAddress(addressService.saveAddress(address.setCity(city)));
        ///client.setAssistantCommercial(AssistantCommercial);
        ///client.setResponsibleCommercial(responsibleCommercial);
+
         clientRepository.save(client);
     }
 
@@ -94,6 +96,17 @@ public class ClientServiceImpl implements ClientService{
             clientsDtos.add(clientDto);
             clientDto.setCity(client.getAddress().getCity().getCityName());
             clientDto.setCountry(client.getAddress().getCity().getStateCountry().getCountry().getCountryName());
+            CountryConfig countryConfig=countryConfigRepository.getByCountry(client.getAddress().getCity().getStateCountry().getCountry());
+            if(countryConfig !=null)
+            {
+                clientDto.setCountryLeader(countryConfig.getLeader().getName());
+
+            }
+            else
+            {
+                clientDto.setCountryLeader("-");
+            }
+
         }
         return clientsDtos;
     }

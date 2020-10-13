@@ -6,4 +6,5 @@ import org.techniu.isbackend.entity.Country;
 
 public interface CountryRepository extends MongoRepository<Country, String> {
     Country getByCountryName(String countryName);
+    Country getByCountryId(String id);
 }

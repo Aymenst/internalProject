@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Country implements Serializable {
+public class Country  {
     @Id
     private String countryId;
     private String countryName;
@@ -22,5 +22,4 @@ public class Country implements Serializable {
     private String countryCode;
     @DBRef
     private List<StateCountry> stateCountryList;
-
 }
