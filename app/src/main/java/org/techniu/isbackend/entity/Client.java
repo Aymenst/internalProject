@@ -14,8 +14,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class Client implements Serializable {
     @Id
-    private String clientId;
-    private String codeClient;
+    private String _id;
+    private String code;
     private String logo;
     private String name;
     private String type;
@@ -25,8 +25,8 @@ public class Client implements Serializable {
     private Staff assistantCommercial;
     private String multinational = "No";
     private String isActive = "Yes";
-    private String generalPhone;
-    private String generalEmail;
+    private String phone;
+    private String email;
     @DBRef
     private Address address;
 }

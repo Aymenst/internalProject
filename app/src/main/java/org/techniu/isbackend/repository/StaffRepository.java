@@ -9,6 +9,6 @@ import java.util.List;
 public interface StaffRepository extends MongoRepository<Staff, String> {
 
     List<Staff> findAllByLevelIsNull();
-
+    Staff findBy_id(String id);
     List<Staff> findAllByLevel(FunctionalStructureLevel level);
 }

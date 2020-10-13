@@ -1,24 +1,56 @@
 package org.techniu.isbackend.controller;
 
+import org.mapstruct.factory.Mappers;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.techniu.isbackend.Response;
+import org.techniu.isbackend.controller.request.ClientAddrequest;
+import org.techniu.isbackend.controller.request.StaffAddrequest;
+import org.techniu.isbackend.dto.mapper.ClientMapper;
+import org.techniu.isbackend.dto.mapper.StaffMapper;
+import org.techniu.isbackend.entity.Address;
 import org.techniu.isbackend.entity.Client;
+import org.techniu.isbackend.exception.validation.MapValidationErrorService;
 import org.techniu.isbackend.service.ClientService;
 
+import javax.validation.Valid;
+
+import static org.techniu.isbackend.exception.EntityType.Client;
+import static org.techniu.isbackend.exception.MainException.getMessageTemplate;
+import static org.techniu.isbackend.exception.ExceptionType.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/client")
 @CrossOrigin("*")
 public class ClientController {
     private ClientService clientService;
-    ClientController(ClientService clientService){
+    private final MapValidationErrorService mapValidationErrorService;
+    private final ClientMapper clientMapper = Mappers.getMapper(ClientMapper.class);
+    ClientController(ClientService clientService, MapValidationErrorService mapValidationErrorService){
         this.clientService = clientService;
+        this.mapValidationErrorService = mapValidationErrorService;
     }
+
+    @PostMapping("/add")
+    public ResponseEntity add(@RequestBody @Valid ClientAddrequest clientAddRequest, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) return mapValidationErrorService.mapValidationService(bindingResult);
+        // Save client
+        System.out.println(clientAddRequest);
+        Address address = new Address();
+        address.setAddress(clientAddRequest.getAddressName());
+        address.setPostCode(clientAddRequest.getPostCode());
+        clientService.saveClient(clientMapper.dtoToModel(clientMapper.addRequestToDto(clientAddRequest)),address,clientAddRequest.getCityId(),clientAddRequest.getAssistantCommercial(),clientAddRequest.getResponsibleCommercial());
+        return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(Client, ADDED)), HttpStatus.OK);
+    }
+/*
     @RequestMapping(path = "client",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Client saveClient(@RequestBody Client client){
         return clientService.saveClient(client) ;
-    }
+    }*/
 
     @RequestMapping(path = "clients",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Client> getClients(){

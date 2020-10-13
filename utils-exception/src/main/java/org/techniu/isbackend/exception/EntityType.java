@@ -4,6 +4,7 @@ public enum EntityType {
     Staff,
     City,
     CommercialOperationStatus,
-    ServiceType
+    ServiceType,
+    Client
 
 }
