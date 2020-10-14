@@ -25,7 +25,7 @@ public class AssignmentServiceImpl implements AssignmentService {
     public Assignment saveAssignment(Assignment assignment) {
         if (staffRepository.existsById(assignment.getStaff().get_id())
             && clientRepository.existsById(assignment.getClient().get_id())) {
-            if (assignment.getTypeAssignment().equals("Responsible Commercial")) {
+            if (assignment.getType().equals("Responsible Commercial")) {
                 assignment.getClient().setResponsibleCommercial(assignment.getStaff());
             } else {
                 assignment.getClient().setAssistantCommercial(assignment.getStaff());

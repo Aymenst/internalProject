@@ -18,7 +18,7 @@ public class Assignment implements Serializable {
     private String assignmentId;
     private Date startDateAssignment;
     private Date endDateAssignment;
-    private String typeAssignment;
+    private String type;
     @DBRef
     private Client client;
     @DBRef

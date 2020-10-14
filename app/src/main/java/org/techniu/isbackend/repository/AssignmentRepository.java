@@ -10,4 +10,5 @@ import java.util.List;
 public interface AssignmentRepository extends MongoRepository<Assignment, String> {
     List<Assignment> findByClient(Client client);
     List<Assignment> findByStaff(Staff staff);
+    Assignment findByClientAndType(Client client,String type);
 }

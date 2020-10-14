@@ -15,4 +15,5 @@ public interface StaffService {
     List<Staff> getAllNotAssignedStaffs();
     void assignLevelToStaff(List<Object> objects);
     List<Staff> getStaffsByLevel(String levelId);
+    List<Staff> getStaffByCountry(String countryId);
 }

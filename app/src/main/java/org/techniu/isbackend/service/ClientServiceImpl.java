@@ -24,10 +24,14 @@ public class ClientServiceImpl implements ClientService{
     private AddressService addressService;
     private StaffService  staffService;
     private StaffRepository staffRepository;
+    private AssignmentRepository assignmentRepository;
     private CountryConfigRepository countryConfigRepository;
+    private AssignmentService assignmentService;
     private final ClientMapper clientMapper = Mappers.getMapper(ClientMapper.class);
     ClientServiceImpl(ClientRepository clientRepository, AddressRepository addressRepository, AddressService addressService,StaffService  staffService,
                       CountryConfigRepository countryConfigRepository,
+                      AssignmentService assignmentService,
+                      AssignmentRepository assignmentRepository,
                       StaffRepository staffRepository,CityRepository cityRepository) {
         this.clientRepository = clientRepository;
         this.addressRepository = addressRepository;
@@ -36,6 +40,8 @@ public class ClientServiceImpl implements ClientService{
         this.cityRepository = cityRepository;
         this.staffService = staffService;
         this.countryConfigRepository = countryConfigRepository;
+        this.assignmentService = assignmentService;
+        this.assignmentRepository = assignmentRepository;
     }
     @Override
     public void saveClient(Client client,Address address,String cityId,String AssistantCommercialId,String responsibleCommercialId) {
@@ -100,13 +106,19 @@ public class ClientServiceImpl implements ClientService{
             CountryConfig countryConfig=countryConfigRepository.getByCountry(client.getAddress().getCity().getStateCountry().getCountry());
             if(countryConfig !=null)
             {
-                clientDto.setCountryLeader(countryConfig.getLeader().getName());
+               // clientDto.setCountryLeader(countryConfig.getLeader().getName());
 
             }
             else
             {
                 clientDto.setCountryLeader("-");
             }
+            //get assistant commercial if existe
+            System.out.println(client.get_id());
+            Assignment assignment = assignmentRepository.findByClientAndType(client,"Responsible Commercial");
+            System.out.println(assignment);
+            clientDto.setAssistantCommercial(assignment.getStaff().getName());
+            //get responsable commercial if existe
 
         }
         return clientsDtos;
