@@ -115,6 +115,7 @@ public class ClientServiceImpl implements ClientService{
     @Override
     public List<Client> getClientsByCountryName(String country) {
         List<Client> clients = clientRepository.findAll();
+        System.out.println(clients);
         return clients.stream().filter(client -> client.getAddress().getCity().getStateCountry().getCountry().getCountryName().equals(country)).collect(Collectors.toList());
     }
 }

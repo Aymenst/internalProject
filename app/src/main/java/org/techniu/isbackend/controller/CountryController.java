@@ -31,9 +31,13 @@ public class CountryController {
         return countryService.getAllCountry();
     }*/
    @RequestMapping(method = RequestMethod.GET, value = "/all")
-   public ResponseEntity allCommercialOperationStatus() {
+   public ResponseEntity allCountry() {
        return new ResponseEntity<Response>(Response.ok().setPayload(countryService.getAllCountry()), HttpStatus.OK);
    }
+    @RequestMapping(method = RequestMethod.GET, value = "/all2")
+    public List<Country> allCountry2() {
+        return countryService.getAllCountry();
+    }
 
     @RequestMapping(path = "country-by-name/{name}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Boolean getCountryByName(@PathVariable(value = "name") String name){
