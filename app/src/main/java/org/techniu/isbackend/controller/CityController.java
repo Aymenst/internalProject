@@ -60,6 +60,32 @@ public class CityController {
         cityService.saveCity(country,stateCountry,city);
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(City, ADDED)), HttpStatus.OK);
     }
+    /**
+     * Handles the incoming POST API "/city/import"
+     *
+     * @param cityAddrequests isic import request
+     * @return serviceDto
+     */
+    @PostMapping("/import")
+    public ResponseEntity importIsic(@RequestBody @Valid List<CityAddrequest> cityAddrequests, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) return mapValidationErrorService.mapValidationService(bindingResult);
+        // Save service
+        for (CityAddrequest cityAddrequest : cityAddrequests) {
+            //country
+            Country country = new Country();
+            country.setCountryName(cityAddrequest.getCountryName());
+            country.setCountryCode(cityAddrequest.getCountryCode());
+            country.setPhonePrefix(cityAddrequest.getPhonePrefix());
+            //StateCountry
+            StateCountry stateCountry=new StateCountry();
+            stateCountry.setStateName(cityAddrequest.getStateName());
+            // Save City
+            City city=new City();
+            city.setCityName(cityAddrequest.getCityName());
+            cityService.saveCity(country,stateCountry,city);
+        }
+        return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(City, ADDED)), HttpStatus.OK);
+    }
 
     @RequestMapping(method = RequestMethod.GET, value = "citiesByState/{id}")
     public ResponseEntity getStateCities(@PathVariable String id){
