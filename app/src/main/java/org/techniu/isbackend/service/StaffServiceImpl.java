@@ -14,6 +14,7 @@ import org.techniu.isbackend.service.utilities.StringUtility;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -104,6 +105,12 @@ public class StaffServiceImpl implements StaffService {
         FunctionalStructureLevel level = functionalStructureLevelRepository.findById(levelId).get();
         List<Staff> staffs = staffRepository.findAllByLevel(level);
         return staffs;
+    }
+
+    @Override
+    public List<Staff> getStaffByCountry(String countryId) {
+        System.out.println(staffRepository.findAll());
+        return staffRepository.findAll().stream().filter(people -> people.getAddress().getCity().getStateCountry().getCountry().getCountryId().equals(countryId)).collect(Collectors.toList());
     }
 
 }

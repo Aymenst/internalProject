@@ -8,6 +8,7 @@ import org.techniu.isbackend.service.AssignmentService;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api")
 @CrossOrigin("*")
 public class AssignmentController {
     private AssignmentService assignmentService;

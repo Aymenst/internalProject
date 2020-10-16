@@ -35,4 +35,10 @@ public class ClientDto {
     private String country;
     private String addressName;
     private String postCode;
+    private String countryLeader;
+
+    private String sector1;
+    private String sector2;
+    private String sector3;
+    private String sectorLeader;
 }

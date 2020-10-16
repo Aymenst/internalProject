@@ -24,6 +24,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/staff")
+@CrossOrigin("*")
 public class StaffController {
     private final StaffService staffService;
     private final MapValidationErrorService mapValidationErrorService;
@@ -50,6 +51,11 @@ public class StaffController {
         address.setPostCode(staffAddRequest.getPostCode());
         staffService.saveStaff(staffMapper.dtoToModel(staffMapper.addRequestToDto(staffAddRequest)),address,staffAddRequest.getCityId());
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(Staff, ADDED)), HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "staffBycountry/{countryId}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Staff> gePeople(@PathVariable(value = "countryId") String countryId){
+        return staffService.getStaffByCountry(countryId);
     }
 
     @RequestMapping(path = "all",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

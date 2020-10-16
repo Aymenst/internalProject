@@ -53,6 +53,7 @@ public class CityServiceImpl implements CityService{
             stateCountry1= stateCountry2.get();
         }
         else {
+            // save country if note existe
             stateCountry1=stateCountryRepository.save(stateCountry);
         }
         StateCountry stateCountry3=stateCountryRepository.save(stateCountry1.setCountry(country1));
