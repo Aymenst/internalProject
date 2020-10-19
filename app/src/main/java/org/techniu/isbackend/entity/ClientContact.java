@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Document(value = "ClientContact")
 @Data
@@ -16,20 +17,13 @@ import java.io.Serializable;
 public class ClientContact implements Serializable {
 
     @Id
-    private String clientContactId;
-    private String name;
-    private String fatherName;
-    private String motherName;
-    private String department;
-    private String position;
-    private String companyEmail;
-    private String companyPhone;
-    private String companyMobilePhone;
-    private String companyAddress;
-    private String personalEmail;
-    private String personalPhone;
-    private String personalMobilePhone;
-    private String skype;
+    private String ClientContractId;
+    private Date signedDate;
+    private Date startDate;
+    private Date endDate;
+    private Date finalReelDate;
     @DBRef
     private Client client;
+    private Date creationDate;
+
 }
