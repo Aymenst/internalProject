@@ -116,6 +116,7 @@ public class ValidationConstants {
     //Internal Project
     //CommercialOperationStatus
     public final static String COMMERCIALOPERATIONSTATUS_NAME_NOT_BLANK = "operation status name can not be blank";
+    public final static String COMMERCIALOPERATIONSTATUS_CODE_NOT_BLANK = "operation status code can not be blank";
     public final static String COMMERCIALOPERATIONSTATUS_PERCENTAGE_NOT_BLANK = "operation status percentage can not be blank";
     //ServiceType
     public final static String SERVICETYPE_NAME_NOT_BLANK = "service type name can not be blank";
@@ -332,6 +333,7 @@ public class ValidationConstants {
         //internal project
         //COMMERCIALOPERATIONSTATUS
         backendTranslation.put(COMMERCIALOPERATIONSTATUS_NAME_NOT_BLANK, getNotBlankValue(COMMERCIALOPERATIONSTATUS_NAME_NOT_BLANK));
+        backendTranslation.put(COMMERCIALOPERATIONSTATUS_CODE_NOT_BLANK, getNotBlankValue(COMMERCIALOPERATIONSTATUS_CODE_NOT_BLANK));
         backendTranslation.put(COMMERCIALOPERATIONSTATUS_PERCENTAGE_NOT_BLANK, getNotBlankValue(COMMERCIALOPERATIONSTATUS_PERCENTAGE_NOT_BLANK));
         //SERVICETYPE
         backendTranslation.put(SERVICETYPE_NAME_NOT_BLANK, getNotBlankValue(SERVICETYPE_NAME_NOT_BLANK));
