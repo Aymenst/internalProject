@@ -16,8 +16,8 @@ import java.util.Date;
 public class Assignment implements Serializable {
     @Id
     private String assignmentId;
-    private Date startDateAssignment;
-    private Date endDateAssignment;
+    private Date startDate;
+    private Date endDate;
     private String type;
     @DBRef
     private Client client;
