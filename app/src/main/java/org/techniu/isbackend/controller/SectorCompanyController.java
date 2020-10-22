@@ -53,15 +53,19 @@ public class SectorCompanyController {
 
         sectorCompany3.setName(sectorCompanyAddrequest.getThirdSectorName());
         sectorCompany3.setDescription(sectorCompanyAddrequest.getThirdSectorDescription());
-        sectorCompany3.setParent(sectorCompanyService.save(sectorCompany2));
-        sectorCompanyService.save(sectorCompany3);
+
+            if(sectorCompanyAddrequest.getSecondSectorName()!=null && sectorCompanyAddrequest.getSecondSectorName() !=""){
+        sectorCompany3.setParent(sectorCompanyService.save(sectorCompany2));}
+            if(sectorCompanyAddrequest.getThirdSectorName()!=null && sectorCompanyAddrequest.getThirdSectorName() !="") {
+                sectorCompanyService.save(sectorCompany3);
+            }
         }
 
         else {
             // chek if Sector2 exist
             SectorCompany sectorCompanyparent2 = sectorCompanyService.checkIfSectorExist(sectorCompanyAddrequest.getSecondSectorName());
             //not existe create sector2
-            if (sectorCompanyparent2 == null) {
+            if (sectorCompanyparent2 == null && sectorCompanyAddrequest.getSecondSectorName() !=null) {
                 sectorCompany2.setName(sectorCompanyAddrequest.getSecondSectorName());
                 sectorCompany2.setDescription(sectorCompanyAddrequest.getSecondSectorDescription());
                 sectorCompany2.setParent(sectorCompanyparent1);
@@ -71,10 +75,12 @@ public class SectorCompanyController {
                 sectorCompanyService.save(sectorCompany3);
             }
             else{
-                sectorCompany3.setParent(sectorCompanyparent2);
-                sectorCompany3.setName(sectorCompanyAddrequest.getThirdSectorName());
-                sectorCompany3.setDescription(sectorCompanyAddrequest.getThirdSectorDescription());
-                sectorCompanyService.save(sectorCompany3);
+                if (sectorCompanyAddrequest.getSecondSectorName() !=null) {
+                    sectorCompany3.setParent(sectorCompanyparent2);
+                    sectorCompany3.setName(sectorCompanyAddrequest.getThirdSectorName());
+                    sectorCompany3.setDescription(sectorCompanyAddrequest.getThirdSectorDescription());
+                    sectorCompanyService.save(sectorCompany3);
+                }
             }
         }
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(SectorCompany, ADDED)), HttpStatus.OK);
@@ -98,11 +104,16 @@ public class SectorCompanyController {
     /**
      * Handles the incoming DELETE API "/commercialOperationStatus/delete"
      *
-     * @param id action delete request
+     * @param firstSectorName action delete request
+     * @param secondSectorName action delete request
+     * @param thirdSectorName action delete request
      */
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity delete(@PathVariable String id) {
-       // sectorCompanyService.remove(id);
+    @RequestMapping(value = "/delete/{firstSectorName}/{secondSectorName}/{thirdSectorName}", method = RequestMethod.DELETE)
+    public ResponseEntity delete(@PathVariable String firstSectorName,@PathVariable String secondSectorName,@PathVariable String thirdSectorName) {
+        System.out.println(firstSectorName);
+        System.out.println(secondSectorName);
+        System.out.println(thirdSectorName);
+         sectorCompanyService.remove(firstSectorName,secondSectorName,thirdSectorName);
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(SectorCompany, DELETED)), HttpStatus.OK);
     }
 /*

@@ -17,6 +17,8 @@ public interface SectorCompanyService {
     List<SectorCompanyDto> getAllBysectorByParent(String sectorName);
 
     List<SectorCompanyDto> getSectorsPrimary();
+
+    void remove(String firstSectorName, String secondSectorName, String thirdSectorName);
     /*List<SectorCompany> getSectorByPrimary(String name);
     List<SectorCompany> getSectorByType(String type);*/
 }
