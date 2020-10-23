@@ -39,9 +39,9 @@ public class ClientController {
     public ResponseEntity add(@RequestBody @Valid ClientAddrequest clientAddRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) return mapValidationErrorService.mapValidationService(bindingResult);
         // Save client
-
+System.out.println(clientAddRequest);
         Address address = new Address();
-        address.setAddress(clientAddRequest.getAddressName());
+        address.setFullAddress(clientAddRequest.getAddressName());
         address.setPostCode(clientAddRequest.getPostCode());
         clientService.saveClient(clientMapper.dtoToModel(clientMapper.addRequestToDto(clientAddRequest)),address,clientAddRequest.getCityId(),clientAddRequest.getAssistantCommercial(),clientAddRequest.getResponsibleCommercial());
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(Client, ADDED)), HttpStatus.OK);

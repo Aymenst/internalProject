@@ -30,6 +30,7 @@ public class ClientDto {
     private String isActive = "Yes";
     private String phone;
     private String email;
+    private String webSite;
     private String cityId;
     private String city;
     private String country;
