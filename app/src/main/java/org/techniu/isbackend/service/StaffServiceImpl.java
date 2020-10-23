@@ -71,7 +71,7 @@ public class StaffServiceImpl implements StaffService {
         ArrayList<StaffDto> staffDtos = new ArrayList<>();
         for (Staff staff : staffs) {
             StaffDto staffDto = staffMapper.modelToDto(staff);
-            staffDto.setAddressName(staff.getAddress().getAddress());
+            staffDto.setAddressName(staff.getAddress().getFullAddress());
             staffDto.setPostCode(staff.getAddress().getPostCode());
             staffDto.setCityName(staff.getAddress().getCity().getCityName());
             staffDtos.add(staffDto);

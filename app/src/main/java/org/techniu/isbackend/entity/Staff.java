@@ -8,7 +8,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.Builder;
-import java.io.Serializable;
+
 import java.util.List;
 
 
@@ -39,7 +39,7 @@ public class Staff {
     private Address address;
 
     @DBRef
-    private Company company;
+    private FinancialCompany company;
 
     @DBRef
     private FunctionalStructureLevel level;

@@ -6,8 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.techniu.isbackend.entity.StateCountry;
+import org.techniu.isbackend.entity.Address;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -18,21 +19,19 @@ import java.util.Date;
 @Accessors(chain = true)
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class IvaDto {
+public class FinancialCompanyDto {
 
     @NotNull
-    private String ivaId;
+    private String financialCompanyId;
     @NotNull
-    private int ivaCode;
+    private String name;
+    private String email;
     @NotNull
-    private int value;
-    @NotNull
-    private boolean electronicInvoice;
-    @NotNull
-    private Date startingDate;
-    private Date endingDate;
+    private String phone1;
+    private String phone2;
+    private String logo;
 
     @DBRef
-    private StateCountry stateCountry;
+    private Address address;
 
 }

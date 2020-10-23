@@ -41,7 +41,7 @@ public class ClientController {
         // Save client
 
         Address address = new Address();
-        address.setAddress(clientAddRequest.getAddressName());
+        address.setFullAddress(clientAddRequest.getAddressName());
         address.setPostCode(clientAddRequest.getPostCode());
         clientService.saveClient(clientMapper.dtoToModel(clientMapper.addRequestToDto(clientAddRequest)),address,clientAddRequest.getCityId(),clientAddRequest.getAssistantCommercial(),clientAddRequest.getResponsibleCommercial());
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(Client, ADDED)), HttpStatus.OK);

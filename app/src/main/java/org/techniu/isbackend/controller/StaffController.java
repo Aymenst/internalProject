@@ -47,7 +47,7 @@ public class StaffController {
         if (bindingResult.hasErrors()) return mapValidationErrorService.mapValidationService(bindingResult);
         // Save staff
         Address address = new Address();
-        address.setAddress(staffAddRequest.getAddressName());
+        address.setFullAddress(staffAddRequest.getAddressName());
         address.setPostCode(staffAddRequest.getPostCode());
         staffService.saveStaff(staffMapper.dtoToModel(staffMapper.addRequestToDto(staffAddRequest)),address,staffAddRequest.getCityId());
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(Staff, ADDED)), HttpStatus.OK);

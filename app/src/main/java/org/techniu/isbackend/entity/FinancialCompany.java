@@ -9,20 +9,24 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Date;
 
-@Document(value = "Company")
+@Document(value = "FinancialCompany")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Company implements Serializable {
+public class FinancialCompany implements Serializable {
     @Id
-    private String companyId;
+    private String _id;
     @NotNull
     private String name;
     private String email;
     private String phone1;
     private String phone2;
     private String logo;
+
+    private Date creationDate;
+    private Date modificationDate;
 
     @DBRef
     private Address address;

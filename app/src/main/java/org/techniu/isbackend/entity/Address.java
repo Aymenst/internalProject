@@ -17,7 +17,7 @@ import java.io.Serializable;
 public class Address implements Serializable {
     @Id
     private String addressId;
-    private String address;
+    private String fullAddress;
     private String postCode;
     @DBRef
     private City city;

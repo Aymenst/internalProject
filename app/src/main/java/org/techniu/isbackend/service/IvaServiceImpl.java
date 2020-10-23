@@ -8,10 +8,12 @@ import org.techniu.isbackend.dto.model.ContractStatusDto;
 import org.techniu.isbackend.dto.model.IvaDto;
 import org.techniu.isbackend.entity.ContractStatus;
 import org.techniu.isbackend.entity.Iva;
+import org.techniu.isbackend.entity.StateCountry;
 import org.techniu.isbackend.exception.EntityType;
 import org.techniu.isbackend.exception.ExceptionType;
 import org.techniu.isbackend.exception.MainException;
 import org.techniu.isbackend.repository.IvaRepository;
+import org.techniu.isbackend.repository.StateCountryRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,13 +26,16 @@ import static org.techniu.isbackend.exception.ExceptionType.ENTITY_NOT_FOUND;
 public class IvaServiceImpl implements IvaService {
     private IvaRepository ivaRepository;
     private final IvaMapper ivaMapper = Mappers.getMapper(IvaMapper.class);
+    private StateCountryRepository stateCountryRepository;
 
-    public IvaServiceImpl(IvaRepository ivaRepository) {
+    public IvaServiceImpl(IvaRepository ivaRepository, StateCountryRepository stateCountryRepository) {
         this.ivaRepository = ivaRepository;
+        this.stateCountryRepository = stateCountryRepository;
     }
 
     @Override
     public void saveIva(IvaDto ivaDto) {
+        System.out.println("Implement part :" + ivaDto);
         ivaRepository.save(ivaMapper.dtoToModel(ivaDto));
     }
 
@@ -63,13 +68,20 @@ public class IvaServiceImpl implements IvaService {
             throw exception(ExceptionType.ENTITY_NOT_FOUND);
         }
 
-        iva.setCountry(ivaDto.getCountry());
-        iva.setState(ivaDto.getState());
+        System.out.println(iva);
+
+        StateCountry stateCountry = stateCountryRepository.findStateCountryBy_id(ivaDto.getStateCountry().get_id());
+
+        System.out.println(stateCountry);
+
+        iva.setStateCountry(stateCountry);
         iva.setIvaCode(ivaDto.getIvaCode());
         iva.setValue(ivaDto.getValue());
         iva.setElectronicInvoice(ivaDto.isElectronicInvoice());
         iva.setStartingDate(ivaDto.getStartingDate());
         iva.setEndingDate(ivaDto.getEndingDate());
+
+        System.out.println(iva);
 
         ivaRepository.save(iva);
         return getAllIva();
