@@ -8,24 +8,20 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
-import java.util.List;
 
-@Document(value = "FunctionalStructureLevel")
+@Document(value = "LegalCategoryType")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FunctionalStructureLevel implements Serializable {
+public class LegalCategoryType implements Serializable {
 
     @Id
-    private String levelId;
+    private String legalCategoryTypeId;
     private String name;
-    private String description;
-    private String type;
-    private String isProductionLevel;
-    private String isCommercialLevel;
+    private String functions;
+    private String companyName;
 
     @DBRef
-    private List<FunctionalStructureLevel> childs;
+    private Company company;
 
 }
-

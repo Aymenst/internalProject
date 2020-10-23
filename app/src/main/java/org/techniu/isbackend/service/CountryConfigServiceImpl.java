@@ -33,7 +33,7 @@ public class CountryConfigServiceImpl implements CountryConfigService {
     @Override
     public void saveCountryConfig(CountryConfigDto countryConfigDto) {
         Country country = countryRepository.getByCountryId(countryConfigDto.getCountryId());
-        Staff leader = staffRepository.findBy_id(countryConfigDto.getLeader());
+        Staff leader = staffRepository.findById(countryConfigDto.getLeader()).get();
         Log log = new Log();
         log.setUserName("John Doe");
         log.setActionDate(new Date());

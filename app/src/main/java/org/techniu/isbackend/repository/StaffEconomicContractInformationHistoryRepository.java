@@ -1,0 +1,11 @@
+package org.techniu.isbackend.repository;
+
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.techniu.isbackend.entity.StaffEconomicContractInformation;
+import org.techniu.isbackend.entity.StaffEconomicContractInformationHistory;
+
+public interface StaffEconomicContractInformationHistoryRepository extends MongoRepository<StaffEconomicContractInformationHistory, String> {
+
+    StaffEconomicContractInformationHistory findByStaffEconomicContractInformation(StaffEconomicContractInformation staffEconomicContractInformation);
+
+}

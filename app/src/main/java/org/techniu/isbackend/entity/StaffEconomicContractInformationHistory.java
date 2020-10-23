@@ -10,22 +10,15 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.io.Serializable;
 import java.util.List;
 
-@Document(value = "FunctionalStructureLevel")
+@Document(value = "StaffEconomicContractInformationHistory")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FunctionalStructureLevel implements Serializable {
-
+public class StaffEconomicContractInformationHistory implements Serializable {
     @Id
-    private String levelId;
-    private String name;
-    private String description;
-    private String type;
-    private String isProductionLevel;
-    private String isCommercialLevel;
+    private String staffEconomicContractInformationHistoryId;
+    private List<StaffEconomicContractInformation> history;
 
     @DBRef
-    private List<FunctionalStructureLevel> childs;
-
+    private StaffEconomicContractInformation staffEconomicContractInformation;
 }
-

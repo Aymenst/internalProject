@@ -1,65 +1,36 @@
 package org.techniu.isbackend.controller;
 
-import org.mapstruct.factory.Mappers;
-import org.springframework.validation.BindingResult;
-import org.techniu.isbackend.controller.request.StaffAddrequest;
-import org.techniu.isbackend.dto.mapper.StaffMapper;
-import org.techniu.isbackend.dto.model.StaffDto;
-import org.techniu.isbackend.entity.Address;
-import org.techniu.isbackend.exception.validation.MapValidationErrorService;
-import org.techniu.isbackend.Response;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.techniu.isbackend.entity.Staff;
+import org.springframework.web.multipart.MultipartFile;
+import org.techniu.isbackend.entity.*;
 import org.techniu.isbackend.service.StaffService;
-import static org.techniu.isbackend.exception.EntityType.*;
-import org.springframework.http.HttpStatus;
-import javax.validation.Valid;
+import org.techniu.isbackend.service.StaffService;
 
-import static org.techniu.isbackend.exception.MainException.getMessageTemplate;
-import static org.techniu.isbackend.exception.ExceptionType.*;
-
+import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/staff")
+@RequestMapping("/api")
 @CrossOrigin("*")
 public class StaffController {
-    private final StaffService staffService;
-    private final MapValidationErrorService mapValidationErrorService;
-    private final StaffMapper staffMapper = Mappers.getMapper(StaffMapper.class);
-    public StaffController(StaffService staffService, MapValidationErrorService mapValidationErrorService) {
+    private StaffService staffService;
+    StaffController(StaffService  staffService){
         this.staffService = staffService;
-        this.mapValidationErrorService = mapValidationErrorService;
     }
 
-    /**
-     * display all staff GET API "/api/staff"
-     */
-    @RequestMapping(method = RequestMethod.GET, value = "/all")
-    public ResponseEntity allServices() {
-        return new ResponseEntity<Response>(Response.ok().setPayload(staffService.getAllStaffs()), HttpStatus.OK);
+    @RequestMapping(path = "staff-add",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Staff saveStaff(@RequestPart("staff") Staff staff, @RequestPart("city") City city, @RequestPart("staffEconomicContractInformation") StaffEconomicContractInformation staffEconomicContractInformation, @RequestPart("staffContract") StaffContract staffContract,
+                           @RequestPart("files[]") List<MultipartFile> staffDocuments, @RequestPart("staffDocumentsList") List<StaffDocuments> staffDocumentsList) throws IOException {
+        //System.out.println(staff);
+        for (int i = 0; i<staffDocumentsList.size(); i++) {
+            staffDocumentsList.get(i).setDocument(staffDocuments.get(i).getBytes());
+        }
+        return staffService.saveStaff(staff, city, staffEconomicContractInformation, staffContract, staffDocumentsList);
     }
 
-    @PostMapping("/add")
-    public ResponseEntity add(@RequestBody @Valid StaffAddrequest staffAddRequest, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) return mapValidationErrorService.mapValidationService(bindingResult);
-        // Save staff
-        Address address = new Address();
-        address.setAddress(staffAddRequest.getAddressName());
-        address.setPostCode(staffAddRequest.getPostCode());
-        staffService.saveStaff(staffMapper.dtoToModel(staffMapper.addRequestToDto(staffAddRequest)),address,staffAddRequest.getCityId());
-        return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(Staff, ADDED)), HttpStatus.OK);
-    }
-
-    @RequestMapping(path = "staffBycountry/{countryId}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Staff> gePeople(@PathVariable(value = "countryId") String countryId){
-        return staffService.getStaffByCountry(countryId);
-    }
-
-    @RequestMapping(path = "all",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<StaffDto> getStaff(){
+    @RequestMapping(path = "staff-all",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Staff> getStaff(){
         return staffService.getAllStaffs();
     }
 
@@ -70,14 +41,11 @@ public class StaffController {
 
     @RequestMapping(path = "assign-level-staff",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public void assignLevelToStaff(@RequestBody List<Object> objects){
-         staffService.assignLevelToStaff(objects);
+        staffService.assignLevelToStaff(objects);
     }
 
-    @RequestMapping(path = "get-staff-by-level/{levelId}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Staff> getStaffsByLevel(@PathVariable("levelId") String levelId){
-        return staffService.getStaffsByLevel(levelId);
+    @RequestMapping(path = "get-staff-by-level/levelId={levelId}&isLeader={isLeader}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Staff> getStaffsByLevel(@PathVariable("levelId") String levelId, @PathVariable("isLeader") String isLeader){
+        return staffService.getStaffsByLevel(levelId, isLeader);
     }
-
-
-
 }

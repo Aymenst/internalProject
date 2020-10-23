@@ -23,7 +23,7 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
     @Override
     public Assignment saveAssignment(Assignment assignment) {
-        if (staffRepository.existsById(assignment.getStaff().get_id())
+        if (staffRepository.existsById(assignment.getStaff().getStaffId())
             && clientRepository.existsById(assignment.getClient().get_id())) {
             if (assignment.getType().equals("Responsible Commercial")) {
                 assignment.getClient().setResponsibleCommercial(assignment.getStaff());

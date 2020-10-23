@@ -8,12 +8,12 @@ import java.util.List;
 
 public interface FunctionalStructureLevelService {
     Boolean saveLevel(List<Object> objects);
-    FunctionalStructureLevel updateLevel(FunctionalStructureLevel level);
+    FunctionalStructureLevel updateLevel(List<Object> objects, String levelId);
     FunctionalStructureLevel getLevelByName(String name);
     ResponseEntity<?> deleteLevel(String levelId);
     List<FunctionalStructureLevel> getAllLevels();
-    List<FunctionalStructureLevel> getLevelByParent(String name);
     List<FunctionalStructureLevel> getLevelByType(String type);
     List<Staff> setLevelStaffs(List<Object> staffs);
+    List<FunctionalStructureLevel> getFunctionalStructureTree(String levelId);
 
 }

@@ -1,0 +1,14 @@
+package org.techniu.isbackend.service;
+
+import org.techniu.isbackend.entity.Staff;
+import org.techniu.isbackend.entity.StaffEconomicContractInformationHistory;
+
+import java.util.List;
+
+public interface StaffEconomicContractInformationHistoryService {
+    StaffEconomicContractInformationHistory saveStaffEconomicContractInformationHistory(StaffEconomicContractInformationHistory staffEconomicContractInformationHistory);
+    Staff updateStaffEconomicContractInformationHistory(String staffEconomicContractInformationHistoryId, StaffEconomicContractInformationHistory staffEconomicContractInformationHistory);
+    void deleteStaffEconomicContractInformationHistory(String staffEconomicContractInformationHistoryId);
+    List<StaffEconomicContractInformationHistory> getAllStaffEconomicContractInformationHistory();
+    StaffEconomicContractInformationHistory getStaffEconomicContractInformationHistoryByStaff(String id);
+}
