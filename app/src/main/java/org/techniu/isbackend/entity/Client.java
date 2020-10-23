@@ -27,6 +27,7 @@ public class Client implements Serializable {
     private String isActive = "Yes";
     private String phone;
     private String email;
+    private String webSite;
     @DBRef
     private Address address;
 

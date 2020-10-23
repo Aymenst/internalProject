@@ -39,7 +39,7 @@ public class ClientController {
     public ResponseEntity add(@RequestBody @Valid ClientAddrequest clientAddRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) return mapValidationErrorService.mapValidationService(bindingResult);
         // Save client
-
+System.out.println(clientAddRequest);
         Address address = new Address();
         address.setAddress(clientAddRequest.getAddressName());
         address.setPostCode(clientAddRequest.getPostCode());
