@@ -8,5 +8,6 @@ public enum EntityType {
     Client,
     ContractStatus,
     Iva,
-    FinancialCompany
+    FinancialCompany,
+    SectorCompany
 }

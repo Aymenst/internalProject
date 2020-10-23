@@ -21,6 +21,8 @@ import java.util.List;
 public class StaffDto{
     private String staffId;
     private String name;
+    private String fatherFamilyname;
+    private String motherFamilyname;
     private String personalPhone;
     private String personalEmail;
     private String companyPhone;

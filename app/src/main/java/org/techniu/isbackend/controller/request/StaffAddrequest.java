@@ -15,6 +15,8 @@ import java.io.Serializable;
 public class StaffAddrequest {
     private String staffId;
     private String name;
+    private String fatherFamilyname;
+    private String motherFamilyname;
     private String personalPhone;
     private String personalEmail;
     private String companyPhone;

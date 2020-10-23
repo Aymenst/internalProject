@@ -35,6 +35,10 @@ public class CommercialOperationStatusServiceImpl implements CommercialOperation
         if (commercialOperationStatus.isPresent()) {
             throw exception(DUPLICATE_ENTITY);
         }
+        Optional<CommercialOperationStatus>  commercialOperationStatus1= Optional.ofNullable(commercialOperationStatusRepository.findByCode(commercialOperationStatusDto.getCode()));
+        if (commercialOperationStatus1.isPresent()) {
+            throw exception(DUPLICATE_ENTITY);
+        }
         commercialOperationStatusRepository.save(commercialOperationStatusMapper.dtoToModel(commercialOperationStatusDto));
     }
 
@@ -52,6 +56,10 @@ public class CommercialOperationStatusServiceImpl implements CommercialOperation
         Optional<CommercialOperationStatus> commercialOperationStatus2 = Optional.ofNullable(commercialOperationStatusRepository.findByName(commercialOperationStatusDto.getName()));
 
         if (commercialOperationStatus2.isPresent() && !(commercialOperationStatus1.get().getName().equals(commercialOperationStatusDto.getName())) ) {
+            throw exception(DUPLICATE_ENTITY);
+        }
+        Optional<CommercialOperationStatus> commercialOperationStatus3 = Optional.ofNullable(commercialOperationStatusRepository.findByCode(commercialOperationStatusDto.getCode()));
+        if (commercialOperationStatus3.isPresent() && !(commercialOperationStatus1.get().getCode().equals(commercialOperationStatusDto.getCode())) ) {
             throw exception(DUPLICATE_ENTITY);
         }
          commercialOperationStatusRepository.save(commercialOperationStatusMapper.dtoToModel(commercialOperationStatusDto));

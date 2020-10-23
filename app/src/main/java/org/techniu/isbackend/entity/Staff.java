@@ -22,6 +22,8 @@ public class Staff {
     @Id
     private String _id;
     private String name;
+    private String fatherFamilyname;
+    private String motherFamilyname;
     private String personalPhone;
     private String personalEmail;
     private String companyPhone;

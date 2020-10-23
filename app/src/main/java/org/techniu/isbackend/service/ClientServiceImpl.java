@@ -115,9 +115,14 @@ public class ClientServiceImpl implements ClientService{
             }
             //get assistant commercial if existe
             System.out.println(client.get_id());
-            Assignment assignment = assignmentRepository.findByClientAndType(client,"Responsible Commercial");
-            System.out.println(assignment);
-            clientDto.setAssistantCommercial(assignment.getStaff().getName());
+            Assignment assignmentResponsible = assignmentRepository.findByClientAndType(client,"Responsible Commercial");
+            if(assignmentResponsible !=null) {
+                clientDto.setResponsibleCommercial(assignmentResponsible.getStaff().getName()+" "+assignmentResponsible.getStaff().getFatherFamilyname());
+            }
+            Assignment assignmentAssistant = assignmentRepository.findByClientAndType(client,"Assistant Commercial");
+            if(assignmentAssistant !=null) {
+                clientDto.setAssistantCommercial(assignmentAssistant.getStaff().getName()+" "+assignmentAssistant.getStaff().getFatherFamilyname());
+            }
             //get responsable commercial if existe
 
         }

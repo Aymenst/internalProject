@@ -8,19 +8,18 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
-import java.util.Date;
-@Document(value = "Assignment")
+
+@Document(value = "sectorCompany")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class Assignment implements Serializable {
+@NoArgsConstructor
+public class SectorCompany {
     @Id
-    private String assignmentId;
-    private Date startDate;
-    private Date endDate;
-    private String type;
+    private String _id;
+    private String name;
+    private String description;
     @DBRef
-    private Client client;
+    private SectorCompany parent;
     @DBRef
     private Staff staff;
 }
