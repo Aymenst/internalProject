@@ -9,5 +9,6 @@ public enum EntityType {
     ContractStatus,
     Iva,
     FinancialCompany,
-    SectorCompany
+    SectorCompany,
+    Currency
 }
