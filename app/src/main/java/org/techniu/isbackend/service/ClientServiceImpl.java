@@ -43,9 +43,9 @@ public class ClientServiceImpl implements ClientService{
         this.assignmentService = assignmentService;
         this.assignmentRepository = assignmentRepository;
     }
+
     @Override
     public void saveClient(Client client,Address address,String cityId,String AssistantCommercialId,String responsibleCommercialId) {
-        System.out.println(client);
         int len = this.getAllClient().size();
         String code;
         City city=cityRepository.findCityBy_id(cityId);
@@ -74,17 +74,39 @@ public class ClientServiceImpl implements ClientService{
     }
 
     @Override
+    public void updateClient(Client client, Address address, String cityId, String AssistantCommercialId, String responsibleCommercialId) {
+        Client clientOld=clientRepository.getBy_id(client.get_id());
+        City city=cityRepository.findCityBy_id(cityId);
+        Address address1=clientOld.getAddress();
+        System.out.println(address);
+        client.setCode(clientOld.getCode());
+        client.setResponsibleCommercial(clientOld.getResponsibleCommercial());
+        client.setAssistantCommercial(clientOld.getAssistantCommercial());
+        address1.setPostCode(address.getPostCode());
+        address1.setAddress(address.getAddress());
+        address1.setCity(city);
+        address1.setPostCode(address.getPostCode());
+        client.setSector1(clientOld.getSector1());
+        client.setSector2(clientOld.getSector2());
+        client.setSector3(clientOld.getSector3());
+        client.setSectorLeader(clientOld.getSectorLeader());
+        client.setAddress(addressService.saveAddress(addressService.saveAddress(address1)));
+
+        clientRepository.save(client);
+    }
+
+    @Override
     public Client getClientByCode(String codeClient) {
         return clientRepository.getByCode(codeClient);
     }
-
+/*
     @Override
     public Client updateClient(String clientId, Client client) {
         return clientRepository.findById(clientId).map(client1 -> {
             client.set_id(client1.get_id());
             return clientRepository.save(client);
         }).orElseThrow(() -> new ExceptionMessage("Cannot update client"));
-    }
+    }*/
 
     @Override
     public ResponseEntity<?> deleteClient(String clientId) {
@@ -103,6 +125,10 @@ public class ClientServiceImpl implements ClientService{
             clientsDtos.add(clientDto);
             clientDto.setCity(client.getAddress().getCity().getCityName());
             clientDto.setCountry(client.getAddress().getCity().getStateCountry().getCountry().getCountryName());
+            clientDto.setAddressName(client.getAddress().getAddress());
+            clientDto.setPostCode(client.getAddress().getPostCode());
+            clientDto.setCountryId(client.getAddress().getCity().getStateCountry().getCountry().getCountryId());
+            clientDto.setStateId(client.getAddress().getCity().getStateCountry().get_id());
             CountryConfig countryConfig=countryConfigRepository.getByCountry(client.getAddress().getCity().getStateCountry().getCountry());
             if(countryConfig !=null)
             {
@@ -114,7 +140,6 @@ public class ClientServiceImpl implements ClientService{
                 clientDto.setCountryLeader("-");
             }
             //get assistant commercial if existe
-            System.out.println(client.get_id());
             Assignment assignmentResponsible = assignmentRepository.findByClientAndType(client,"Responsible Commercial");
             if(assignmentResponsible !=null) {
                 clientDto.setResponsibleCommercial(assignmentResponsible.getStaff().getFirstName()+" "+assignmentResponsible.getStaff().getFatherFamilyName());
