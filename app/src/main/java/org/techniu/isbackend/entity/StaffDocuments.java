@@ -8,15 +8,19 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 
-
-@Document(value = "FunctionalStructureLevelConfig")
+@Document(value = "StaffDocuments")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FunctionalStructureLevelConfig implements Serializable {
+public class StaffDocuments implements Serializable {
+
     @Id
-    private String levelConfigId;
-    private String level1;
-    private String level2;
-    private String level3;
+    private String staffDocumentsId;
+    private String name;
+    private String number;
+    private String expeditionDate;
+    private String expirationDate;
+    private String docExtension;
+    private byte[] document;
+
 }

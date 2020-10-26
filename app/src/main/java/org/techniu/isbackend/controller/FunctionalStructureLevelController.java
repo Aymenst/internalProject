@@ -9,7 +9,8 @@ import org.techniu.isbackend.service.FunctionalStructureLevelService;
 import java.util.List;
 
 @RestController
-@CrossOrigin("/api/level")
+@RequestMapping("/api")
+@CrossOrigin("*")
 public class FunctionalStructureLevelController {
     private FunctionalStructureLevelService functionalStructureLevelService;
     FunctionalStructureLevelController(FunctionalStructureLevelService functionalStructureLevelService) {
@@ -20,18 +21,29 @@ public class FunctionalStructureLevelController {
         return functionalStructureLevelService.saveLevel(objects) ;
     }
 
+    @RequestMapping(path = "level-update/{levelId}",method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    public void updateLevel(@RequestBody List<Object> objects, @PathVariable("levelId") String levelId){
+        functionalStructureLevelService.updateLevel(objects, levelId) ;
+    }
+
+    @RequestMapping(path = "level-delete/{levelId}",method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public void deleteLevel(@PathVariable("levelId") String levelId){
+        functionalStructureLevelService.deleteLevel(levelId) ;
+    }
+
     @RequestMapping(path = "levels",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<FunctionalStructureLevel> getLevels(){
         return functionalStructureLevelService.getAllLevels();
-    }
-    @RequestMapping(path = "levels-parent/{name}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<FunctionalStructureLevel> getLevelByParent(@PathVariable(value = "name") String name){
-        return functionalStructureLevelService.getLevelByParent(name);
     }
 
     @RequestMapping(path = "levels-type/{type}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<FunctionalStructureLevel> getLevelByType(@PathVariable(value = "type") String type){
         return functionalStructureLevelService.getLevelByType(type);
+    }
+
+    @RequestMapping(path = "level-tree/{levelId}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<FunctionalStructureLevel> getFunctionalStructureTree(@PathVariable(value = "levelId") String levelId){
+        return functionalStructureLevelService.getFunctionalStructureTree(levelId);
     }
 
     @RequestMapping(path = "level-name/{name}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

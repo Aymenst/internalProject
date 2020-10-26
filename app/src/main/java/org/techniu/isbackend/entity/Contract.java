@@ -29,7 +29,7 @@ public class Contract {
     private String contractDoc;
 
     @DBRef
-    private Company company;
+    private FinancialCompany company;
 
     @DBRef
     private Client client;

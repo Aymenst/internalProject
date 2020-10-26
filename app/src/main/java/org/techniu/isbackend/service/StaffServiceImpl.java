@@ -2,49 +2,51 @@ package org.techniu.isbackend.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.mapstruct.factory.Mappers;
+import org.springframework.data.mongodb.core.query.SerializationUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.techniu.isbackend.dto.mapper.StaffMapper;
-import org.techniu.isbackend.dto.model.StaffDto;
 import org.techniu.isbackend.entity.*;
 import org.techniu.isbackend.repository.*;
 import org.techniu.isbackend.service.utilities.StringUtility;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class StaffServiceImpl implements StaffService {
     private StaffRepository staffRepository;
-    private AddressRepository addressRepository;
-    private CityRepository cityRepository;
     private FunctionalStructureLevelRepository functionalStructureLevelRepository;
-    private AddressService addressService;
-    private final StaffMapper staffMapper = Mappers.getMapper(StaffMapper.class);
-    private IdentificatorRepository identificatorRepository;
+    private AddressRepository addressRepository;
+    private StaffDocumentsRepository staffDocumentsRepository;
+    private StaffEconomicContractInformationService staffEconomicContractInformationService;
     StaffServiceImpl(
-            CityRepository cityRepository,
             StaffRepository staffRepository,
-            AddressRepository addressRepository,
             FunctionalStructureLevelRepository functionalStructureLevelRepository,
-            IdentificatorRepository identificatorRepository,
-            AddressService addressService) {
+            StaffDocumentsRepository staffDocumentsRepository,
+            AddressRepository addressRepository, StaffEconomicContractInformationService staffEconomicContractInformationService) {
         this.staffRepository = staffRepository;
-        this.addressRepository = addressRepository;
         this.functionalStructureLevelRepository = functionalStructureLevelRepository;
-        this.identificatorRepository = identificatorRepository;
-        this.addressService = addressService;
-        this.cityRepository = cityRepository;
+        this.staffDocumentsRepository = staffDocumentsRepository;
+        this.addressRepository = addressRepository;
+        this.staffEconomicContractInformationService = staffEconomicContractInformationService;
     }
 
     @Override
-    public Staff saveStaff(Staff staff,Address address,String cityId) {
-       City city = cityRepository.findCityBy_id(cityId);
-        staff.setAddress(addressService.saveAddress(address.setCity(city)));
+    public Staff saveStaff(Staff staff, City city, StaffEconomicContractInformation staffEconomicContractInformation, StaffContract staffContract, List<StaffDocuments> staffDocumentsList) {
+        Address address = staff.getAddress();
+        System.out.println(address);
+        address.setCity(city);
+        System.out.println(city);
+        Address address1 = addressRepository.save(address);
+        staff.setAddress(address1);
+        staff.setStaffContract(staffContract);
+        staff.setAddress(null);
+        StaffEconomicContractInformation staffEconomicContractInformation2 = staffEconomicContractInformationService.saveStaffEconomicContractInformation(staffEconomicContractInformation);
+        staff.setStaffEconomicContractInformation(staffEconomicContractInformation2);
+        staff.setStaffDocuments(staffDocumentsRepository.saveAll(staffDocumentsList));
         return staffRepository.save(staff);
     }
 
@@ -64,19 +66,8 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public List<StaffDto> getAllStaffs() {
-        // Get all staffs
-        List<Staff> staffs = staffRepository.findAll();
-        // Create a list of all staff dto
-        ArrayList<StaffDto> staffDtos = new ArrayList<>();
-        for (Staff staff : staffs) {
-            StaffDto staffDto = staffMapper.modelToDto(staff);
-            staffDto.setAddressName(staff.getAddress().getAddress());
-            staffDto.setPostCode(staff.getAddress().getPostCode());
-            staffDto.setCityName(staff.getAddress().getCity().getCityName());
-            staffDtos.add(staffDto);
-        }
-        return staffDtos;
+    public List<Staff> getAllStaffs() {
+        return staffRepository.findAll();
     }
 
     @Override
@@ -90,7 +81,7 @@ public class StaffServiceImpl implements StaffService {
         FunctionalStructureLevel functionalStructureLevel = mapper.convertValue(objects.get(0), FunctionalStructureLevel.class);
         List<Staff> assignedStaffs = mapper.convertValue(objects.get(1), new TypeReference<List<Staff>>() { });
         List<Staff> notAssignedStaffs = mapper.convertValue(objects.get(2), new TypeReference<List<Staff>>() { });
-       assignedStaffs.forEach(staff -> {
+        assignedStaffs.forEach(staff -> {
             staff.setLevel(functionalStructureLevel);
             staffRepository.save(staff);
         });
@@ -101,16 +92,10 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public List<Staff> getStaffsByLevel(String levelId) {
+    public List<Staff> getStaffsByLevel(String levelId, String isLeader) {
         FunctionalStructureLevel level = functionalStructureLevelRepository.findById(levelId).get();
-        List<Staff> staffs = staffRepository.findAllByLevel(level);
+        List<Staff> staffs = staffRepository.findAllByLevelAndIsLeader(level, isLeader);
         return staffs;
-    }
-
-    @Override
-    public List<Staff> getStaffByCountry(String countryId) {
-        System.out.println(staffRepository.findAll());
-        return staffRepository.findAll().stream().filter(people -> people.getAddress().getCity().getStateCountry().getCountry().getCountryId().equals(countryId)).collect(Collectors.toList());
     }
 
 }

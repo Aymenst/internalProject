@@ -9,8 +9,7 @@ import java.util.List;
 
 public interface ContractStatusService {
     void saveContractStatus(ContractStatusDto contractStatusdto);
-    // ContractStatus updateContractStatus(ContractStatus contractStatus);
-    // ResponseEntity<?> deleteContractStatus(String contractStatusId);
+
     List<ContractStatus> getAllContractStatus();
 
     List<ContractStatusDto> getAllContractStatus2();

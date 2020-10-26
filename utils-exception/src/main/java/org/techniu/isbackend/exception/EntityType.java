@@ -7,7 +7,8 @@ public enum EntityType {
     ServiceType,
     Client,
     ContractStatus,
+    Iva,
+    FinancialCompany,
     SectorCompany,
-    Iva
-
+    Currency
 }

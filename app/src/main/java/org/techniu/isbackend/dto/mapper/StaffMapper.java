@@ -15,11 +15,10 @@ public interface StaffMapper{
      * @param staffDto staffDto
      * @return Staff
      */
-    @Mapping(source = "staffId", target="_id")
+    @Mapping(source = "staffId", target="staffId")
     @Mapping(target = "address", ignore=true)
     @Mapping(target = "company", ignore=true)
     @Mapping(target = "level", ignore=true)
-    @Mapping(target = "identificators", ignore=true)
     Staff dtoToModel(StaffDto staffDto);
 
     /**
@@ -38,6 +37,6 @@ public interface StaffMapper{
      * @param staff staff
      * @return StaffDto
      */
-    @Mapping(source = "_id", target="staffId")
+    @Mapping(source = "staffId", target="staffId")
     StaffDto modelToDto(Staff staff);
 }

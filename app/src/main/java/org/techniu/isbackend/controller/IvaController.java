@@ -11,7 +11,9 @@ import org.techniu.isbackend.controller.request.IvaUpdaterequest;
 import org.techniu.isbackend.dto.mapper.IvaMapper;
 import org.techniu.isbackend.dto.model.IvaDto;
 import org.techniu.isbackend.entity.Iva;
+import org.techniu.isbackend.entity.StateCountry;
 import org.techniu.isbackend.exception.validation.MapValidationErrorService;
+import org.techniu.isbackend.repository.StateCountryRepository;
 import org.techniu.isbackend.service.IvaService;
 
 import javax.validation.Valid;
@@ -29,11 +31,14 @@ public class IvaController {
     private IvaService ivaService;
     private final MapValidationErrorService mapValidationErrorService;
     private final IvaMapper ivaMapper = Mappers.getMapper(IvaMapper.class);
+    private StateCountryRepository stateCountryRepository;
 
 
-    public IvaController(IvaService ivaService, MapValidationErrorService mapValidationErrorService) {
+    public IvaController(IvaService ivaService,StateCountryRepository stateCountryRepository,
+                         MapValidationErrorService mapValidationErrorService) {
         this.ivaService = ivaService;
         this.mapValidationErrorService = mapValidationErrorService;
+        this.stateCountryRepository = stateCountryRepository;
     }
 
 
@@ -42,6 +47,12 @@ public class IvaController {
         if (bindingResult.hasErrors()) return mapValidationErrorService.mapValidationService(bindingResult);
         // Save  Iva
         System.out.println(ivaAddrequest);
+
+        StateCountry stateCountry = stateCountryRepository.findStateCountryBy_id(ivaAddrequest.getStateCountry().get_id());
+
+        ivaAddrequest.setStateCountry(stateCountry);
+        System.out.println(ivaAddrequest);
+
         ivaService.saveIva(ivaMapper.addRequestToDto(ivaAddrequest));
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(Iva, ADDED)), HttpStatus.OK);
     }
@@ -69,7 +80,6 @@ public class IvaController {
     public List<IvaDto> update(@RequestBody @Valid IvaUpdaterequest ivaUpdaterequest) {
         // Save Contract Status
         String Id = ivaUpdaterequest.getIvaId();
-        System.out.println(ivaUpdaterequest + "" + Id);
         ivaService.updateIva(ivaMapper.updateRequestToDto(ivaUpdaterequest), Id);
         return ivaService.getAllIva();
     }

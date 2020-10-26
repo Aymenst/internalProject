@@ -21,9 +21,11 @@ public class FunctionalStructureLevel implements Serializable {
     private String name;
     private String description;
     private String type;
+    private String isProductionLevel;
+    private String isCommercialLevel;
 
     @DBRef
-    private FunctionalStructureLevel parent;
+    private List<FunctionalStructureLevel> childs;
 
 }
 
