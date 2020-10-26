@@ -4,6 +4,7 @@ package org.techniu.isbackend.dto.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.techniu.isbackend.controller.request.ClientAddrequest;
+import org.techniu.isbackend.controller.request.ClientUpdaterequest;
 import org.techniu.isbackend.dto.model.ClientDto;
 import org.techniu.isbackend.entity.Client;
 
@@ -28,6 +29,13 @@ public interface ClientMapper {
      * @return ClientDto
      */
     ClientDto addRequestToDto(ClientAddrequest clientAddrequest);
+    /**
+     * Map clientRequest to clientDo
+     *
+     * @param clientUpdaterequest clientUpdaterequest
+     * @return ClientDto
+     */
+    ClientDto updateRequestToDto(ClientUpdaterequest clientUpdaterequest);
 
     /**
      * Map client to clientDo

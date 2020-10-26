@@ -8,5 +8,6 @@ import java.util.List;
 
 public interface ClientRepository extends MongoRepository<Client, String> {
     Client getByCode(String codeClient);
+    Client getBy_id(String id);
     List<Client> findAll();
 }

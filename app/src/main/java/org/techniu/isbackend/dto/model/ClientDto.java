@@ -34,6 +34,8 @@ public class ClientDto {
     private String cityId;
     private String city;
     private String country;
+    private String countryId;
+    private String stateId;
     private String addressName;
     private String postCode;
     private String countryLeader;

@@ -9,8 +9,11 @@ import java.util.List;
 
 public interface ClientService {
     void saveClient(Client client, Address address,String cityId,String AssistantCommercialId,String responsibleCommercialId);
+
+    void updateClient(Client client, Address address, String cityId, String AssistantCommercialId, String responsibleCommercialId);
+
     Client getClientByCode(String codeClient);
-    Client updateClient(String clientId, Client client);
+    //Client updateClient(String clientId, Client client);
     ResponseEntity<?> deleteClient(String clientId);
     List<ClientDto> getAllClient();
     List<Client> getClientsByCountryName(String country);

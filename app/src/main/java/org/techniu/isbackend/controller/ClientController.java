@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.techniu.isbackend.Response;
 import org.techniu.isbackend.controller.request.ClientAddrequest;
+import org.techniu.isbackend.controller.request.ClientUpdaterequest;
 import org.techniu.isbackend.dto.mapper.ClientMapper;
 import org.techniu.isbackend.entity.Address;
 import org.techniu.isbackend.entity.Client;
@@ -39,12 +40,23 @@ public class ClientController {
     public ResponseEntity add(@RequestBody @Valid ClientAddrequest clientAddRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) return mapValidationErrorService.mapValidationService(bindingResult);
         // Save client
-System.out.println(clientAddRequest);
         Address address = new Address();
         address.setAddress(clientAddRequest.getAddressName());
         address.setPostCode(clientAddRequest.getPostCode());
         clientService.saveClient(clientMapper.dtoToModel(clientMapper.addRequestToDto(clientAddRequest)),address,clientAddRequest.getCityId(),clientAddRequest.getAssistantCommercial(),clientAddRequest.getResponsibleCommercial());
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(Client, ADDED)), HttpStatus.OK);
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity update(@RequestBody @Valid ClientUpdaterequest clientUpdaterequest, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) return mapValidationErrorService.mapValidationService(bindingResult);
+        // Save client
+        System.out.println("clientUpdaterequest.getAddressName() "+clientUpdaterequest.getAddressName());
+        Address address = new Address();
+        address.setAddress(clientUpdaterequest.getAddressName());
+        address.setPostCode(clientUpdaterequest.getPostCode());
+        clientService.updateClient(clientMapper.dtoToModel(clientMapper.updateRequestToDto(clientUpdaterequest)),address,clientUpdaterequest.getCityId(),clientUpdaterequest.getAssistantCommercial(),clientUpdaterequest.getResponsibleCommercial());
+        return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(Client, UPDATED)), HttpStatus.OK);
     }
 
     /**
