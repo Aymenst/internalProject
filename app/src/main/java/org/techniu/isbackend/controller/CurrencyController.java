@@ -43,15 +43,10 @@ public class CurrencyController {
         // Save Contract Status
         System.out.println(currencyAddrequest);
 
-        List<CurrencyDto> currencyList = currencyService.getAllCurrency();
+    /*   List<CurrencyDto> currencyList = currencyService.getAllCurrency();
         for (CurrencyDto currencyDto : currencyList) {
-            System.out.println("*******************");
-            System.out.println(currencyDto.getCurrencyCode());
-            System.out.println(currencyAddrequest.getCurrencyCode());
-            System.out.println(currencyDto.getCurrencyCode().equals(currencyAddrequest.getCurrencyCode()));
-            System.out.println("*******************");
             if (currencyDto.getCurrencyCode().equals(currencyAddrequest.getCurrencyCode())) return null;
-        }
+        } */
 
         currencyService.saveCurrency(currencyMapper.addRequestToDto(currencyAddrequest));
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(Currency, ADDED)), HttpStatus.OK);
