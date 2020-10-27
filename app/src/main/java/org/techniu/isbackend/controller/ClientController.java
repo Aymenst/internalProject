@@ -53,7 +53,7 @@ public class ClientController {
         // Save client
         System.out.println("clientUpdaterequest.getAddressName() "+clientUpdaterequest.getAddressName());
         Address address = new Address();
-        address.setAddress(clientUpdaterequest.getAddressName());
+        address.setFullAddress(clientUpdaterequest.getAddressName());
         address.setPostCode(clientUpdaterequest.getPostCode());
         clientService.updateClient(clientMapper.dtoToModel(clientMapper.updateRequestToDto(clientUpdaterequest)),address,clientUpdaterequest.getCityId(),clientUpdaterequest.getAssistantCommercial(),clientUpdaterequest.getResponsibleCommercial());
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(Client, UPDATED)), HttpStatus.OK);

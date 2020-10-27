@@ -17,11 +17,15 @@ import java.util.Date;
 @NoArgsConstructor
 public class CommercialOperation implements Serializable {
     @Id
-    private String commercialOperationId;
-    private String operationName;
+    private String _id;
+    private String name;
+    @DBRef
+    private Client client;
+    @DBRef
+    private CommercialOperationStatus state;
+    private String description;
     private String qPlannedDate;
     private String qCommercialFlow;
-    private String description;
     private Date documentationDate;
     private Date paymentDate;
     private Date contractDate;
@@ -30,11 +34,10 @@ public class CommercialOperation implements Serializable {
     private String devise;
     private Float contractVolumeInEuro;
     private Float estimatedTradeVolumeInEuro;
-    private int progress;
+   // private int progress;
+
     @DBRef
     private ClientContact decisionMakerContact;
-    @DBRef
-    private CommercialOperationStatus state;
     @DBRef
     private ClientContact personCloseOfDecisionMakerContact;
     @DBRef
@@ -51,7 +54,6 @@ public class CommercialOperation implements Serializable {
     private ClientContact otherContact2;
     @DBRef
     private ClientContact otherContact;
-    @DBRef
-    private Client client;
+
 
 }
