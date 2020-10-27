@@ -10,5 +10,7 @@ public enum EntityType {
     Iva,
     FinancialCompany,
     SectorCompany,
-    Currency
+    Currency,
+    CommercialOperation
+
 }
