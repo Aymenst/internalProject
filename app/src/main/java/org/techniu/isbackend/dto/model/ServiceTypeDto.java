@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.util.List;
+
 
 @Data
 @AllArgsConstructor
@@ -18,4 +20,5 @@ public class ServiceTypeDto {
     private String serviceTypeId;
     private String name;
     private String description;
+    private List<String> operationCommercial;
 }
