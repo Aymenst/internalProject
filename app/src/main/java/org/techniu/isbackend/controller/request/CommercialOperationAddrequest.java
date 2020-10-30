@@ -26,8 +26,9 @@ public class CommercialOperationAddrequest {
     private List<String> serviceTypeId;
 
     private Float estimatedTradeVolume;
-    private Float contractVolume;
-    private String devise;
-    private Float contractVolumeInEuro;
     private Float estimatedTradeVolumeInEuro;
+    private String devise;
+    private Float contractVolume;
+    private Float contractVolumeInEuro;
+
 }
