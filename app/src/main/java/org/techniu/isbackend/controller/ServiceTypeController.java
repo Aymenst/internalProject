@@ -14,6 +14,8 @@ import org.techniu.isbackend.service.ServiceTypeService;
 
 import javax.validation.Valid;
 
+import java.util.List;
+
 import static org.techniu.isbackend.exception.EntityType.ServiceType;
 import static org.techniu.isbackend.exception.ExceptionType.*;
 import static org.techniu.isbackend.exception.MainException.getMessageTemplate;
@@ -60,6 +62,17 @@ public class ServiceTypeController {
     public ResponseEntity delete(@PathVariable String id) {
         serviceTypeService.remove(id);
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(ServiceType, DELETED)), HttpStatus.OK);
+    }
+
+    /**
+     * Handles the incoming DELETE API "/serviceType/delete"
+     *
+     * @param serviceType action delete request
+     */
+    @RequestMapping(value = "/deleteUpdate/{serviceType}/{listOperation}")
+    public ResponseEntity deleteServiceTypeUpdateOperation(@PathVariable List<String> serviceType,@PathVariable List<String> listOperation) {
+        serviceTypeService.removeUpdate(serviceType,listOperation);
+        return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(ServiceType, UPDATED)), HttpStatus.OK);
     }
 
     /**

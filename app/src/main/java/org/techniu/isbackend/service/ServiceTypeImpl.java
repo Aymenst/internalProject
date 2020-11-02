@@ -4,10 +4,12 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
 import org.techniu.isbackend.dto.mapper.ServiceTypeMapper;
 import org.techniu.isbackend.dto.model.ServiceTypeDto;
+import org.techniu.isbackend.entity.CommercialOperation;
 import org.techniu.isbackend.entity.ServiceType;
 import org.techniu.isbackend.exception.EntityType;
 import org.techniu.isbackend.exception.ExceptionType;
 import org.techniu.isbackend.exception.MainException;
+import org.techniu.isbackend.repository.CommercialOperationRepository;
 import org.techniu.isbackend.repository.ServiceTypeRepository;
 
 import java.util.ArrayList;
@@ -18,10 +20,12 @@ import static org.techniu.isbackend.exception.ExceptionType.*;
 
 @Service
 public class ServiceTypeImpl implements ServiceTypeService{
-    private ServiceTypeRepository serviceTypeeRepository;
+    private ServiceTypeRepository serviceTypeRepository;
+    private CommercialOperationRepository commercialOperationRepository;
     private final ServiceTypeMapper serviceTypeeMapper = Mappers.getMapper(ServiceTypeMapper.class);
-    ServiceTypeImpl(ServiceTypeRepository serviceTypeeRepository) {
-        this.serviceTypeeRepository = serviceTypeeRepository;
+    ServiceTypeImpl(ServiceTypeRepository serviceTypeRepository, CommercialOperationRepository commercialOperationRepository) {
+        this.serviceTypeRepository = serviceTypeRepository;
+        this.commercialOperationRepository = commercialOperationRepository;
     }
     @Override
     public void save(ServiceTypeDto serviceTypeeDto) {
@@ -31,11 +35,11 @@ public class ServiceTypeImpl implements ServiceTypeService{
         if (serviceTypeeDto.getName().contains(" ")) {
              throw exception(CODE_SHOULD_NOT_CONTAIN_SPACES);
         }
-        Optional<ServiceType>  serviceTypee= Optional.ofNullable(serviceTypeeRepository.findByName(serviceTypeeDto.getName()));
+        Optional<ServiceType>  serviceTypee= Optional.ofNullable(serviceTypeRepository.findByName(serviceTypeeDto.getName()));
         if (serviceTypee.isPresent()) {
             throw exception(DUPLICATE_ENTITY);
         }
-        serviceTypeeRepository.save(serviceTypeeMapper.dtoToModel(serviceTypeeDto));
+        serviceTypeRepository.save(serviceTypeeMapper.dtoToModel(serviceTypeeDto));
     }
 
     @Override
@@ -45,27 +49,44 @@ public class ServiceTypeImpl implements ServiceTypeService{
         if (serviceTypeeDto.getName().contains(" ")) {
             throw exception(CODE_SHOULD_NOT_CONTAIN_SPACES);
         }
-       Optional<ServiceType> serviceTypee1 = Optional.ofNullable(serviceTypeeRepository.findBy_id(serviceTypeeDto.getServiceTypeId()));
+       Optional<ServiceType> serviceTypee1 = Optional.ofNullable(serviceTypeRepository.findBy_id(serviceTypeeDto.getServiceTypeId()));
         if (!serviceTypee1.isPresent()) {
             throw exception(ExceptionType.ENTITY_NOT_FOUND);
         }
-        Optional<ServiceType> serviceTypee2 = Optional.ofNullable(serviceTypeeRepository.findByName(serviceTypeeDto.getName()));
+        Optional<ServiceType> serviceTypee2 = Optional.ofNullable(serviceTypeRepository.findByName(serviceTypeeDto.getName()));
 
         if (serviceTypee2.isPresent() && !(serviceTypee1.get().getName().equals(serviceTypeeDto.getName())) ) {
             throw exception(DUPLICATE_ENTITY);
         }
-         serviceTypeeRepository.save(serviceTypeeMapper.dtoToModel(serviceTypeeDto));
+         serviceTypeRepository.save(serviceTypeeMapper.dtoToModel(serviceTypeeDto));
     }
 
     @Override
     public List<ServiceTypeDto> getAll() {
         // Get all actions
-        List<ServiceType> serviceTypees = serviceTypeeRepository.findAll();
+        List<ServiceType> serviceTypees = serviceTypeRepository.findAll();
         // Create a list of all actions dto
         ArrayList<ServiceTypeDto> serviceTypeeDtos = new ArrayList<>();
 
         for (ServiceType serviceTypee : serviceTypees) {
+            ArrayList<String> operations = new ArrayList<>();
+            List<CommercialOperation> commercialOperations=commercialOperationRepository.findByServiceType(serviceTypee);
+            if(commercialOperations != null){
+                int a = commercialOperations.size();
+                for (CommercialOperation commercialOperation : commercialOperations) {
+                    operations.add(commercialOperation.getName());
+                    a=a-1;
+                    if(a>0) {
+                        operations.add(" , ");
+                    }
+                }
+            }
+                if(commercialOperations.isEmpty())
+            {
+                operations.add(" -- ");
+            }
             ServiceTypeDto serviceTypeeDto=serviceTypeeMapper.modelToDto(serviceTypee);
+            serviceTypeeDto.setOperationCommercial(operations);
             serviceTypeeDtos.add(serviceTypeeDto);
         }
         return serviceTypeeDtos;
@@ -77,14 +98,68 @@ public class ServiceTypeImpl implements ServiceTypeService{
      */
     @Override
     public void remove(String id) {
-        Optional<ServiceType> action = Optional.ofNullable(serviceTypeeRepository.findBy_id(id));
+        Optional<ServiceType> action = Optional.ofNullable(serviceTypeRepository.findBy_id(id));
         // If ServiceType doesn't exists
         if (!action.isPresent()) {
             throw exception(ENTITY_NOT_FOUND);
         }
-        serviceTypeeRepository.deleteById(id);
+
+        serviceTypeRepository.deleteById(id);
     }
 
+    /**
+     * delete Action
+     *
+     * @param serviceTypes - serviceTypes
+     * @param listOperation - listOperation
+     */
+    @Override
+    public void removeUpdate(List<String> serviceTypes, List<String> listOperation) {
+        List<ServiceType> serviceTypetoDeleteOld = new ArrayList<>();
+        List<ServiceType> serviceTypetoDeleteNew = new ArrayList<>();
+        if(!(listOperation.get(0)).equals("--")) {
+            for (String operation : listOperation) {
+                CommercialOperation commercialOperation = commercialOperationRepository.findByName(operation);
+                ArrayList<ServiceType> serviceTypes1 = new ArrayList<>();
+                for (String serviceType : serviceTypes) {
+                    ServiceType serviceType1 = serviceTypeRepository.findByName(serviceType);
+                    serviceTypetoDeleteNew.add(serviceType1);
+                    serviceTypes1.add(serviceType1);
+                }
+                serviceTypetoDeleteOld = commercialOperation.getServiceType();
+                commercialOperation.setServiceType(serviceTypes1);
+                commercialOperationRepository.save(commercialOperation);
+            }
+            List<ServiceType> serviceTypetoDeleteOldx = new ArrayList<>();
+            for (ServiceType sOld : serviceTypetoDeleteOld) {
+                int i = 0;
+                for (ServiceType sNew : serviceTypetoDeleteNew) {
+                    if (sNew.equals(sOld)) {
+                        //serviceTypetoDeleteOld.remove(sOld);
+                    } else {
+                        i = i + 1;
+                    }
+                }
+                if (i == serviceTypetoDeleteNew.size()) {
+                    serviceTypetoDeleteOldx.add(sOld);
+                }
+            }
+            System.out.println("delete " + serviceTypetoDeleteOldx);
+            for (ServiceType serviceType : serviceTypetoDeleteOldx) {
+                 serviceTypeRepository.deleteById(serviceType.get_id());
+            }
+
+        }
+        else {
+            Optional<ServiceType> serviceType = Optional.ofNullable(serviceTypeRepository.findByName(serviceTypes.get(0)));
+            // If ServiceType doesn't exists
+            if (!serviceType.isPresent()) {
+                throw exception(ENTITY_NOT_FOUND);
+            }
+
+            serviceTypeRepository.deleteById(serviceType.get().get_id());
+        }
+    }
 
     /**
      * Returns a new RuntimeException

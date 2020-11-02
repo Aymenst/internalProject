@@ -29,4 +29,6 @@ public interface ServiceTypeService {
      * @param id - id
      */
     void remove(String id);
+
+    void removeUpdate(List<String> serviceType, List<String> listOperation);
 }
