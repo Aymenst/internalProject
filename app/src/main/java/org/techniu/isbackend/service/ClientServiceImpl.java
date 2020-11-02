@@ -83,7 +83,7 @@ public class ClientServiceImpl implements ClientService{
         client.setResponsibleCommercial(clientOld.getResponsibleCommercial());
         client.setAssistantCommercial(clientOld.getAssistantCommercial());
         address1.setPostCode(address.getPostCode());
-        address1.setAddress(address.getAddress());
+        address1.setFullAddress(address.getFullAddress());
         address1.setCity(city);
         address1.setPostCode(address.getPostCode());
         client.setSector1(clientOld.getSector1());
@@ -125,7 +125,7 @@ public class ClientServiceImpl implements ClientService{
             clientsDtos.add(clientDto);
             clientDto.setCity(client.getAddress().getCity().getCityName());
             clientDto.setCountry(client.getAddress().getCity().getStateCountry().getCountry().getCountryName());
-            clientDto.setAddressName(client.getAddress().getAddress());
+            clientDto.setAddressName(client.getAddress().getFullAddress());
             clientDto.setPostCode(client.getAddress().getPostCode());
             clientDto.setCountryId(client.getAddress().getCity().getStateCountry().getCountry().getCountryId());
             clientDto.setStateId(client.getAddress().getCity().getStateCountry().get_id());
