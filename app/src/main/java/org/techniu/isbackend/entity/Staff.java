@@ -34,22 +34,16 @@ public class Staff implements Serializable {
     private String emergencyContactPhone;
     private String photo;
     private String isLeader;
-
     @DBRef
     private Address address;
-
     @DBRef
     private Company company;
-
     @DBRef
     private FunctionalStructureLevel level;
-
     @DBRef
     private StaffContract staffContract;
-
     @DBRef
     private StaffEconomicContractInformation staffEconomicContractInformation;
-
     @DBRef
     private List<StaffDocuments> staffDocuments;
 }

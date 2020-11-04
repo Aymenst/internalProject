@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.springframework.data.annotation.Id;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -20,33 +21,51 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class StaffDto{
     private String staffId;
-    private String name;
-    private String fatherFamilyname;
-    private String motherFamilyname;
+    // *** general information *** //
+    //
+    private String photo;
+    // personal info
+    private String firstName;
+    private String fatherFamilyName;
+    private String motherFamilyName;
+    private String birthday;
+    private String birthCountry;
+    // contact info
     private String personalPhone;
     private String personalEmail;
     private String companyPhone;
     private String companyMobilePhone;
     private String companyEmail;
-    private String birthday;
-    private String birthCountry;
-    private String residenceCountry;
+    private String skype;
     private String emergencyContactName;
     private String emergencyContactPhone;
-    private String photo;
-    private String skype;
-    //city
+    // Address
     private String cityId;
-    private String cityName;
-    //state
-    private String stateName;
-    //country
-    private String countryName;
-    //adress
     private String addressName;
+    private String cityName;
+    private String stateName;
+    private String countryName;
     private String postCode;
-    //company
-    private String companyId;
-    //level
-    private String levelId;
+    // *** documentation *** //
+    // id card
+    private String idCardNumber;
+    private String idCardExpeditionDate;
+    private String idCardExpirationDate;
+    private MultipartFile idCardExpirationDatePhoto;
+    // passport
+    private String passportNumber;
+    private String passportExpeditionDate;
+    private String passportExpirationDate;
+    private MultipartFile passportExpirationDatePhoto;
+    // professional id card
+    private String professionalIdCardNumber;
+    private String professionalIdCardExpeditionDate;
+    private String professionalIdCardExpirationDate;
+    private MultipartFile professionalIdCardExpirationDatePhoto;
+    // Health National Security
+    private String hnsNumber;
+    private String hnsExpeditionDate;
+    private String hnsExpirationDate;
+    private MultipartFile hnsExpirationDatePhoto;
+
 }

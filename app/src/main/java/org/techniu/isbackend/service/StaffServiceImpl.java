@@ -2,15 +2,16 @@ package org.techniu.isbackend.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.data.mongodb.core.query.SerializationUtils;
+import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.techniu.isbackend.dto.mapper.StaffMapper;
+import org.techniu.isbackend.dto.model.CommercialOperationStatusDto;
+import org.techniu.isbackend.dto.model.StaffDto;
 import org.techniu.isbackend.entity.*;
 import org.techniu.isbackend.repository.*;
-import org.techniu.isbackend.service.utilities.StringUtility;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,16 +22,19 @@ public class StaffServiceImpl implements StaffService {
     private FunctionalStructureLevelRepository functionalStructureLevelRepository;
     private AddressRepository addressRepository;
     private StaffDocumentsRepository staffDocumentsRepository;
+    private CityRepository cityRepository;
+    private final StaffMapper staffMapper = Mappers.getMapper(StaffMapper.class);
     private StaffEconomicContractInformationService staffEconomicContractInformationService;
     StaffServiceImpl(
             StaffRepository staffRepository,
             FunctionalStructureLevelRepository functionalStructureLevelRepository,
             StaffDocumentsRepository staffDocumentsRepository,
-            AddressRepository addressRepository, StaffEconomicContractInformationService staffEconomicContractInformationService) {
+            AddressRepository addressRepository, CityRepository cityRepository, StaffEconomicContractInformationService staffEconomicContractInformationService) {
         this.staffRepository = staffRepository;
         this.functionalStructureLevelRepository = functionalStructureLevelRepository;
         this.staffDocumentsRepository = staffDocumentsRepository;
         this.addressRepository = addressRepository;
+        this.cityRepository = cityRepository;
         this.staffEconomicContractInformationService = staffEconomicContractInformationService;
     }
 
@@ -46,6 +50,18 @@ public class StaffServiceImpl implements StaffService {
         staff.setAddress(null);
         StaffEconomicContractInformation staffEconomicContractInformation2 = staffEconomicContractInformationService.saveStaffEconomicContractInformation(staffEconomicContractInformation);
         staff.setStaffEconomicContractInformation(staffEconomicContractInformation2);
+        staff.setStaffDocuments(staffDocumentsRepository.saveAll(staffDocumentsList));
+        return staffRepository.save(staff);
+    }
+    @Override
+    public Staff save(StaffDto staffDto, String cityId, Address address, StaffEconomicContractInformation staffEconomicContractInformation, StaffContract staffContract, List<StaffDocuments> staffDocumentsList) {
+        address.setCity( cityRepository.findCityBy_id(cityId));
+        Address address1 = addressRepository.save(address);
+        Staff staff = staffMapper.dtoToModel(staffDto);
+        staff.setAddress(address1);
+        staff.setStaffContract(staffContract);
+        //StaffEconomicContractInformation staffEconomicContractInformation2 = staffEconomicContractInformationService.saveStaffEconomicContractInformation(staffEconomicContractInformation);
+        //staff.setStaffEconomicContractInformation(staffEconomicContractInformation2);
         staff.setStaffDocuments(staffDocumentsRepository.saveAll(staffDocumentsList));
         return staffRepository.save(staff);
     }
@@ -68,6 +84,20 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public List<Staff> getAllStaffs() {
         return staffRepository.findAll();
+    }
+
+    @Override
+    public List<StaffDto> getAll() {
+        // Get all actions
+        List<Staff> staffs = staffRepository.findAll();
+        // Create a list of all staff dto
+        ArrayList<StaffDto> staffDtos = new ArrayList<>();
+
+        for (Staff staff : staffs) {
+            StaffDto staffDto=staffMapper.modelToDto(staff);
+            staffDtos.add(staffDto);
+        }
+        return staffDtos;
     }
 
     @Override
