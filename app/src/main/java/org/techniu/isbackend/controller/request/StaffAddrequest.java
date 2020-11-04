@@ -34,7 +34,7 @@ public class StaffAddrequest {
     private String emergencyContactPhone;
     // Address
     private String cityId;
-    private String addressName;
+    private String fullAddress;
     private String postCode;
     // *** documentation *** //
     // id card
@@ -42,24 +42,56 @@ public class StaffAddrequest {
     private String idCardName= "Id Card";
     private String idCardExpeditionDate;
     private String idCardExpirationDate;
-    private MultipartFile idCardPhoto;
+    private String idCardDocExtension;
     // passport
     private String passportNumber;
     private String passportName= "Passport";
     private String passportExpeditionDate;
     private String passportExpirationDate;
-    private MultipartFile passportPhoto;
+    private String passportDocExtension;
     // professional id card
     private String professionalIdCardNumber;
     private String professionalName= "Professional Id Card";
     private String professionalIdCardExpeditionDate;
     private String professionalIdCardExpirationDate;
-    private MultipartFile professionalIdCardDatePhoto;
+    private String professionalIdCardDocExtension;
     // Health National Security
     private String hnsNumber;
     private String hnsName= "Health National Security";
     private String hnsExpeditionDate;
     private String hnsExpirationDate;
-    private MultipartFile hnsPhoto;
+    private String hnsDocExtension;
+    // *** staff contract *** //
+    private String companyName;
+    private String associateOffice;
+    private String  hiringCountry;
+    private String townContract;
+    private String personalNumber;
+    private String highDate;
+    private String lowDate;
+    private String registrationDate;
+    private String preContractDate;
+    // *** staff economic contract ***//
+    private String contractSalary;
+    private String companyContractCost;
+    private String expenses;
+    private String companyExpensesCost;
+    private String objectives;
+    private String companyObjectivesCost;
+    private String totalCompanyCost;
+    private String contractSalaryDateGoing;
+    private String contractSalaryDateOut;
+    private String companyContractCostDateGoing;
+    private String companyContractCostDateOut;
+    private String expensesDateGoing;
+    private String expensesDateOut;
+    private String companyExpensesCostDateGoing;
+    private String companyExpensesCostDateOut;
+    private String objectivesDateGoing;
+    private String objectivesDateOut;
+    private String companyObjectivesCostDateGoing;
+    private String companyObjectivesCostDateOut;
+    private String totalCompanyCostDateGoing;
+    private String totalCompanyCostDateOut;
 
 }

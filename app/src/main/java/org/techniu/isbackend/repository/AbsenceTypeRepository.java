@@ -9,4 +9,7 @@ import java.util.List;
 public interface AbsenceTypeRepository extends MongoRepository<AbsenceType, String> {
 
     List<AbsenceType> getAllByState(StateCountry stateCountry);
+    AbsenceType findBy_id(String id);
+    AbsenceType findByName(String name);
+    AbsenceType findByCode(String code);
 }

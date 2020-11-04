@@ -28,7 +28,7 @@ public class StaffEconomicContractInformationHistoryController {
     }
 
     @RequestMapping(path = "staffEconomicContractInformationHistory/{id}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public StaffEconomicContractInformationHistory getStaffEconomicContractInformationHistoryByStaff(@PathVariable("id") String id){
+    public List<StaffEconomicContractInformationHistory> getStaffEconomicContractInformationHistoryByStaff(@PathVariable("id") String id){
         return staffEconomicContractInformationHistoryService.getStaffEconomicContractInformationHistoryByStaff(id);
     }
 

@@ -8,20 +8,19 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
+import java.util.List;
 
-@Document(value = "LegalCategoryType")
+@Document(value = "StaffContractHistory")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LegalCategoryType implements Serializable {
-
+public class StaffContractHistory implements Serializable {
     @Id
-    private String legalCategoryTypeId;
-    private String name;
-    private String functions;
-    private String companyName;
+    private String staffContractHistoryId;
+    private StaffContract staffContractHistory;
 
     @DBRef
-    private FinancialCompany company;
+    private StaffContract staffContract;
+
 
 }

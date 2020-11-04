@@ -22,6 +22,7 @@ public class StaffServiceImpl implements StaffService {
     private FunctionalStructureLevelRepository functionalStructureLevelRepository;
     private AddressRepository addressRepository;
     private StaffDocumentsRepository staffDocumentsRepository;
+    private StaffContractRepository staffContractRepository;
     private CityRepository cityRepository;
     private final StaffMapper staffMapper = Mappers.getMapper(StaffMapper.class);
     private StaffEconomicContractInformationService staffEconomicContractInformationService;
@@ -29,6 +30,7 @@ public class StaffServiceImpl implements StaffService {
             StaffRepository staffRepository,
             FunctionalStructureLevelRepository functionalStructureLevelRepository,
             StaffDocumentsRepository staffDocumentsRepository,
+            StaffContractRepository staffContractRepository,
             AddressRepository addressRepository, CityRepository cityRepository, StaffEconomicContractInformationService staffEconomicContractInformationService) {
         this.staffRepository = staffRepository;
         this.functionalStructureLevelRepository = functionalStructureLevelRepository;
@@ -36,6 +38,7 @@ public class StaffServiceImpl implements StaffService {
         this.addressRepository = addressRepository;
         this.cityRepository = cityRepository;
         this.staffEconomicContractInformationService = staffEconomicContractInformationService;
+        this.staffContractRepository = staffContractRepository;
     }
 
     @Override
@@ -60,14 +63,16 @@ public class StaffServiceImpl implements StaffService {
         Staff staff = staffMapper.dtoToModel(staffDto);
         staff.setAddress(address1);
         staff.setStaffContract(staffContract);
-        //StaffEconomicContractInformation staffEconomicContractInformation2 = staffEconomicContractInformationService.saveStaffEconomicContractInformation(staffEconomicContractInformation);
-        //staff.setStaffEconomicContractInformation(staffEconomicContractInformation2);
+        StaffEconomicContractInformation staffEconomicContractInformation2 = staffEconomicContractInformationService.saveStaffEconomicContractInformation(staffEconomicContractInformation);
+        staff.setStaffEconomicContractInformation(staffEconomicContractInformation2);
+        StaffContract staffContract1 = staffContractRepository.save(staffContract);
+        staff.setStaffContract(staffContract1);
         staff.setStaffDocuments(staffDocumentsRepository.saveAll(staffDocumentsList));
         return staffRepository.save(staff);
     }
 
     @Override
-    public Staff updateStaff(Staff staff) {
+    public Staff updateStaff(String staffId, String cityId, Staff staff) {
         return null;
     }
 
@@ -84,6 +89,11 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public List<Staff> getAllStaffs() {
         return staffRepository.findAll();
+    }
+
+    @Override
+    public Staff getStaffById(String staffId) {
+        return staffRepository.findById(staffId).get();
     }
 
     @Override

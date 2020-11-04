@@ -41,7 +41,7 @@ public class StaffDto{
     private String emergencyContactPhone;
     // Address
     private String cityId;
-    private String addressName;
+    private String fullAddress;
     private String cityName;
     private String stateName;
     private String countryName;
@@ -49,23 +49,31 @@ public class StaffDto{
     // *** documentation *** //
     // id card
     private String idCardNumber;
+    private String idCardName= "Id Card";
     private String idCardExpeditionDate;
     private String idCardExpirationDate;
-    private MultipartFile idCardExpirationDatePhoto;
+    private String idCardDocExtension;
+    private MultipartFile idCardDoc;
     // passport
     private String passportNumber;
+    private String passportName= "Passport";
     private String passportExpeditionDate;
     private String passportExpirationDate;
-    private MultipartFile passportExpirationDatePhoto;
+    private String passportDocExtension;
+    private MultipartFile passportDoc;
     // professional id card
     private String professionalIdCardNumber;
+    private String professionalName= "Professional Id Card";
     private String professionalIdCardExpeditionDate;
     private String professionalIdCardExpirationDate;
-    private MultipartFile professionalIdCardExpirationDatePhoto;
+    private String professionalIdCardDocExtension;
+    private MultipartFile professionalIdCardDoc;
     // Health National Security
     private String hnsNumber;
+    private String hnsName= "Health National Security";
     private String hnsExpeditionDate;
     private String hnsExpirationDate;
-    private MultipartFile hnsExpirationDatePhoto;
+    private String hnsDocExtension;
+    private MultipartFile hnsDoc;
 
 }

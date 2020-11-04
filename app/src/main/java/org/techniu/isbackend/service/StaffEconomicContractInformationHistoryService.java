@@ -10,5 +10,5 @@ public interface StaffEconomicContractInformationHistoryService {
     Staff updateStaffEconomicContractInformationHistory(String staffEconomicContractInformationHistoryId, StaffEconomicContractInformationHistory staffEconomicContractInformationHistory);
     void deleteStaffEconomicContractInformationHistory(String staffEconomicContractInformationHistoryId);
     List<StaffEconomicContractInformationHistory> getAllStaffEconomicContractInformationHistory();
-    StaffEconomicContractInformationHistory getStaffEconomicContractInformationHistoryByStaff(String id);
+    List<StaffEconomicContractInformationHistory> getStaffEconomicContractInformationHistoryByStaff(String id);
 }

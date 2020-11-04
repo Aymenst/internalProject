@@ -31,10 +31,8 @@ public class StaffEconomicContractInformationServiceImpl implements StaffEconomi
         staffEconomicContractInformation.setCreatedAt(new Date());
         StaffEconomicContractInformation staffEconomicContractInformation1 = staffEconomicContractInformationRepository.save(staffEconomicContractInformation);
         StaffEconomicContractInformationHistory staffEconomicContractInformationHistory = new StaffEconomicContractInformationHistory();
-        List<StaffEconomicContractInformation> history = new ArrayList<>();
-        history.add(staffEconomicContractInformation1);
+        staffEconomicContractInformationHistory.setStaffEconomicContractInformationHistory(staffEconomicContractInformation1);
         staffEconomicContractInformationHistory.setStaffEconomicContractInformation(staffEconomicContractInformation1);
-        staffEconomicContractInformationHistory.setHistory(history);
         staffEconomicContractInformationHistoryRepository.save(staffEconomicContractInformationHistory);
         return staffEconomicContractInformation1;
     }
@@ -44,10 +42,9 @@ public class StaffEconomicContractInformationServiceImpl implements StaffEconomi
         StaffEconomicContractInformation staffEconomicContractInformation1 = staffEconomicContractInformationRepository.findById(staffEconomicContractInformationId).get();
         staffEconomicContractInformation.setStaffEconomicContractInformationId(staffEconomicContractInformation1.getStaffEconomicContractInformationId());
         staffEconomicContractInformation.setCreatedAt(new Date());
-        StaffEconomicContractInformationHistory staffEconomicContractInformationHistory = staffEconomicContractInformationHistoryRepository.findByStaffEconomicContractInformation(staffEconomicContractInformation1);
-        List<StaffEconomicContractInformation> history = staffEconomicContractInformationHistory.getHistory();
-        history.add(staffEconomicContractInformation);
-        staffEconomicContractInformationHistory.setHistory(history);
+        StaffEconomicContractInformationHistory staffEconomicContractInformationHistory = new StaffEconomicContractInformationHistory();
+        staffEconomicContractInformationHistory.setStaffEconomicContractInformationHistory(staffEconomicContractInformation1);
+        staffEconomicContractInformationHistory.setStaffEconomicContractInformation(staffEconomicContractInformation1);
         staffEconomicContractInformationHistoryRepository.save(staffEconomicContractInformationHistory);
         return staffEconomicContractInformationRepository.save(staffEconomicContractInformation);
     }

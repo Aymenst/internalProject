@@ -7,9 +7,10 @@ import java.util.List;
 
 public interface StaffService {
     Staff saveStaff(Staff staff, City city, StaffEconomicContractInformation staffEconomicContractInformation, StaffContract staffContract, List<StaffDocuments> staffDocumentsList);
-    Staff updateStaff(Staff staff);
+    Staff updateStaff(String staffId, String cityId, Staff staff);
     String deleteStaff(String staffId);
     List<Staff> getAllStaffs();
+    Staff getStaffById( String staffId);
     List<StaffDto> getAll();
     List<Staff> getAllNotAssignedStaffs();
     void assignLevelToStaff(List<Object> objects);

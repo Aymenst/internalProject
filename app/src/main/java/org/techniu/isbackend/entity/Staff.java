@@ -22,28 +22,29 @@ public class Staff implements Serializable {
     private String motherFamilyName;
     private String personalPhone;
     private String personalEmail;
-    private String companyName;
     private String companyPhone;
     private String companyMobilePhone;
     private String companyEmail;
     private String skype;
     private String birthday;
     private String birthCountry;
-    private String residenceCountry;
     private String emergencyContactName;
     private String emergencyContactPhone;
     private String photo;
     private String isLeader;
+
     @DBRef
     private Address address;
-    @DBRef
-    private Company company;
+
     @DBRef
     private FunctionalStructureLevel level;
+
     @DBRef
     private StaffContract staffContract;
+
     @DBRef
     private StaffEconomicContractInformation staffEconomicContractInformation;
+
     @DBRef
     private List<StaffDocuments> staffDocuments;
 }

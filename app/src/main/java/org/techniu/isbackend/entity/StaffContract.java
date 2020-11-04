@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Document(value = "StaffContract")
 @Data
@@ -17,6 +18,7 @@ public class StaffContract implements Serializable {
 
     @Id
     private String staffContractId;
+    private String companyName;
     private String associateOffice;
     private String hiringCountry;
     private String townContract;
@@ -28,6 +30,10 @@ public class StaffContract implements Serializable {
     private  byte[] internalRulesDoc;
     private  byte[] contractDoc;
     private  byte[] preContractDoc;
+    private Date createdAt;
+
+    @DBRef
+    private FinancialCompany company;
 
     @DBRef
     ContractType contractType;
