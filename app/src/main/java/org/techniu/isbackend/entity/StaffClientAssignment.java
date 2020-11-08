@@ -9,27 +9,22 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.io.Serializable;
-import java.util.List;
+import java.util.Date;
 
-@Document(value = "FunctionalStructureLevel")
+@Document()
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain=true)
 @Builder
-public class FunctionalStructureLevel implements Serializable {
-
+public class StaffClientAssignment {
     @Id
-    private String levelId;
-    private String name;
-    private String description;
-    private String type;
-    private String isProductionLevel;
-    private String isCommercialLevel;
-
+    private String _id;
+    private Date startDate;
+    private Date endDate;
+    private String typeStaff;
     @DBRef
-    private List<FunctionalStructureLevel> childs;
-
+    private Client client;
+    @DBRef
+    private Staff staff;
 }
-

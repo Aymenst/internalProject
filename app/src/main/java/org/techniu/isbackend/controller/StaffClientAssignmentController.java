@@ -7,56 +7,53 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.techniu.isbackend.Response;
-import org.techniu.isbackend.controller.request.AssignmentAddrequest;
-import org.techniu.isbackend.controller.request.CommercialOperationStatusAddrequest;
-import org.techniu.isbackend.dto.mapper.AssignmentMapper;
-import org.techniu.isbackend.dto.mapper.CommercialOperationStatusMapper;
+import org.techniu.isbackend.controller.request.StaffClientAssignmentAddrequest;
+import org.techniu.isbackend.dto.mapper.StaffClientAssignmentMapper;
 import org.techniu.isbackend.entity.Assignment;
 import org.techniu.isbackend.exception.validation.MapValidationErrorService;
 import org.techniu.isbackend.service.AssignmentService;
+import org.techniu.isbackend.service.StaffClientAssignmentService;
 
 import javax.validation.Valid;
 import java.util.List;
 
-import static org.techniu.isbackend.exception.EntityType.CommercialOperation;
 import static org.techniu.isbackend.exception.EntityType.CommercialOperationStatus;
 import static org.techniu.isbackend.exception.ExceptionType.ADDED;
-import static org.techniu.isbackend.exception.ExceptionType.UPDATED;
 import static org.techniu.isbackend.exception.MainException.getMessageTemplate;
 
 @RestController
 @RequestMapping("/api/assignment")
 @CrossOrigin("*")
-public class AssignmentController {
-    private AssignmentService assignmentService;
+public class StaffClientAssignmentController {
+    private StaffClientAssignmentService staffClientAssignmentService;
     private final MapValidationErrorService mapValidationErrorService;
-    private final AssignmentMapper assignmentMapper = Mappers.getMapper(AssignmentMapper.class);
-    AssignmentController(AssignmentService assignmentService, MapValidationErrorService mapValidationErrorService){
-        this.assignmentService = assignmentService;
+    private final StaffClientAssignmentMapper staffClientAssignmentMapper = Mappers.getMapper(StaffClientAssignmentMapper.class);
+    StaffClientAssignmentController(AssignmentService assignmentService, StaffClientAssignmentService staffClientAssignmentService, MapValidationErrorService mapValidationErrorService){
+        this.staffClientAssignmentService = staffClientAssignmentService;
         this.mapValidationErrorService = mapValidationErrorService;
     }
-    @RequestMapping(path = "assignment",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    /*@RequestMapping(path = "assignment",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Assignment saveAssignment(@RequestBody Assignment assignment){
-        return assignmentService.saveAssignment(assignment) ;
-    }
+        return staffClientAssignmentService.saveAssignment(assignment) ;
+    }*/
 
 
-    @PostMapping("/assine")
-    public ResponseEntity add(@RequestBody @Valid AssignmentAddrequest assignmentAddrequest, BindingResult bindingResult) {
+    @PostMapping("/assine2")
+    public ResponseEntity add(@RequestBody @Valid StaffClientAssignmentAddrequest staffClientAssignmentAddrequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) return mapValidationErrorService.mapValidationService(bindingResult);
         // Save Assignment
-        assignmentService.save(assignmentMapper.addRequestToDto(assignmentAddrequest),assignmentAddrequest.getStaffId(),assignmentAddrequest.getClientIds());
+        staffClientAssignmentService.save(staffClientAssignmentMapper.addRequestToDto(staffClientAssignmentAddrequest),staffClientAssignmentAddrequest.getStaffId(),staffClientAssignmentAddrequest.getClientIds());
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(CommercialOperationStatus, ADDED)), HttpStatus.OK);
     }
 
-
+/*
     @RequestMapping(path = "client/assignment/{clientId}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Assignment> getAssignmentByClient(@PathVariable(value = "clientId") String clientId){
-        return assignmentService.getAssignmentByClient(clientId);
+        return staffClientAssignmentService.getAssignmentByClient(clientId);
     }
 
     @RequestMapping(path = "client/assignment/people/{peopleId}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Assignment> getAssignmentByPeople(@PathVariable(value = "peopleId") String peopleId){
-        return assignmentService.getAssignmentByPeople(peopleId);
-    }
+        return staffClientAssignmentService.getAssignmentByPeople(peopleId);
+    }*/
 }

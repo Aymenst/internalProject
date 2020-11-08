@@ -16,7 +16,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommercialOperation implements Serializable {
+public class CommercialOperation{
     @Id
     private String _id;
     private String name;

@@ -1,6 +1,7 @@
 package org.techniu.isbackend.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -14,6 +15,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain=true)
+@Builder
 public class Address implements Serializable {
     @Id
     private String addressId;
