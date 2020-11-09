@@ -100,6 +100,11 @@ public class SectorCompanyController {
     public ResponseEntity sectorByParent(@PathVariable(value = "parentName") String parentName){
         return new ResponseEntity<Response>(Response.ok().setPayload(sectorCompanyService.getAllBysectorByParent(parentName)), HttpStatus.OK);
     }
+    // return all sub sector of primarysector
+    @RequestMapping(method = RequestMethod.GET, value = "/allSectorByParent/{parentName}")
+    public ResponseEntity allSectorByParent(@PathVariable(value = "parentName") String parentName){
+        return new ResponseEntity<Response>(Response.ok().setPayload(sectorCompanyService.getAllSectorsByParent(parentName)), HttpStatus.OK);
+    }
 
     /**
      * Handles the incoming DELETE API "/commercialOperationStatus/delete"
@@ -110,9 +115,6 @@ public class SectorCompanyController {
      */
     @RequestMapping(value = "/delete/{firstSectorName}/{secondSectorName}/{thirdSectorName}", method = RequestMethod.DELETE)
     public ResponseEntity delete(@PathVariable String firstSectorName,@PathVariable String secondSectorName,@PathVariable String thirdSectorName) {
-        System.out.println(firstSectorName);
-        System.out.println(secondSectorName);
-        System.out.println(thirdSectorName);
          sectorCompanyService.remove(firstSectorName,secondSectorName,thirdSectorName);
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(SectorCompany, DELETED)), HttpStatus.OK);
     }
