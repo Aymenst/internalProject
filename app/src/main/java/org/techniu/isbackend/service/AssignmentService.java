@@ -1,6 +1,7 @@
 package org.techniu.isbackend.service;
 
 import org.springframework.http.ResponseEntity;
+import org.techniu.isbackend.dto.model.AssignmentDto;
 import org.techniu.isbackend.entity.Address;
 import org.techniu.isbackend.entity.Assignment;
 
@@ -13,4 +14,13 @@ public interface AssignmentService {
     List<Assignment> getAllAssignment();
     List<Assignment> getAssignmentByClient(String clientId);
     List<Assignment> getAssignmentByPeople(String staffId);
+
+    /**
+     * save
+     *
+     * @param assignmentDto - assignmentDto
+     * @param staffId - staffId
+     * @param clients - clients
+     */
+    void save(AssignmentDto assignmentDto, String staffId, List<String> clients);
 }

@@ -4,6 +4,7 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
 import org.techniu.isbackend.dto.mapper.CommercialOperationMapper;
 import org.techniu.isbackend.dto.model.CommercialOperationDto;
+import org.techniu.isbackend.dto.model.IvaDto;
 import org.techniu.isbackend.entity.*;
 import org.techniu.isbackend.exception.EntityType;
 import org.techniu.isbackend.exception.ExceptionType;
@@ -117,7 +118,7 @@ public class CommercialOperationServiceImpl implements CommercialOperationServic
         for (CommercialOperation commercialOperation : commercialOperations) {
             CommercialOperationDto commercialOperationDto = commercialOperationMapper.modelToDto(commercialOperation);
             commercialOperationDto.setClientName(commercialOperation.getClient().getName());
-            commercialOperationDto.setStateName(commercialOperation.getState().getPercentage());
+            //commercialOperationDto.set(commercialOperation.getState().getPercentage());
             commercialOperationDto.setCountryName(commercialOperation.getClient().getAddress().getCity().getStateCountry().getCountry().getCountryName());
             ArrayList<String> serviceTypes = new ArrayList<>();
             if (commercialOperation.getServiceType() != null){
@@ -131,11 +132,27 @@ public class CommercialOperationServiceImpl implements CommercialOperationServic
 
                 }
             commercialOperationDto.setServiceTypeName(serviceTypes);
+                commercialOperationDto.setStateName(commercialOperation.getState().getName());
         }
             commercialOperationDtos.add(commercialOperationDto);
         }
         return commercialOperationDtos;
     }
+
+    @Override
+    public List<CommercialOperationDto> getAll2() {
+        // Get all actions
+        List<CommercialOperation> commercialOperation = commercialOperationRepository.findAll();
+        // Create a list of all actions dto
+        ArrayList<CommercialOperationDto> commercialOperationDtos = new ArrayList<>();
+
+        for (CommercialOperation commercialOperation1 : commercialOperation) {
+            CommercialOperationDto commercialOperationDto = commercialOperationMapper.modelToDto(commercialOperation1);
+            commercialOperationDtos.add(commercialOperationDto);
+        }
+        return commercialOperationDtos;
+    }
+
     /**
      * delete Action
      *

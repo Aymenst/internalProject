@@ -1,13 +1,15 @@
 package org.techniu.isbackend.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.techniu.isbackend.dto.model.ClientDto;
+import org.springframework.stereotype.Repository;
 import org.techniu.isbackend.entity.Client;
 
-import java.util.List;
 
+import java.util.List;
+@Repository
 public interface ClientRepository extends MongoRepository<Client, String> {
     Client getByCode(String codeClient);
     Client getBy_id(String id);
     List<Client> findAll();
+    Client findBy_id(String id);
 }

@@ -140,11 +140,12 @@ public class ClientServiceImpl implements ClientService{
                 clientDto.setCountryLeader("-");
             }
             //get assistant commercial if existe
-            Assignment assignmentResponsible = assignmentRepository.findByClientAndType(client,"Responsible Commercial");
+            Assignment assignmentResponsible = assignmentRepository.findByClientAndTypeStaff(client,"Responsible Commercial");
             if(assignmentResponsible !=null) {
                 clientDto.setResponsibleCommercial(assignmentResponsible.getStaff().getFirstName()+" "+assignmentResponsible.getStaff().getFatherFamilyName());
             }
-            Assignment assignmentAssistant = assignmentRepository.findByClientAndType(client,"Assistant Commercial");
+            Assignment assignmentAssistant = assignmentRepository.findByClientAndTypeStaff(client,"Assistant Commercial");
+            System.out.println("assignmentAssistant  ** " +assignmentAssistant);
             if(assignmentAssistant !=null) {
                 clientDto.setAssistantCommercial(assignmentAssistant.getStaff().getFirstName()+" "+assignmentAssistant.getStaff().getFatherFamilyName());
             }

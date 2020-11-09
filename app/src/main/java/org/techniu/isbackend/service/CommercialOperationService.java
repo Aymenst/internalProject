@@ -18,6 +18,12 @@ public interface CommercialOperationService {
      */
     List<CommercialOperationDto> getAll();
     /**
+     * all CommercialOperationDto
+     *
+     * @return List commercialOperationDto
+     */
+    List<CommercialOperationDto> getAll2();
+    /**
      * Update Action
      *
      * @param commercialOperationDto - commercialOperationDto

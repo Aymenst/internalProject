@@ -1,20 +1,26 @@
 package org.techniu.isbackend.service;
 
+import org.mapstruct.factory.Mappers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.techniu.isbackend.dto.mapper.AssignmentMapper;
+import org.techniu.isbackend.dto.model.AssignmentDto;
 import org.techniu.isbackend.entity.Assignment;
+import org.techniu.isbackend.entity.Client;
+import org.techniu.isbackend.entity.Staff;
 import org.techniu.isbackend.repository.AssignmentRepository;
 import org.techniu.isbackend.repository.ClientRepository;
 import org.techniu.isbackend.repository.StaffRepository;
 
 import java.util.List;
+import java.util.Optional;
+
 @Service
-@Transactional
 public class AssignmentServiceImpl implements AssignmentService {
-    private AssignmentRepository assignmentRepository;
-    private StaffRepository staffRepository;
-    private  ClientRepository clientRepository;
+    private final AssignmentRepository assignmentRepository;
+    private final StaffRepository staffRepository;
+    private final  ClientRepository clientRepository;
+    private final AssignmentMapper assignmentMapper = Mappers.getMapper(AssignmentMapper.class);
     AssignmentServiceImpl(AssignmentRepository assignmentRepository, StaffRepository staffRepository,
                           ClientRepository clientRepository) {
         this.assignmentRepository = assignmentRepository;
@@ -25,7 +31,7 @@ public class AssignmentServiceImpl implements AssignmentService {
     public Assignment saveAssignment(Assignment assignment) {
         if (staffRepository.existsById(assignment.getStaff().getStaffId())
             && clientRepository.existsById(assignment.getClient().get_id())) {
-            if (assignment.getType().equals("Responsible Commercial")) {
+            if (assignment.getTypeStaff().equals("Responsible Commercial")) {
                 assignment.getClient().setResponsibleCommercial(assignment.getStaff());
             } else {
                 assignment.getClient().setAssistantCommercial(assignment.getStaff());
@@ -37,10 +43,39 @@ public class AssignmentServiceImpl implements AssignmentService {
         }
     }
 
+    /**
+     * save
+     *
+     * @param assignmentDto - assignmentDto
+     * @param staffId     - staffId
+     * @param clientsIds       - clientsIds
+     */
+    @Override
+    public void save(AssignmentDto assignmentDto, String staffId, List<String> clientsIds) {
+        Optional<Staff> staff= staffRepository.findById(staffId);
+        List<Assignment>  assignmentList= assignmentRepository.findAll();
+        for (String clientId : clientsIds)
+        {
+            Client client = clientRepository.findBy_id(clientId);
+            Assignment assignmentx= assignmentRepository.findByClientAndTypeStaff(client,assignmentDto.getTypeStaff());
+            if(assignmentx != null){
+                assignmentx.setClient(client);
+                assignmentx.setStaff(staff.get());
+                assignmentRepository.save(assignmentx);
+            }
+            else {
+                Assignment assignment=assignmentMapper.dtoToModel(assignmentDto);
+                assignment.setClient(client);
+                assignment.setStaff(staff.get());
+                assignmentRepository.save(assignment);
+            }
+        }
+    }
+
     @Override
     public Assignment updateAssignment(String assignmentId, Assignment assignment) {
         return assignmentRepository.findById(assignmentId).map(assignment1 -> {
-                assignment.setAssignmentId(assignment1.getAssignmentId());
+                assignment.set_id(assignment1.get_id());
                 return assignmentRepository.save(assignment);
         }).orElseThrow(() -> new ExceptionMessage("Cannot save assignment"));
     }

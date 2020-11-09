@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommercialOperationServiceType implements Serializable {
+public class CommercialOperationServiceType{
     @Id
     private String CommercialOperationServiceTypeId;
     @DBRef
