@@ -18,7 +18,6 @@ public class StaffContract implements Serializable {
 
     @Id
     private String staffContractId;
-    private String companyName;
     private String associateOffice;
     private String hiringCountry;
     private String townContract;

@@ -13,13 +13,14 @@ import static org.techniu.isbackend.exception.ValidationConstants.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-public class AbsenceTypeAddrequest {
+public class FunctionalStructureLevelAddrequest {
 
-    @NotBlank(message = ABSENCETYPE_CODE_NOT_BLANK)
-    private String code;
-    @NotBlank(message = ABSENCETYPE_NAME_NOT_BLANK)
+    @NotBlank(message = FUNCTIONALSTRUCTURELEVEL_NAME_NOT_BLANK)
     private String name;
     private String description;
-    private String stateId;
+    @NotBlank(message = FUNCTIONALSTRUCTURELEVEL_TYPE_NOT_BLANK)
+    private String type;
+    private String isProductionLevel;
+    private String isCommercialLevel;
 
 }

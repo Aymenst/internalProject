@@ -6,9 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.techniu.isbackend.entity.StateCountry;
 
 @Data
 @AllArgsConstructor
@@ -16,13 +13,11 @@ import org.techniu.isbackend.entity.StateCountry;
 @Accessors(chain = true)
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AbsenceTypeDto {
+public class LegalCategoryTypeDto {
 
-    private String absenceTypeId;
-    private String code;
+    private String legalCategoryTypeId;
     private String name;
-    private String description;
-    private String stateId;
-    private String stateName;
-    private String countryName;
+    private String functions;
+    private String financialCompanyId;
+    private String companyName;
 }

@@ -1,13 +1,14 @@
 package org.techniu.isbackend.service;
 
+import org.techniu.isbackend.dto.model.LegalCategoryTypeDto;
 import org.techniu.isbackend.entity.LegalCategoryType;
 
 import java.util.List;
 
 public interface LegalCategoryTypeService {
-    LegalCategoryType saveLegalCategoryType(LegalCategoryType legalCategoryType);
-    LegalCategoryType updateLegalCategoryType(String legalCategoryTypeId, LegalCategoryType legalCategoryType);
-    void deleteLegalCategoryType(String legalCategoryTypeId);
-    List<LegalCategoryType> getAllLegalCategoryTypes();
-    List<LegalCategoryType> getAllLegalCategoryTypesByCompany(String companyName);
+    void save(LegalCategoryTypeDto legalCategoryTypeDto);
+    void update(LegalCategoryTypeDto legalCategoryTypeDto);
+    void remove(String id);
+    List<LegalCategoryTypeDto> getAllLegalCategoryTypes();
+    List<LegalCategoryTypeDto> getAllByCompany(String companyId);
 }

@@ -6,8 +6,8 @@ import org.techniu.isbackend.entity.ContractType;
 import java.util.List;
 
 public interface ContractTypeService {
-    ContractType save(ContractTypeDto contractTypeDto);
-    ContractType updateContractType(String contractTypeId, ContractType contractType);
+    void save(ContractTypeDto contractTypeDto);
+    void update(ContractTypeDto contractTypeDto);
     void remove(String id);
     List<ContractTypeDto> getAllContractTypes();
     List<ContractTypeDto> getAllByState(String stateCountryId);

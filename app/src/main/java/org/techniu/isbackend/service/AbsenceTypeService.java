@@ -6,9 +6,9 @@ import org.techniu.isbackend.entity.AbsenceType;
 import java.util.List;
 
 public interface AbsenceTypeService {
-    AbsenceType save(AbsenceTypeDto absenceTypeDto);
-    AbsenceType updateAbsenceType(String absenceTypeId, AbsenceType absenceType);
+    void save(AbsenceTypeDto absenceTypeDto);
+    void update(AbsenceTypeDto absenceTypeDto);
     void remove(String id);
-    List<AbsenceType> getAllAbsenceTypes();
-    List<AbsenceType> getAllByState(String stateCountryId);
+    List<AbsenceTypeDto> getAllAbsenceTypes();
+    List<AbsenceTypeDto> getAllByState(String stateCountryId);
 }

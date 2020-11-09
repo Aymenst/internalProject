@@ -125,9 +125,17 @@ public class ValidationConstants {
     public final static String CONTRACTTYPE_NAME_NOT_BLANK = "contract type name can not be blank";
     public final static String CONTRACTTYPE_CODE_NOT_BLANK = "contract type code can not be blank";
 
-    //ContractType
+    //AbsenceType
     public final static String ABSENCETYPE_NAME_NOT_BLANK = "absence type name can not be blank";
     public final static String ABSENCETYPE_CODE_NOT_BLANK = "absence type code can not be blank";
+
+    //LegalCategoryType
+    public final static String LEGALCATEGORYTYPE_NAME_NOT_BLANK = "legal category type name can not be blank";
+    public final static String LEGALCATEGORYTYPE_FUNCTIONS_NOT_BLANK = "legal category code can not be blank";
+
+    //FunctionalStructureLevel
+    public final static String FUNCTIONALSTRUCTURELEVEL_NAME_NOT_BLANK = "level name can not be blank";
+    public final static String FUNCTIONALSTRUCTURELEVEL_TYPE_NOT_BLANK = "level type can not be blank";
 
     // Static messages, do not modify them
     private static HashMap<String, String> backendTranslation = new HashMap<>();
@@ -352,6 +360,10 @@ public class ValidationConstants {
         //ABSENCETYPE
         backendTranslation.put(ABSENCETYPE_NAME_NOT_BLANK, getNotBlankValue(ABSENCETYPE_NAME_NOT_BLANK));
         backendTranslation.put(ABSENCETYPE_CODE_NOT_BLANK, getNotBlankValue(ABSENCETYPE_CODE_NOT_BLANK));
+
+        //LEGALCATEGORYTYPE
+        backendTranslation.put(LEGALCATEGORYTYPE_NAME_NOT_BLANK, getNotBlankValue(LEGALCATEGORYTYPE_NAME_NOT_BLANK));
+        backendTranslation.put(LEGALCATEGORYTYPE_FUNCTIONS_NOT_BLANK, getNotBlankValue(LEGALCATEGORYTYPE_NAME_NOT_BLANK));
 
 
         // commercialProject

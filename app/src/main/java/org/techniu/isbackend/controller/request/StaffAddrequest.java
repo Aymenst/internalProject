@@ -23,6 +23,7 @@ public class StaffAddrequest {
     private String motherFamilyName;
     private String birthday;
     private String birthCountry;
+    private String isLeader;
     // contact info
     private String personalPhone;
     private String personalEmail;
@@ -62,7 +63,7 @@ public class StaffAddrequest {
     private String hnsExpirationDate;
     private String hnsDocExtension;
     // *** staff contract *** //
-    private String companyName;
+    private String companyId;
     private String associateOffice;
     private String  hiringCountry;
     private String townContract;
@@ -71,6 +72,8 @@ public class StaffAddrequest {
     private String lowDate;
     private String registrationDate;
     private String preContractDate;
+    private String contractTypeId;
+    private String legalCategoryTypeId;
     // *** staff economic contract ***//
     private String contractSalary;
     private String companyContractCost;

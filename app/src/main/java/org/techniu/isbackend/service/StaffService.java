@@ -15,5 +15,6 @@ public interface StaffService {
     List<Staff> getAllNotAssignedStaffs();
     void assignLevelToStaff(List<Object> objects);
     List<Staff> getStaffsByLevel(String levelId, String isLeader);
-    Staff save(StaffDto staffDto, String cityId, Address address, StaffEconomicContractInformation staffEconomicContractInformation, StaffContract staffContract, List<StaffDocuments> staffDocumentsList);
+    Staff save(StaffDto staffDto, String cityId, Address address, StaffEconomicContractInformation staffEconomicContractInformation, StaffContract staffContract, String companyId, String contractTypeId, String legalCategoryTypeId, List<StaffDocuments> staffDocumentsList);
+    Staff update(StaffDto staffDto, String cityId, Address address);
 }
