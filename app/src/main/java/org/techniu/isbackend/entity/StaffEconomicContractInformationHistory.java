@@ -17,7 +17,7 @@ import java.util.List;
 public class StaffEconomicContractInformationHistory implements Serializable {
     @Id
     private String staffEconomicContractInformationHistoryId;
-    private List<StaffEconomicContractInformation> history;
+    private StaffEconomicContractInformation staffEconomicContractInformationHistory;
 
     @DBRef
     private StaffEconomicContractInformation staffEconomicContractInformation;

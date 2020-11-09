@@ -11,6 +11,7 @@ public enum EntityType {
     FinancialCompany,
     SectorCompany,
     Currency,
-    CommercialOperation
-
+    CommercialOperation,
+    AbsenceType,
+    ContractType
 }

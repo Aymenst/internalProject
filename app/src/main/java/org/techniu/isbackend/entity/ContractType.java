@@ -16,7 +16,7 @@ import java.io.Serializable;
 public class ContractType implements Serializable {
 
     @Id
-    private String contractTypeId;
+    private String _id;
     private String code;
     private String name;
     private String description;

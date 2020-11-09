@@ -22,6 +22,6 @@ public class LegalCategoryType implements Serializable {
     private String companyName;
 
     @DBRef
-    private Company company;
+    private FinancialCompany company;
 
 }

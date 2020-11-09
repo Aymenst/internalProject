@@ -45,8 +45,8 @@ public class StaffEconomicContractInformationHistoryServiceImpl implements Staff
     }
 
     @Override
-    public StaffEconomicContractInformationHistory getStaffEconomicContractInformationHistoryByStaff(String id) {
+    public List<StaffEconomicContractInformationHistory> getStaffEconomicContractInformationHistoryByStaff(String id) {
         StaffEconomicContractInformation staffEconomicContractInformation = staffEconomicContractInformationRepository.findById(id).get();
-        return staffEconomicContractInformationHistoryRepository.findByStaffEconomicContractInformation(staffEconomicContractInformation);
+        return staffEconomicContractInformationHistoryRepository.findAllByStaffEconomicContractInformation(staffEconomicContractInformation);
     }
 }

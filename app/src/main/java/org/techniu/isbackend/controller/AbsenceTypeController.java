@@ -1,23 +1,47 @@
 package org.techniu.isbackend.controller;
 
+import org.mapstruct.factory.Mappers;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.techniu.isbackend.Response;
+import org.techniu.isbackend.controller.request.AbsenceTypeAddrequest;
+import org.techniu.isbackend.dto.mapper.AbsenceTypeMapper;
+import org.techniu.isbackend.dto.mapper.AbsenceTypeMapper;
 import org.techniu.isbackend.entity.AbsenceType;
+import org.techniu.isbackend.exception.validation.MapValidationErrorService;
 import org.techniu.isbackend.service.AbsenceTypeService;
 
+import javax.validation.Valid;
 import java.util.List;
 
+import static org.techniu.isbackend.exception.EntityType.AbsenceType;
+import static org.techniu.isbackend.exception.ExceptionType.ADDED;
+import static org.techniu.isbackend.exception.ExceptionType.DELETED;
+import static org.techniu.isbackend.exception.MainException.getMessageTemplate;
+
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/absenceType")
 @CrossOrigin("*")
 public class AbsenceTypeController {
     private AbsenceTypeService absenceTypeService;
-    AbsenceTypeController(AbsenceTypeService absenceTypeService){
+    private final MapValidationErrorService mapValidationErrorService;
+    private final AbsenceTypeMapper absenceTypeMapper = Mappers.getMapper(AbsenceTypeMapper.class);
+    
+    AbsenceTypeController(AbsenceTypeService absenceTypeService, MapValidationErrorService mapValidationErrorService){
         this.absenceTypeService = absenceTypeService;
+        this.mapValidationErrorService = mapValidationErrorService;
     }
-    @RequestMapping(path = "absenceType-save/{stateCountryId}",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public AbsenceType saveAbsenceType(@RequestBody AbsenceType absenceType, @PathVariable("stateCountryId") String stateCountryId){
-        return absenceTypeService.saveAbsenceType(absenceType, stateCountryId) ;
+
+    @PostMapping("/add")
+    public ResponseEntity add(@RequestBody @Valid AbsenceTypeAddrequest absenceTypeAddrequest, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) return mapValidationErrorService.mapValidationService(bindingResult);
+        // Save AbsenceType
+        System.out.println(absenceTypeMapper.addRequestToDto(absenceTypeAddrequest));
+        absenceTypeService.save(absenceTypeMapper.addRequestToDto(absenceTypeAddrequest));
+        return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(AbsenceType, ADDED)), HttpStatus.OK);
     }
 
     @RequestMapping(path = "absenceType-all",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -35,9 +59,10 @@ public class AbsenceTypeController {
         return absenceTypeService.updateAbsenceType(absenceTypeId, absenceType);
     }
 
-    @RequestMapping(path = "absenceType-delete/{absenceTypeId}",method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void deleteAbsenceType(@PathVariable("absenceTypeId") String absenceTypeId){
-        absenceTypeService.deleteAbsenceType(absenceTypeId);
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity delete(@PathVariable("id") String id) {
+        absenceTypeService.remove(id);
+        return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(AbsenceType, DELETED)), HttpStatus.OK);
     }
 
     

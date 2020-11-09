@@ -16,7 +16,7 @@ import java.io.Serializable;
 public class AbsenceType implements Serializable {
 
     @Id
-    private String absenceTypeId;
+    private String _id;
     private String code;
     private String name;
     private String description;

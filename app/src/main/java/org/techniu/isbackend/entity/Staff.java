@@ -1,8 +1,10 @@
 package org.techniu.isbackend.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -14,7 +16,9 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Staff implements Serializable {
+@Accessors(chain=true)
+@Builder
+public class Staff {
     @Id
     private String staffId;
     private String firstName;
@@ -22,14 +26,12 @@ public class Staff implements Serializable {
     private String motherFamilyName;
     private String personalPhone;
     private String personalEmail;
-    private String companyName;
     private String companyPhone;
     private String companyMobilePhone;
     private String companyEmail;
     private String skype;
     private String birthday;
     private String birthCountry;
-    private String residenceCountry;
     private String emergencyContactName;
     private String emergencyContactPhone;
     private String photo;
@@ -37,9 +39,6 @@ public class Staff implements Serializable {
 
     @DBRef
     private Address address;
-
-    @DBRef
-    private Company company;
 
     @DBRef
     private FunctionalStructureLevel level;

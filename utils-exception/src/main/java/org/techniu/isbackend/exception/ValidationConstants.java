@@ -121,6 +121,13 @@ public class ValidationConstants {
     //ServiceType
     public final static String SERVICETYPE_NAME_NOT_BLANK = "service type name can not be blank";
 
+    //ContractType
+    public final static String CONTRACTTYPE_NAME_NOT_BLANK = "contract type name can not be blank";
+    public final static String CONTRACTTYPE_CODE_NOT_BLANK = "contract type code can not be blank";
+
+    //ContractType
+    public final static String ABSENCETYPE_NAME_NOT_BLANK = "absence type name can not be blank";
+    public final static String ABSENCETYPE_CODE_NOT_BLANK = "absence type code can not be blank";
 
     // Static messages, do not modify them
     private static HashMap<String, String> backendTranslation = new HashMap<>();
@@ -337,6 +344,14 @@ public class ValidationConstants {
         backendTranslation.put(COMMERCIALOPERATIONSTATUS_PERCENTAGE_NOT_BLANK, getNotBlankValue(COMMERCIALOPERATIONSTATUS_PERCENTAGE_NOT_BLANK));
         //SERVICETYPE
         backendTranslation.put(SERVICETYPE_NAME_NOT_BLANK, getNotBlankValue(SERVICETYPE_NAME_NOT_BLANK));
+
+        //CONTRACTTYPE
+        backendTranslation.put(CONTRACTTYPE_NAME_NOT_BLANK, getNotBlankValue(CONTRACTTYPE_NAME_NOT_BLANK));
+        backendTranslation.put(CONTRACTTYPE_CODE_NOT_BLANK, getNotBlankValue(CONTRACTTYPE_CODE_NOT_BLANK));
+
+        //ABSENCETYPE
+        backendTranslation.put(ABSENCETYPE_NAME_NOT_BLANK, getNotBlankValue(ABSENCETYPE_NAME_NOT_BLANK));
+        backendTranslation.put(ABSENCETYPE_CODE_NOT_BLANK, getNotBlankValue(ABSENCETYPE_CODE_NOT_BLANK));
 
 
         // commercialProject

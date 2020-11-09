@@ -17,8 +17,8 @@ public interface StaffMapper{
      */
     @Mapping(source = "staffId", target="staffId")
     @Mapping(target = "address", ignore=true)
-    @Mapping(target = "company", ignore=true)
-    @Mapping(target = "level", ignore=true)
+    //@Mapping(target = "company", ignore=true)
+    //@Mapping(target = "level", ignore=true)
     Staff dtoToModel(StaffDto staffDto);
 
     /**
@@ -28,7 +28,7 @@ public interface StaffMapper{
      * @return StaffDto
      */
     @Mapping(target = "cityName", ignore=true)
-    @Mapping(target = "levelId", ignore=true)
+   // @Mapping(target = "levelId", ignore=true)
     StaffDto addRequestToDto(StaffAddrequest staffAddrequest);
 
     /**
