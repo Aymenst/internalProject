@@ -59,6 +59,8 @@ public class FinancialCompanyServiceImpl implements FinancialCompanyService {
 
     @Override
     public FinancialCompany getById(String id) {
+        // System.out.println(id);
+        // System.out.println(financialCompanyRepository.findAllBy_id(id));
         return financialCompanyRepository.findAllBy_id(id);
     }
 
