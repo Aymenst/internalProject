@@ -117,7 +117,7 @@ public class CommercialOperationServiceImpl implements CommercialOperationServic
         for (CommercialOperation commercialOperation : commercialOperations) {
             CommercialOperationDto commercialOperationDto = commercialOperationMapper.modelToDto(commercialOperation);
             commercialOperationDto.setClientName(commercialOperation.getClient().getName());
-            commercialOperationDto.setStateName(commercialOperation.getState().getPercentage());
+            //commercialOperationDto.set(commercialOperation.getState().getPercentage());
             commercialOperationDto.setCountryName(commercialOperation.getClient().getAddress().getCity().getStateCountry().getCountry().getCountryName());
             ArrayList<String> serviceTypes = new ArrayList<>();
             if (commercialOperation.getServiceType() != null){
@@ -131,6 +131,7 @@ public class CommercialOperationServiceImpl implements CommercialOperationServic
 
                 }
             commercialOperationDto.setServiceTypeName(serviceTypes);
+                commercialOperationDto.setStateName(commercialOperation.getState().getName());
         }
             commercialOperationDtos.add(commercialOperationDto);
         }

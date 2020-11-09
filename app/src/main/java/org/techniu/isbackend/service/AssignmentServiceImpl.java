@@ -57,17 +57,14 @@ public class AssignmentServiceImpl implements AssignmentService {
         for (String clientId : clientsIds)
         {
             Client client = clientRepository.findBy_id(clientId);
-            Assignment assignmentx= assignmentRepository.findByClientAndTypeStaff(client,assignmentDto.getTypeStaff() );
-            System.out.println("assignment "+ assignmentx);
+            Assignment assignmentx= assignmentRepository.findByClientAndTypeStaff(client,assignmentDto.getTypeStaff());
             if(assignmentx != null){
-                System.out.println("UPDATE assignment");
                 assignmentx.setClient(client);
                 assignmentx.setStaff(staff.get());
                 assignmentRepository.save(assignmentx);
             }
             else {
                 Assignment assignment=assignmentMapper.dtoToModel(assignmentDto);
-                System.out.println("NEW assignment");
                 assignment.setClient(client);
                 assignment.setStaff(staff.get());
                 assignmentRepository.save(assignment);
