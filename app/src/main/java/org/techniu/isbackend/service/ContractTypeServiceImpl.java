@@ -4,9 +4,7 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.techniu.isbackend.dto.mapper.ContractTypeMapper;
-import org.techniu.isbackend.dto.model.CommercialOperationStatusDto;
 import org.techniu.isbackend.dto.model.ContractTypeDto;
-import org.techniu.isbackend.entity.CommercialOperationStatus;
 import org.techniu.isbackend.entity.ContractType;
 import org.techniu.isbackend.entity.StateCountry;
 import org.techniu.isbackend.exception.EntityType;
@@ -36,12 +34,12 @@ public class ContractTypeServiceImpl implements ContractTypeService {
     }
 
     @Override
-    public ContractType save(ContractTypeDto contractTypeDto) {
+    public void save(ContractTypeDto contractTypeDto) {
         StateCountry stateCountry = stateCountryRepository.findById(contractTypeDto.getStateId()).get();
         ContractType contractType = contractTypeMapper.dtoToModel(contractTypeDto);
         contractType.setState(stateCountry);
 
-        if (contractTypeDto.getName().contains(" ")) {
+        if (contractTypeDto.getCode().contains(" ")) {
             throw exception(CODE_SHOULD_NOT_CONTAIN_SPACES);
         }
         Optional<ContractType>  contractType1= Optional.ofNullable(contractTypeRepository.findByName(contractTypeDto.getName()));
@@ -53,21 +51,27 @@ public class ContractTypeServiceImpl implements ContractTypeService {
             throw exception(DUPLICATE_ENTITY);
         }
 
-        return contractTypeRepository.save(contractType);
+        contractTypeRepository.save(contractType);
     }
 
     @Override
-    public ContractType updateContractType(String contractTypeId, ContractType contractType) {
-        ContractType contractType1 = contractTypeRepository.findById(contractTypeId).get();
-        contractType.set_id(contractType1.get_id());
-        return contractTypeRepository.save(contractType);
+    public void update(ContractTypeDto contractTypeDto) {
+        ContractType contractType = contractTypeRepository.findById(contractTypeDto.getContractTypeId()).get();
+        contractType.setCode(contractTypeDto.getCode());
+        contractType.setName(contractTypeDto.getName());
+        contractType.setDescription(contractTypeDto.getDescription());
+
+        if (contractTypeDto.getCode().contains(" ")) {
+            throw exception(CODE_SHOULD_NOT_CONTAIN_SPACES);
+        }
+
+        contractTypeRepository.save(contractType);
     }
 
     @Override
     public void remove(String id) {
 
         Optional<ContractType> action = Optional.ofNullable(contractTypeRepository.findBy_id(id));
-        // If CommercialOperationStatus doesn't exists
         if (!action.isPresent()) {
             throw exception(ENTITY_NOT_FOUND);
         }
@@ -83,6 +87,9 @@ public class ContractTypeServiceImpl implements ContractTypeService {
 
         for (ContractType contractType : contractTypes) {
             ContractTypeDto contractTypeDto=contractTypeMapper.modelToDto(contractType);
+            contractTypeDto.setStateId(contractType.getState().get_id());
+            contractTypeDto.setStateName(contractType.getState().getStateName());
+            contractTypeDto.setCountryName(contractType.getState().getCountry().getCountryName());
             contractTypeDtos.add(contractTypeDto);
         }
         return contractTypeDtos;
@@ -98,6 +105,9 @@ public class ContractTypeServiceImpl implements ContractTypeService {
 
         for (ContractType contractType : contractTypes) {
             ContractTypeDto contractTypeDto=contractTypeMapper.modelToDto(contractType);
+            contractTypeDto.setStateId(contractType.getState().get_id());
+            contractTypeDto.setStateName(contractType.getState().getStateName());
+            contractTypeDto.setCountryName(contractType.getState().getCountry().getCountryName());
             contractTypeDtos.add(contractTypeDto);
         }
         return contractTypeDtos;
@@ -105,6 +115,6 @@ public class ContractTypeServiceImpl implements ContractTypeService {
 
 
     private RuntimeException exception(ExceptionType exceptionType, String... args) {
-        return MainException.throwException(EntityType.CommercialOperationStatus, exceptionType, args);
+        return MainException.throwException(EntityType.ContractType, exceptionType, args);
     }
 }

@@ -2,6 +2,7 @@ package org.techniu.isbackend.dto.mapper;
 
 
 import org.techniu.isbackend.controller.request.StaffAddrequest;
+import org.techniu.isbackend.controller.request.StaffUpdaterequest;
 import org.techniu.isbackend.dto.model.StaffDto;
 import org.techniu.isbackend.entity.Staff;
 import org.mapstruct.Mapper;
@@ -28,8 +29,12 @@ public interface StaffMapper{
      * @return StaffDto
      */
     @Mapping(target = "cityName", ignore=true)
-   // @Mapping(target = "levelId", ignore=true)
+    // @Mapping(target = "levelId", ignore=true)
     StaffDto addRequestToDto(StaffAddrequest staffAddrequest);
+
+    @Mapping(target = "cityName", ignore=true)
+        // @Mapping(target = "levelId", ignore=true)
+    StaffDto updateRequestToDto(StaffUpdaterequest staffUpdaterequest);
 
     /**
      * Map staff to staffDo

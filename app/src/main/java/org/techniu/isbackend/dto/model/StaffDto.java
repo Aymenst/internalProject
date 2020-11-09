@@ -8,9 +8,11 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.springframework.data.annotation.Id;
 import org.springframework.web.multipart.MultipartFile;
+import org.techniu.isbackend.entity.StaffDocuments;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -46,34 +48,56 @@ public class StaffDto{
     private String stateName;
     private String countryName;
     private String postCode;
-    // *** documentation *** //
-    // id card
-    private String idCardNumber;
-    private String idCardName= "Id Card";
-    private String idCardExpeditionDate;
-    private String idCardExpirationDate;
-    private String idCardDocExtension;
-    private MultipartFile idCardDoc;
-    // passport
-    private String passportNumber;
-    private String passportName= "Passport";
-    private String passportExpeditionDate;
-    private String passportExpirationDate;
-    private String passportDocExtension;
-    private MultipartFile passportDoc;
-    // professional id card
-    private String professionalIdCardNumber;
-    private String professionalName= "Professional Id Card";
-    private String professionalIdCardExpeditionDate;
-    private String professionalIdCardExpirationDate;
-    private String professionalIdCardDocExtension;
-    private MultipartFile professionalIdCardDoc;
-    // Health National Security
-    private String hnsNumber;
-    private String hnsName= "Health National Security";
-    private String hnsExpeditionDate;
-    private String hnsExpirationDate;
-    private String hnsDocExtension;
-    private MultipartFile hnsDoc;
+    // documentation
+    private List<StaffDocuments> staffDocuments;
+    // Contract
+    private String companyId;
+    private String companyName;
+    private String associateOffice;
+    private String  hiringCountry;
+    private String townContract;
+    private String personalNumber;
+    private String highDate;
+    private String lowDate;
+    private String registrationDate;
+    private String preContractDate;
+    private String contractTypeId;
+    private String contractTypeName;
+    private String legalCategoryTypeId;
+    private String legelCategoryTypeName;
+    private  byte[] internalRulesDoc;
+    private  byte[] contractDoc;
+    private  byte[] preContractDoc;
+    private Date createdAt;
+    // economic contract
+    private String contractSalary;
+    private String companyContractCost;
+    private String expenses;
+    private String companyExpensesCost;
+    private String objectives;
+    private String companyObjectivesCost;
+    private String totalCompanyCost;
+    private String contractSalaryDateGoing;
+    private String contractSalaryDateOut;
+    private String companyContractCostDateGoing;
+    private String companyContractCostDateOut;
+    private String expensesDateGoing;
+    private String expensesDateOut;
+    private String companyExpensesCostDateGoing;
+    private String companyExpensesCostDateOut;
+    private String objectivesDateGoing;
+    private String objectivesDateOut;
+    private String companyObjectivesCostDateGoing;
+    private String companyObjectivesCostDateOut;
+    private String totalCompanyCostDateGoing;
+    private String totalCompanyCostDateOut;
+
+    // Functional Structure Level
+    private String levelId;
+    private String levelName;
+    private String levelDescription;
+    private String levelType;
+    private String isProductionLevel;
+    private String isCommercialLevel;
 
 }

@@ -15,9 +15,9 @@ import static org.techniu.isbackend.exception.ValidationConstants.*;
 @Accessors(chain = true)
 public class ContractTypeAddrequest {
 
-    @NotBlank(message = CONTRACTTYPE_NAME_NOT_BLANK)
-    private String code;
     @NotBlank(message = CONTRACTTYPE_CODE_NOT_BLANK)
+    private String code;
+    @NotBlank(message = CONTRACTTYPE_NAME_NOT_BLANK)
     private String name;
     private String description;
     private String stateId;

@@ -8,11 +8,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.techniu.isbackend.Response;
 import org.techniu.isbackend.controller.request.StaffAddrequest;
-import org.techniu.isbackend.dto.mapper.CommercialOperationStatusMapper;
+import org.techniu.isbackend.controller.request.StaffUpdaterequest;
 import org.techniu.isbackend.dto.mapper.StaffMapper;
+import org.techniu.isbackend.dto.model.StaffDto;
 import org.techniu.isbackend.entity.*;
 import org.techniu.isbackend.service.StaffService;
-import org.techniu.isbackend.service.StaffService;
+
 import static org.techniu.isbackend.exception.ExceptionType.*;
 import static org.techniu.isbackend.exception.MainException.getMessageTemplate;
 import static org.techniu.isbackend.exception.EntityType.Staff;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/staff")
 @CrossOrigin("*")
 public class StaffController {
     private StaffService staffService;
@@ -33,23 +34,13 @@ public class StaffController {
         this.staffService = staffService;
     }
 
-    @RequestMapping(path = "staff-add",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Staff saveStaff(@RequestPart("staff") Staff staff, @RequestPart("city") City city, @RequestPart("staffEconomicContractInformation") StaffEconomicContractInformation staffEconomicContractInformation, @RequestPart("staffContract") StaffContract staffContract,
-                           @RequestPart("files[]") List<MultipartFile> staffDocuments, @RequestPart("staffDocumentsList") List<StaffDocuments> staffDocumentsList) throws IOException {
-        //System.out.println(staff);
-        for (int i = 0; i<staffDocumentsList.size(); i++) {
-            staffDocumentsList.get(i).setDocument(staffDocuments.get(i).getBytes());
-        }
-        return staffService.saveStaff(staff, city, staffEconomicContractInformation, staffContract, staffDocumentsList);
-    }
-
     /**
      * Handles the incoming POST API "/application/add"
      *
      * @param staffAddRequest staffAddRequest
      * @return ApplicationDto
      */
-    @PostMapping("staff/add")
+    @PostMapping("/add")
     public ResponseEntity add(@ModelAttribute @Valid StaffAddrequest staffAddRequest, BindingResult bindingResult,
                               @RequestParam("idCardDoc") MultipartFile idCardDoc,
                               @RequestParam("passportDoc") MultipartFile passportDoc,
@@ -103,7 +94,6 @@ public class StaffController {
 
         // Staff contract
         StaffContract staffContract = new StaffContract();
-        staffContract.setCompanyName(staffAddRequest.getCompanyName());
         staffContract.setAssociateOffice(staffAddRequest.getAssociateOffice());
         staffContract.setHiringCountry(staffAddRequest.getHiringCountry());
         staffContract.setTownContract(staffAddRequest.getTownContract());
@@ -145,27 +135,35 @@ public class StaffController {
         staffEconomicContractInformation.setCompanyObjectivesCostDateOut(staffAddRequest.getCompanyObjectivesCostDateOut());
         staffEconomicContractInformation.setTotalCompanyCostDateGoing(staffAddRequest.getTotalCompanyCostDateGoing());
         staffEconomicContractInformation.setTotalCompanyCostDateOut(staffAddRequest.getTotalCompanyCostDateOut());
-
+        System.out.println(staffAddRequest.getCompanyId());
         staffService.save(staffMapper.addRequestToDto(staffAddRequest),
-                staffAddRequest.getCityId(), address, staffEconomicContractInformation, staffContract, staffDocumentsList);
+                staffAddRequest.getCityId(), address, staffEconomicContractInformation, staffContract, staffAddRequest.getCompanyId(), staffAddRequest.getContractTypeId(), staffAddRequest.getLegalCategoryTypeId(), staffDocumentsList);
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(Staff, ADDED)), HttpStatus.OK);
     }
-    @RequestMapping(path = "staff-all",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Staff> getStaff(){
-        return staffService.getAllStaffs();
+
+    @PutMapping("/update")
+    public ResponseEntity update(@RequestBody @Valid StaffUpdaterequest staffUpdaterequest, BindingResult bindingResult) {
+        Address address =new Address()
+                .setAddressId(staffUpdaterequest.getAddressId())
+                .setFullAddress(staffUpdaterequest.getFullAddress())
+                .setPostCode(staffUpdaterequest.getPostCode());
+        staffService.update(staffMapper.updateRequestToDto(staffUpdaterequest),
+                staffUpdaterequest.getCityId(), address);
+        return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(Staff, UPDATED)), HttpStatus.OK);
     }
 
-    @RequestMapping(path = "staff/{staffId}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(path = "getById/{staffId}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Staff getStaffById(@PathVariable("staffId") String staffId){
         return staffService.getStaffById(staffId);
     }
 
     /**
      * display all staff GET API "/api/staff/all"
+     * @return
      */
-    @RequestMapping(method = RequestMethod.GET, value = "staff/all")
-    public ResponseEntity allStaff() {
-        return new ResponseEntity<Response>(Response.ok().setPayload(staffService.getAll()), HttpStatus.OK);
+    @GetMapping("/all")
+    public List<StaffDto> allStaff() {
+        return staffService.getAll();
     }
 
     @RequestMapping(path = "staff-no-assigned",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

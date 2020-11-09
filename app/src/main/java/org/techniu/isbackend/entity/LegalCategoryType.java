@@ -16,10 +16,9 @@ import java.io.Serializable;
 public class LegalCategoryType implements Serializable {
 
     @Id
-    private String legalCategoryTypeId;
+    private String _id;
     private String name;
     private String functions;
-    private String companyName;
 
     @DBRef
     private FinancialCompany company;

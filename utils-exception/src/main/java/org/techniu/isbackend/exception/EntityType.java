@@ -13,5 +13,7 @@ public enum EntityType {
     Currency,
     CommercialOperation,
     AbsenceType,
-    ContractType
+    ContractType,
+    LegalCategoryType,
+    FunctionalStructureLevel
 }

@@ -1,59 +1,91 @@
 package org.techniu.isbackend.controller;
 
-import org.springframework.http.MediaType;
+import org.mapstruct.factory.Mappers;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.techniu.isbackend.Response;
+import org.techniu.isbackend.controller.request.FunctionalStructureLevelUpdaterequest;
+import org.techniu.isbackend.dto.mapper.FunctionalStructureLevelMapper;
+import org.techniu.isbackend.dto.mapper.LegalCategoryTypeMapper;
+import org.techniu.isbackend.dto.model.FunctionalStructureLevelDto;
 import org.techniu.isbackend.entity.FunctionalStructureLevel;
-import org.techniu.isbackend.entity.Staff;
+import org.techniu.isbackend.exception.validation.MapValidationErrorService;
 import org.techniu.isbackend.service.FunctionalStructureLevelService;
 
 import java.util.List;
 
+import static org.techniu.isbackend.exception.EntityType.*;
+import static org.techniu.isbackend.exception.ExceptionType.*;
+import static org.techniu.isbackend.exception.MainException.getMessageTemplate;
+
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/functionalStructure")
 @CrossOrigin("*")
 public class FunctionalStructureLevelController {
     private FunctionalStructureLevelService functionalStructureLevelService;
-    FunctionalStructureLevelController(FunctionalStructureLevelService functionalStructureLevelService) {
+
+    private final MapValidationErrorService mapValidationErrorService;
+    private final FunctionalStructureLevelMapper functionalStructureLevelMapper = Mappers.getMapper(FunctionalStructureLevelMapper.class);
+
+    FunctionalStructureLevelController(FunctionalStructureLevelService functionalStructureLevelService, MapValidationErrorService mapValidationErrorService){
         this.functionalStructureLevelService = functionalStructureLevelService;
-    }
-    @RequestMapping(path = "level-save",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Boolean saveLevel(@RequestBody List<Object> objects){
-        return functionalStructureLevelService.saveLevel(objects) ;
+        this.mapValidationErrorService = mapValidationErrorService;
     }
 
-    @RequestMapping(path = "level-update/{levelId}",method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void updateLevel(@RequestBody List<Object> objects, @PathVariable("levelId") String levelId){
-        functionalStructureLevelService.updateLevel(objects, levelId) ;
+    @PostMapping("/add")
+    public ResponseEntity add(@RequestBody List<Object> objects, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) return mapValidationErrorService.mapValidationService(bindingResult);
+        // Save FunctionalStructureLevel
+        functionalStructureLevelService.save(objects) ;
+        return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(FunctionalStructureLevel, ADDED)), HttpStatus.OK);
     }
 
-    @RequestMapping(path = "level-delete/{levelId}",method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void deleteLevel(@PathVariable("levelId") String levelId){
-        functionalStructureLevelService.deleteLevel(levelId) ;
+    @GetMapping("/all")
+    public List<FunctionalStructureLevelDto> getAllFunctionalStructureLevels(){
+        System.out.println("get all");
+        List<FunctionalStructureLevelDto> list = functionalStructureLevelService.getAll();
+        System.out.println(list);
+        return list;
     }
 
-    @RequestMapping(path = "levels",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<FunctionalStructureLevel> getLevels(){
-        return functionalStructureLevelService.getAllLevels();
+    @GetMapping("/all-by-type/{type}")
+    public List<FunctionalStructureLevelDto> getAllByType(@PathVariable("type") String type){
+        return functionalStructureLevelService.getAllByType(type);
     }
 
-    @RequestMapping(path = "levels-type/{type}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<FunctionalStructureLevel> getLevelByType(@PathVariable(value = "type") String type){
-        return functionalStructureLevelService.getLevelByType(type);
+
+    @PutMapping("/update")
+    public ResponseEntity update(@RequestBody FunctionalStructureLevelUpdaterequest functionalStructureLevelUpdaterequest){
+        functionalStructureLevelService.update(functionalStructureLevelMapper.updateRequestToDto(functionalStructureLevelUpdaterequest), functionalStructureLevelUpdaterequest.getOldLeaderId(), functionalStructureLevelUpdaterequest.getNewLeaderId());
+        return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(FunctionalStructureLevel, UPDATED)), HttpStatus.OK);
+
     }
 
-    @RequestMapping(path = "level-tree/{levelId}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity delete(@PathVariable("id") String id) {
+        functionalStructureLevelService.remove(id);
+        return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(FunctionalStructureLevel, DELETED)), HttpStatus.OK);
+    }
+
+    @GetMapping("/level-tree/{levelId}")
     public List<FunctionalStructureLevel> getFunctionalStructureTree(@PathVariable(value = "levelId") String levelId){
         return functionalStructureLevelService.getFunctionalStructureTree(levelId);
     }
 
-    @RequestMapping(path = "level-name/{name}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping("/level-name/{name}")
     public FunctionalStructureLevel getLevelByName(@PathVariable(value = "name") String name){
         return functionalStructureLevelService.getLevelByName(name);
     }
 
-    @RequestMapping(path = "level-assign",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Staff> setLevelStaffs(@RequestBody List<Object> objects){
-        return functionalStructureLevelService.setLevelStaffs(objects) ;
+
+
+    @PostMapping("/level-assign")
+    public ResponseEntity setLevelStaffs(@RequestBody List<Object> objects){
+         functionalStructureLevelService.setLevelStaffs(objects) ;
+        return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(FunctionalStructureLevel, DELETED)), HttpStatus.OK);
+
     }
 }
 
