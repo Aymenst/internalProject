@@ -79,7 +79,7 @@ public class ContractTypeServiceImpl implements ContractTypeService {
     }
 
     @Override
-    public List<ContractTypeDto> getAllContractTypes() {
+    public List<ContractTypeDto> getAll() {
 
         List<ContractType> contractTypes = contractTypeRepository.findAll();
         // Create a list of all actions dto

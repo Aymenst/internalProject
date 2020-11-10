@@ -9,6 +9,6 @@ public interface ContractTypeService {
     void save(ContractTypeDto contractTypeDto);
     void update(ContractTypeDto contractTypeDto);
     void remove(String id);
-    List<ContractTypeDto> getAllContractTypes();
+    List<ContractTypeDto> getAll();
     List<ContractTypeDto> getAllByState(String stateCountryId);
 }

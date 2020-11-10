@@ -80,7 +80,7 @@ public class AbsenceTypeServiceImpl implements AbsenceTypeService {
     }
 
     @Override
-    public List<AbsenceTypeDto> getAllAbsenceTypes() {
+    public List<AbsenceTypeDto> getAll() {
 
         List<AbsenceType> absenceTypes = absenceTypeRepository.findAll();
         // Create a list of all actions dto

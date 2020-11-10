@@ -46,15 +46,15 @@ public class LegalCategoryTypeController {
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(LegalCategoryType, ADDED)), HttpStatus.OK);
     }
 
-
     @GetMapping("/all")
-    public List<LegalCategoryTypeDto> getAllLegalCategoryTypes(){
-        return legalCategoryTypeService.getAllLegalCategoryTypes();
+    public ResponseEntity getAllLegalCategoryTypes(){
+        return new ResponseEntity<Response>(Response.ok().setPayload(legalCategoryTypeService.getAll()), HttpStatus.OK);
     }
 
     @GetMapping("/all-by-company/{companyId}")
-    public List<LegalCategoryTypeDto> getAllByCompany(@PathVariable("companyId") String companyId){
-        return legalCategoryTypeService.getAllByCompany(companyId);
+    public ResponseEntity getAllByCompany(@PathVariable("companyId") String companyId){
+        return new ResponseEntity<Response>(Response.ok().setPayload(legalCategoryTypeService.getAllByCompany(companyId)), HttpStatus.OK);
+
     }
 
     @PutMapping("/update")

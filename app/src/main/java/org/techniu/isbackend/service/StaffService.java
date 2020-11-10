@@ -10,7 +10,7 @@ public interface StaffService {
     Staff updateStaff(String staffId, String cityId, Staff staff);
     String deleteStaff(String staffId);
     List<Staff> getAllStaffs();
-    Staff getStaffById( String staffId);
+    StaffDto getStaffById( String staffId);
     List<StaffDto> getAll();
     List<Staff> getAllNotAssignedStaffs();
     void assignLevelToStaff(List<Object> objects);

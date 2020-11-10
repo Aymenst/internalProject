@@ -5,8 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.techniu.isbackend.dto.mapper.FunctionalStructureLevelMapper;
 import org.techniu.isbackend.dto.mapper.StaffMapper;
 import org.techniu.isbackend.dto.model.CommercialOperationStatusDto;
+import org.techniu.isbackend.dto.model.FunctionalStructureLevelDto;
 import org.techniu.isbackend.dto.model.StaffDto;
 import org.techniu.isbackend.entity.*;
 import org.techniu.isbackend.repository.*;
@@ -30,6 +32,7 @@ public class StaffServiceImpl implements StaffService {
     private FinancialCompanyRepository financialCompanyRepository;
     private StaffEconomicContractInformationService staffEconomicContractInformationService;
 
+    private final FunctionalStructureLevelMapper functionalStructureLevelMapper = Mappers.getMapper(FunctionalStructureLevelMapper.class);
     private final StaffMapper staffMapper = Mappers.getMapper(StaffMapper.class);
 
     StaffServiceImpl(
@@ -114,8 +117,9 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public Staff getStaffById(String staffId) {
-        return staffRepository.findById(staffId).get();
+    public StaffDto getStaffById(String staffId) {
+        Staff staff = staffRepository.findById(staffId).get();
+        return staffToStaffDto(staff);
     }
 
     @Override
@@ -126,69 +130,8 @@ public class StaffServiceImpl implements StaffService {
         ArrayList<StaffDto> staffDtos = new ArrayList<>();
 
         for (Staff staff : staffs) {
-            StaffDto staffDto=staffMapper.modelToDto(staff);
-            // Address
-            staffDto.setCityId(staff.getAddress().getCity().get_id());
-            staffDto.setFullAddress(staff.getAddress().getFullAddress());
-            staffDto.setCityName(staff.getAddress().getCity().getCityName());
-            staffDto.setStateName(staff.getAddress().getCity().getStateCountry().getStateName());
-            staffDto.setCountryName(staff.getAddress().getCity().getStateCountry().getCountry().getCountryName());
-            staffDto.setPostCode(staff.getAddress().getPostCode());
-            // Documentation
-            staffDto.setStaffDocuments(staff.getStaffDocuments());
-            // Contract
-            staffDto.setCompanyId(staff.getStaffContract().getCompany().get_id());
-            staffDto.setCompanyName(staff.getStaffContract().getCompany().getName());
-            staffDto.setAssociateOffice(staff.getStaffContract().getAssociateOffice());
-            staffDto.setHiringCountry(staff.getStaffContract().getHiringCountry());
-            staffDto.setTownContract(staff.getStaffContract().getTownContract());
-            staffDto.setPersonalNumber(staff.getStaffContract().getPersonalNumber());
-            staffDto.setHighDate(staff.getStaffContract().getHighDate());
-            staffDto.setLowDate(staff.getStaffContract().getLowDate());
-            staffDto.setRegistrationDate(staff.getStaffContract().getRegistrationDate());
-            staffDto.setPreContractDate(staff.getStaffContract().getPreContractDate());
-            staffDto.setContractTypeId(staff.getStaffContract().getContractType().get_id());
-            staffDto.setContractTypeName(staff.getStaffContract().getContractType().getName());
-            staffDto.setLegalCategoryTypeId(staff.getStaffContract().getLegalCategoryType().get_id());
-            staffDto.setLegelCategoryTypeName(staff.getStaffContract().getLegalCategoryType().getName());
-            staffDto.setInternalRulesDoc(staff.getStaffContract().getInternalRulesDoc());
-            staffDto.setContractDoc(staff.getStaffContract().getContractDoc());
-            staffDto.setPreContractDoc(staff.getStaffContract().getPreContractDoc());
-            staffDto.setCreatedAt(staff.getStaffContract().getCreatedAt());
-            // Economic contract
-            staffDto.setContractSalary(staff.getStaffEconomicContractInformation().getContractSalary());
-            staffDto.setCompanyContractCost(staff.getStaffEconomicContractInformation().getCompanyContractCost());
-            staffDto.setExpenses(staff.getStaffEconomicContractInformation().getExpenses());
-           staffDto.setCompanyExpensesCost(staff.getStaffEconomicContractInformation().getCompanyExpensesCost());
-           staffDto.setObjectives(staff.getStaffEconomicContractInformation().getObjectives());
-           staffDto.setCompanyObjectivesCost(staff.getStaffEconomicContractInformation().getCompanyObjectivesCost());
-           staffDto.setTotalCompanyCost(staff.getStaffEconomicContractInformation().getTotalCompanyCost());
-           staffDto.setContractSalaryDateGoing(staff.getStaffEconomicContractInformation().getContractSalaryDateGoing());
-           staffDto.setContractSalaryDateOut(staff.getStaffEconomicContractInformation().getContractSalaryDateOut());
-           staffDto.setCompanyContractCostDateGoing(staff.getStaffEconomicContractInformation().getCompanyContractCostDateGoing());
-           staffDto.setCompanyContractCostDateOut(staff.getStaffEconomicContractInformation().getCompanyContractCostDateOut());
-           staffDto.setExpensesDateGoing(staff.getStaffEconomicContractInformation().getExpensesDateGoing());
-           staffDto.setExpensesDateOut(staff.getStaffEconomicContractInformation().getExpensesDateOut());
-           staffDto.setCompanyExpensesCostDateGoing(staff.getStaffEconomicContractInformation().getCompanyExpensesCostDateGoing());
-           staffDto.setCompanyExpensesCostDateOut(staff.getStaffEconomicContractInformation().getCompanyExpensesCostDateOut());
-           staffDto.setObjectivesDateGoing(staff.getStaffEconomicContractInformation().getObjectivesDateGoing());
-           staffDto.setObjectivesDateOut(staff.getStaffEconomicContractInformation().getObjectivesDateOut());
-           staffDto.setCompanyObjectivesCostDateGoing(staff.getStaffEconomicContractInformation().getCompanyObjectivesCostDateGoing());
-           staffDto.setCompanyObjectivesCostDateOut(staff.getStaffEconomicContractInformation().getCompanyObjectivesCostDateOut());
-           staffDto.setTotalCompanyCostDateGoing(staff.getStaffEconomicContractInformation().getTotalCompanyCostDateGoing());
-           staffDto.setTotalCompanyCostDateOut(staff.getStaffEconomicContractInformation().getTotalCompanyCostDateOut());
-            // Functional Structure Level
-            if(staff.getLevel() != null) {
 
-                staffDto.setLevelId(staff.getLevel().get_id());
-                staffDto.setLevelName(staff.getLevel().getName());
-                staffDto.setLevelDescription(staff.getLevel().getDescription());
-                staffDto.setLevelType(staff.getLevel().getType());
-                staffDto.setIsProductionLevel(staff.getLevel().getIsProductionLevel());
-                staffDto.setIsCommercialLevel(staff.getLevel().getIsCommercialLevel());
-            }
-
-            staffDtos.add(staffDto);
+            staffDtos.add(staffToStaffDto(staff));
         }
         return staffDtos;
     }
@@ -201,15 +144,16 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public void assignLevelToStaff(List<Object> objects) {
         ObjectMapper mapper = new ObjectMapper();
-        FunctionalStructureLevel functionalStructureLevel = mapper.convertValue(objects.get(0), FunctionalStructureLevel.class);
+        FunctionalStructureLevelDto functionalStructureLevelDto = mapper.convertValue(objects.get(0), FunctionalStructureLevelDto.class);
+        FunctionalStructureLevel functionalStructureLevel = functionalStructureLevelRepository.findById(functionalStructureLevelDto.getLevelId()).get();
         List<Staff> assignedStaffs = mapper.convertValue(objects.get(1), new TypeReference<List<Staff>>() { });
         List<Staff> notAssignedStaffs = mapper.convertValue(objects.get(2), new TypeReference<List<Staff>>() { });
-        assignedStaffs.forEach(staff -> {
-            staff.setLevel(functionalStructureLevel);
-            staffRepository.save(staff);
-        });
         notAssignedStaffs.forEach(staff -> {
             staff.setLevel(null);
+            staffRepository.save(staff);
+        });
+        assignedStaffs.forEach(staff -> {
+            staff.setLevel(functionalStructureLevel);
             staffRepository.save(staff);
         });
     }
@@ -219,6 +163,79 @@ public class StaffServiceImpl implements StaffService {
         FunctionalStructureLevel level = functionalStructureLevelRepository.findById(levelId).get();
         List<Staff> staffs = staffRepository.findAllByLevelAndIsLeader(level, isLeader);
         return staffs;
+    }
+
+    public StaffDto staffToStaffDto(Staff staff) {
+        StaffDto staffDto=staffMapper.modelToDto(staff);
+        // Address
+        staffDto.setAddressId(staff.getAddress().getAddressId());
+        staffDto.setCityId(staff.getAddress().getCity().get_id());
+        staffDto.setFullAddress(staff.getAddress().getFullAddress());
+        staffDto.setCityName(staff.getAddress().getCity().getCityName());
+        staffDto.setStateName(staff.getAddress().getCity().getStateCountry().getStateName());
+        staffDto.setCountryName(staff.getAddress().getCity().getStateCountry().getCountry().getCountryName());
+        staffDto.setPostCode(staff.getAddress().getPostCode());
+        // Documentation
+        staffDto.setStaffDocuments(staff.getStaffDocuments());
+        // Contract
+        staffDto.setStaffContractId(staff.getStaffContract().getStaffContractId());
+        staffDto.setCompanyId(staff.getStaffContract().getCompany().get_id());
+        staffDto.setCompanyName(staff.getStaffContract().getCompany().getName());
+        staffDto.setAssociateOffice(staff.getStaffContract().getAssociateOffice());
+        staffDto.setHiringCountry(staff.getStaffContract().getHiringCountry());
+        staffDto.setTownContract(staff.getStaffContract().getTownContract());
+        staffDto.setPersonalNumber(staff.getStaffContract().getPersonalNumber());
+        staffDto.setHighDate(staff.getStaffContract().getHighDate());
+        staffDto.setLowDate(staff.getStaffContract().getLowDate());
+        staffDto.setRegistrationDate(staff.getStaffContract().getRegistrationDate());
+        staffDto.setPreContractDate(staff.getStaffContract().getPreContractDate());
+        staffDto.setContractTypeId(staff.getStaffContract().getContractType().get_id());
+        staffDto.setContractTypeName(staff.getStaffContract().getContractType().getName());
+        staffDto.setContractTypeCountryId(staff.getStaffContract().getContractType().getState().getCountry().getCountryId());
+        staffDto.setContractTypeCountry(staff.getStaffContract().getContractType().getState().getCountry().getCountryName());
+        staffDto.setContractTypeStateId(staff.getStaffContract().getContractType().getState().get_id());
+        staffDto.setContractTypeState(staff.getStaffContract().getContractType().getState().getStateName());
+        staffDto.setLegalCategoryTypeId(staff.getStaffContract().getLegalCategoryType().get_id());
+        staffDto.setLegelCategoryTypeName(staff.getStaffContract().getLegalCategoryType().getName());
+        staffDto.setInternalRulesDoc(staff.getStaffContract().getInternalRulesDoc());
+        staffDto.setContractDoc(staff.getStaffContract().getContractDoc());
+        staffDto.setPreContractDoc(staff.getStaffContract().getPreContractDoc());
+        staffDto.setCreatedAt(staff.getStaffContract().getCreatedAt());
+        // Economic contract
+        staffDto.setStaffEconomicContractInformationId(staff.getStaffEconomicContractInformation().getStaffEconomicContractInformationId());
+        staffDto.setContractSalary(staff.getStaffEconomicContractInformation().getContractSalary());
+        staffDto.setCompanyContractCost(staff.getStaffEconomicContractInformation().getCompanyContractCost());
+        staffDto.setExpenses(staff.getStaffEconomicContractInformation().getExpenses());
+        staffDto.setCompanyExpensesCost(staff.getStaffEconomicContractInformation().getCompanyExpensesCost());
+        staffDto.setObjectives(staff.getStaffEconomicContractInformation().getObjectives());
+        staffDto.setCompanyObjectivesCost(staff.getStaffEconomicContractInformation().getCompanyObjectivesCost());
+        staffDto.setTotalCompanyCost(staff.getStaffEconomicContractInformation().getTotalCompanyCost());
+        staffDto.setContractSalaryDateGoing(staff.getStaffEconomicContractInformation().getContractSalaryDateGoing());
+        staffDto.setContractSalaryDateOut(staff.getStaffEconomicContractInformation().getContractSalaryDateOut());
+        staffDto.setCompanyContractCostDateGoing(staff.getStaffEconomicContractInformation().getCompanyContractCostDateGoing());
+        staffDto.setCompanyContractCostDateOut(staff.getStaffEconomicContractInformation().getCompanyContractCostDateOut());
+        staffDto.setExpensesDateGoing(staff.getStaffEconomicContractInformation().getExpensesDateGoing());
+        staffDto.setExpensesDateOut(staff.getStaffEconomicContractInformation().getExpensesDateOut());
+        staffDto.setCompanyExpensesCostDateGoing(staff.getStaffEconomicContractInformation().getCompanyExpensesCostDateGoing());
+        staffDto.setCompanyExpensesCostDateOut(staff.getStaffEconomicContractInformation().getCompanyExpensesCostDateOut());
+        staffDto.setObjectivesDateGoing(staff.getStaffEconomicContractInformation().getObjectivesDateGoing());
+        staffDto.setObjectivesDateOut(staff.getStaffEconomicContractInformation().getObjectivesDateOut());
+        staffDto.setCompanyObjectivesCostDateGoing(staff.getStaffEconomicContractInformation().getCompanyObjectivesCostDateGoing());
+        staffDto.setCompanyObjectivesCostDateOut(staff.getStaffEconomicContractInformation().getCompanyObjectivesCostDateOut());
+        staffDto.setTotalCompanyCostDateGoing(staff.getStaffEconomicContractInformation().getTotalCompanyCostDateGoing());
+        staffDto.setTotalCompanyCostDateOut(staff.getStaffEconomicContractInformation().getTotalCompanyCostDateOut());
+        // Functional Structure Level
+        if(staff.getLevel() != null) {
+
+            staffDto.setLevelId(staff.getLevel().get_id());
+            staffDto.setLevelName(staff.getLevel().getName());
+            staffDto.setLevelDescription(staff.getLevel().getDescription());
+            staffDto.setLevelType(staff.getLevel().getType());
+            staffDto.setIsProductionLevel(staff.getLevel().getIsProductionLevel());
+            staffDto.setIsCommercialLevel(staff.getLevel().getIsCommercialLevel());
+        }
+        return  staffDto;
+
     }
 
 }

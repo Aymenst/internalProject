@@ -26,5 +26,5 @@ public class FunctionalStructureLevelDto {
     private String type;
     private String isProductionLevel;
     private String isCommercialLevel;
-    private List<FunctionalStructureLevel> childs;
+    private List<FunctionalStructureLevelDto> childs;
 }
