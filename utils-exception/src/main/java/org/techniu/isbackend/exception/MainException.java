@@ -74,7 +74,8 @@ public class MainException {
      * @return String
      */
     public static String getMessageTemplate(EntityType entityType, ExceptionType exceptionType) {
-        return entityType.name().concat(".").concat(exceptionType.getValue()).toLowerCase();
+        /*aid*/
+        return /*entityType.name().concat(".").concat*/(exceptionType.getValue()).toLowerCase();
     }
 
     /**

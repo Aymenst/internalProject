@@ -39,4 +39,6 @@ public class Client {
     private String sector2;
     private String sector3;
     private String sectorLeader;
+    @DBRef
+    private SectorCompany sectorCompany;
 }
