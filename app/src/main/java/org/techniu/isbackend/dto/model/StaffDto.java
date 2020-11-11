@@ -56,7 +56,7 @@ public class StaffDto{
     private String companyId;
     private String companyName;
     private String associateOffice;
-    private String  hiringCountry;
+    private String hiringCountry;
     private String townContract;
     private String personalNumber;
     private String highDate;
@@ -74,7 +74,6 @@ public class StaffDto{
     private  byte[] internalRulesDoc;
     private  byte[] contractDoc;
     private  byte[] preContractDoc;
-    private Date createdAt;
     // economic contract
     private String staffEconomicContractInformationId;
     private String contractSalary;
@@ -106,5 +105,9 @@ public class StaffDto{
     private String levelType;
     private String isProductionLevel;
     private String isCommercialLevel;
+    private String isLeader;
+
+    //Created at
+    private String createdAt;
 
 }

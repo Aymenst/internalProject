@@ -59,7 +59,8 @@ public class AbsenceTypeController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity update(@RequestBody AbsenceTypeUpdaterequest absenceTypeUpdaterequest){
+    public ResponseEntity update(@RequestBody @Valid AbsenceTypeUpdaterequest absenceTypeUpdaterequest, BindingResult bindingResult){
+        if (bindingResult.hasErrors()) return mapValidationErrorService.mapValidationService(bindingResult);
         absenceTypeService.update(absenceTypeMapper.updateRequestToDto(absenceTypeUpdaterequest));
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(AbsenceType, UPDATED)), HttpStatus.OK);
 

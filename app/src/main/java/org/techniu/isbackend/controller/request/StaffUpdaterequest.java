@@ -13,6 +13,7 @@ public class StaffUpdaterequest {
     // *** general information *** //
     //
     private String staffId;
+    private String photo;
     // personal info
     private String firstName;
     private String fatherFamilyName;

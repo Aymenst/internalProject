@@ -12,6 +12,7 @@ import org.techniu.isbackend.controller.request.StaffUpdaterequest;
 import org.techniu.isbackend.dto.mapper.StaffMapper;
 import org.techniu.isbackend.dto.model.StaffDto;
 import org.techniu.isbackend.entity.*;
+import org.techniu.isbackend.exception.validation.MapValidationErrorService;
 import org.techniu.isbackend.service.StaffService;
 
 import static org.techniu.isbackend.exception.ExceptionType.*;
@@ -28,10 +29,15 @@ import java.util.List;
 @RequestMapping("/api/staff")
 @CrossOrigin("*")
 public class StaffController {
+
     private StaffService staffService;
+    private final MapValidationErrorService mapValidationErrorService;
+
     private final StaffMapper staffMapper = Mappers.getMapper(StaffMapper.class);
-    StaffController(StaffService  staffService){
+
+    StaffController(StaffService  staffService, MapValidationErrorService mapValidationErrorService){
         this.staffService = staffService;
+        this.mapValidationErrorService = mapValidationErrorService;
     }
 
     /**
@@ -49,7 +55,8 @@ public class StaffController {
                               @RequestParam("contractDoc") MultipartFile contractDoc,
                               @RequestParam("internalRulesDoc") MultipartFile internalRulesDoc,
                               @RequestParam("preContractDoc") MultipartFile preContractDoc) throws IOException {
-       // objet address
+        if (bindingResult.hasErrors()) return mapValidationErrorService.mapValidationService(bindingResult);
+        // objet address
         Address address =new Address()
         .setFullAddress(staffAddRequest.getFullAddress())
         .setPostCode(staffAddRequest.getPostCode());
@@ -143,10 +150,12 @@ public class StaffController {
 
     @PutMapping("/update")
     public ResponseEntity update(@RequestBody @Valid StaffUpdaterequest staffUpdaterequest, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) return mapValidationErrorService.mapValidationService(bindingResult);
         Address address =new Address()
                 .setAddressId(staffUpdaterequest.getAddressId())
                 .setFullAddress(staffUpdaterequest.getFullAddress())
                 .setPostCode(staffUpdaterequest.getPostCode());
+        System.out.println(staffUpdaterequest);
         staffService.update(staffMapper.updateRequestToDto(staffUpdaterequest),
                 staffUpdaterequest.getCityId(), address);
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(Staff, UPDATED)), HttpStatus.OK);
