@@ -17,4 +17,5 @@ public interface ClientService {
     ResponseEntity<?> deleteClient(String clientId);
     List<ClientDto> getAllClient();
     List<Client> getClientsByCountryName(String country);
+    List<ClientDto> getListClientsByCountry(String country);
 }

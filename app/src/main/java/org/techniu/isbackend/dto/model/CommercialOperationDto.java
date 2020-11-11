@@ -45,4 +45,7 @@ public class CommercialOperationDto {
     private Float contractVolumeInEuro;
     private Float estimatedTradeVolumeInEuro;
     private String clientName;
+    private String sector1;
+    private String sector2;
+    private String sector3;
 }

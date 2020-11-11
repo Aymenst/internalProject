@@ -175,6 +175,14 @@ public class StaffController {
         return staffService.getAll();
     }
 
+    /**
+     * display all staff GET API "/api/staff/allaid"
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/allaid")
+    public ResponseEntity allstaffaid() {
+        return new ResponseEntity<Response>(Response.ok().setPayload(staffService.getAll()), HttpStatus.OK);
+    }
+
     @RequestMapping(path = "staff-no-assigned",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Staff> getNotAssignedStaff(){
         return staffService.getAllNotAssignedStaffs();

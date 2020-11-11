@@ -6,13 +6,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.techniu.isbackend.dto.mapper.ClientMapper;
 import org.techniu.isbackend.dto.model.ClientDto;
-import org.techniu.isbackend.dto.model.CommercialOperationStatusDto;
 import org.techniu.isbackend.entity.*;
 import org.techniu.isbackend.repository.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,12 +25,13 @@ public class ClientServiceImpl implements ClientService{
     private AssignmentRepository assignmentRepository;
     private CountryConfigRepository countryConfigRepository;
     private AssignmentService assignmentService;
+    private CountryRepository countryRepository;
     private final ClientMapper clientMapper = Mappers.getMapper(ClientMapper.class);
-    ClientServiceImpl(ClientRepository clientRepository, AddressRepository addressRepository, AddressService addressService,StaffService  staffService,
+    ClientServiceImpl(ClientRepository clientRepository, AddressRepository addressRepository, AddressService addressService, StaffService staffService,
                       CountryConfigRepository countryConfigRepository,
                       AssignmentService assignmentService,
                       AssignmentRepository assignmentRepository,
-                      StaffRepository staffRepository,CityRepository cityRepository) {
+                      StaffRepository staffRepository, CityRepository cityRepository, CountryRepository countryRepository) {
         this.clientRepository = clientRepository;
         this.addressRepository = addressRepository;
         this.addressService = addressService;
@@ -42,6 +41,7 @@ public class ClientServiceImpl implements ClientService{
         this.countryConfigRepository = countryConfigRepository;
         this.assignmentService = assignmentService;
         this.assignmentRepository = assignmentRepository;
+        this.countryRepository = countryRepository;
     }
 
     @Override
@@ -160,5 +160,45 @@ public class ClientServiceImpl implements ClientService{
         List<Client> clients = clientRepository.findAll();
         System.out.println(clients);
         return clients.stream().filter(client -> client.getAddress().getCity().getStateCountry().getCountry().getCountryName().equals(country)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ClientDto> getListClientsByCountry(String country) {
+        // Get all actions
+        List<Client> clients = clientRepository.findAll();
+        // Create a list of all actions dto
+        ArrayList<ClientDto> clientsDtos = new ArrayList<>();
+        Country country1=countryRepository.getByCountryName(country);
+        for (Client client : clients) {
+            if(client.getAddress().getCity().getStateCountry().getCountry().getCountryName().equals(country)) {
+                ClientDto clientDto = clientMapper.modelToDto(client);
+                clientsDtos.add(clientDto);
+                clientDto.setCity(client.getAddress().getCity().getCityName());
+                clientDto.setCountry(client.getAddress().getCity().getStateCountry().getCountry().getCountryName());
+                clientDto.setAddressName(client.getAddress().getFullAddress());
+                clientDto.setPostCode(client.getAddress().getPostCode());
+                clientDto.setCountryId(client.getAddress().getCity().getStateCountry().getCountry().getCountryId());
+                clientDto.setStateId(client.getAddress().getCity().getStateCountry().get_id());
+                CountryConfig countryConfig = countryConfigRepository.getByCountry(client.getAddress().getCity().getStateCountry().getCountry());
+                if (countryConfig != null) {
+                    // clientDto.setCountryLeader(countryConfig.getLeader().getName());
+
+                } else {
+                    clientDto.setCountryLeader("-");
+                }
+                //get assistant commercial if existe
+                Assignment assignmentResponsible = assignmentRepository.findByClientAndTypeStaff(client, "Responsible Commercial");
+                if (assignmentResponsible != null) {
+                    clientDto.setResponsibleCommercial(assignmentResponsible.getStaff().getFirstName() + " " + assignmentResponsible.getStaff().getFatherFamilyName());
+                }
+                Assignment assignmentAssistant = assignmentRepository.findByClientAndTypeStaff(client, "Assistant Commercial");
+                System.out.println("assignmentAssistant  ** " + assignmentAssistant);
+                if (assignmentAssistant != null) {
+                    clientDto.setAssistantCommercial(assignmentAssistant.getStaff().getFirstName() + " " + assignmentAssistant.getStaff().getFatherFamilyName());
+                }
+                //get responsable commercial if existe
+            }
+        }
+        return clientsDtos;
     }
 }
