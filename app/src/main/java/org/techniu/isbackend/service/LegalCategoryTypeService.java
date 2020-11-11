@@ -9,6 +9,6 @@ public interface LegalCategoryTypeService {
     void save(LegalCategoryTypeDto legalCategoryTypeDto);
     void update(LegalCategoryTypeDto legalCategoryTypeDto);
     void remove(String id);
-    List<LegalCategoryTypeDto> getAllLegalCategoryTypes();
+    List<LegalCategoryTypeDto> getAll();
     List<LegalCategoryTypeDto> getAllByCompany(String companyId);
 }

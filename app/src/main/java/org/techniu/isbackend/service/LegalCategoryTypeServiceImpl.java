@@ -69,7 +69,7 @@ public class LegalCategoryTypeServiceImpl implements LegalCategoryTypeService {
     }
 
     @Override
-    public List<LegalCategoryTypeDto> getAllLegalCategoryTypes() {
+    public List<LegalCategoryTypeDto> getAll() {
 
         List<LegalCategoryType> legalCategoryTypes = legalCategoryTypeRepository.findAll();
         // Create a list of all actions dto

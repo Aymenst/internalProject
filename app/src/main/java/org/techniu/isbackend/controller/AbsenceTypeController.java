@@ -48,13 +48,14 @@ public class AbsenceTypeController {
 
 
     @GetMapping("/all")
-    public List<AbsenceTypeDto> getAllAbsenceTypes(){
-        return absenceTypeService.getAllAbsenceTypes();
+    public ResponseEntity getAllAbsenceTypes(){
+        return new ResponseEntity<Response>(Response.ok().setPayload(absenceTypeService.getAll()), HttpStatus.OK);
     }
 
     @GetMapping("/all-by-state/{stateCountryId}")
-    public List<AbsenceTypeDto> getAllByState(@PathVariable("stateCountryId") String stateCountryId){
-        return absenceTypeService.getAllByState(stateCountryId);
+    public ResponseEntity getAllByState(@PathVariable("stateCountryId") String stateCountryId){
+        return new ResponseEntity<Response>(Response.ok().setPayload(absenceTypeService.getAllByState(stateCountryId)), HttpStatus.OK);
+
     }
 
     @PutMapping("/update")

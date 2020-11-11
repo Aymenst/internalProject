@@ -43,16 +43,13 @@ public class FunctionalStructureLevelController {
     }
 
     @GetMapping("/all")
-    public List<FunctionalStructureLevelDto> getAllFunctionalStructureLevels(){
-        System.out.println("get all");
-        List<FunctionalStructureLevelDto> list = functionalStructureLevelService.getAll();
-        System.out.println(list);
-        return list;
+    public ResponseEntity getAllFunctionalStructureLevels(){
+        return new ResponseEntity<Response>(Response.ok().setPayload(functionalStructureLevelService.getAll()), HttpStatus.OK);
     }
 
     @GetMapping("/all-by-type/{type}")
-    public List<FunctionalStructureLevelDto> getAllByType(@PathVariable("type") String type){
-        return functionalStructureLevelService.getAllByType(type);
+    public ResponseEntity getAllByType(@PathVariable("type") String type){
+        return new ResponseEntity<Response>(Response.ok().setPayload(functionalStructureLevelService.getAllByType(type)), HttpStatus.OK);
     }
 
 
@@ -84,7 +81,7 @@ public class FunctionalStructureLevelController {
     @PostMapping("/level-assign")
     public ResponseEntity setLevelStaffs(@RequestBody List<Object> objects){
          functionalStructureLevelService.setLevelStaffs(objects) ;
-        return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(FunctionalStructureLevel, DELETED)), HttpStatus.OK);
+        return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(FunctionalStructureLevel, ASSIGNED_LEVEL_STAFF)), HttpStatus.OK);
 
     }
 }

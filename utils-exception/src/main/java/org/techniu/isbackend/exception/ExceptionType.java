@@ -14,10 +14,8 @@ public enum ExceptionType {
     CONFIGURATION_DATABASE_TABLE_NAME_NOT_BLANK("configuration.table.name.can't.be.blank"),
     METER_DIAMETER_CAN_T_BE_NULL("meter.diameter.can't.be.null"),
     CODE_SHOULD_NOT_CONTAIN_SPACES("code.should.not.contain.spaces"),
-    SECTOR_RELATED_TO_CLIENT("you can't delete this sectore its already related to client"),
-    DELETED("deleted");
-
-
+    DELETED("deleted"),
+    ASSIGNED_LEVEL_STAFF("staff.assigned.to.level");
 
     String value;
 

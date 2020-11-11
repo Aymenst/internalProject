@@ -42,6 +42,7 @@ public class StaffDto{
     private String emergencyContactName;
     private String emergencyContactPhone;
     // Address
+    private String addressId;
     private String cityId;
     private String fullAddress;
     private String cityName;
@@ -51,6 +52,7 @@ public class StaffDto{
     // documentation
     private List<StaffDocuments> staffDocuments;
     // Contract
+    private String staffContractId;
     private String companyId;
     private String companyName;
     private String associateOffice;
@@ -63,6 +65,10 @@ public class StaffDto{
     private String preContractDate;
     private String contractTypeId;
     private String contractTypeName;
+    private String contractTypeStateId;
+    private String contractTypeState;
+    private String contractTypeCountryId;
+    private String contractTypeCountry;
     private String legalCategoryTypeId;
     private String legelCategoryTypeName;
     private  byte[] internalRulesDoc;
@@ -70,6 +76,7 @@ public class StaffDto{
     private  byte[] preContractDoc;
     private Date createdAt;
     // economic contract
+    private String staffEconomicContractInformationId;
     private String contractSalary;
     private String companyContractCost;
     private String expenses;

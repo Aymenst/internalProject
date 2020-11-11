@@ -9,6 +9,6 @@ public interface AbsenceTypeService {
     void save(AbsenceTypeDto absenceTypeDto);
     void update(AbsenceTypeDto absenceTypeDto);
     void remove(String id);
-    List<AbsenceTypeDto> getAllAbsenceTypes();
+    List<AbsenceTypeDto> getAll();
     List<AbsenceTypeDto> getAllByState(String stateCountryId);
 }

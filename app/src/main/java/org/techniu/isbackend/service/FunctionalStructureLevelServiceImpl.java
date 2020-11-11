@@ -160,9 +160,26 @@ public class FunctionalStructureLevelServiceImpl implements FunctionalStructureL
         // Create a list of all actions dto
         List<FunctionalStructureLevelDto> functionalStructureLevelDtos = new ArrayList<>();
 
-        for (FunctionalStructureLevel functionalStructureLevel : functionalStructureLevels) {
-            FunctionalStructureLevelDto functionalStructureLevelDto=functionalStructureLevelMapper.modelToDto(functionalStructureLevel);
-            functionalStructureLevelDto.setChilds(functionalStructureLevel.getChilds());
+        for (FunctionalStructureLevel level : functionalStructureLevels) {
+            FunctionalStructureLevelDto functionalStructureLevelDto=functionalStructureLevelMapper.modelToDto(level);
+            List<FunctionalStructureLevel> functionalStructureLevels1 = level.getChilds();
+            if(functionalStructureLevels1 != null){
+                List<FunctionalStructureLevelDto> functionalStructureLevelDtos1 = new ArrayList<>();
+                for (FunctionalStructureLevel level1 : functionalStructureLevels1) {
+                    FunctionalStructureLevelDto functionalStructureLevelDto1 = functionalStructureLevelMapper.modelToDto(level1);
+                    List<FunctionalStructureLevel> functionalStructureLevels2 = level1.getChilds();
+                    List<FunctionalStructureLevelDto> functionalStructureLevelDtos2 = new ArrayList<>();
+                    if (functionalStructureLevels2 != null) {
+                        for (FunctionalStructureLevel level2 : functionalStructureLevels2) {
+                            FunctionalStructureLevelDto functionalStructureLevelDto2 = functionalStructureLevelMapper.modelToDto(level2);
+                            functionalStructureLevelDtos2.add(functionalStructureLevelDto2);
+                        }
+                        functionalStructureLevelDto1.setChilds(functionalStructureLevelDtos2);
+                    }
+                    functionalStructureLevelDtos1.add(functionalStructureLevelDto1);
+                }
+                functionalStructureLevelDto.setChilds(functionalStructureLevelDtos1);
+            }
             functionalStructureLevelDtos.add(functionalStructureLevelDto);
         }
         System.out.println(functionalStructureLevelDtos);
@@ -175,9 +192,26 @@ public class FunctionalStructureLevelServiceImpl implements FunctionalStructureL
         // Create a list of all actions dto
         List<FunctionalStructureLevelDto> functionalStructureLevelDtos = new ArrayList<>();
 
-        for (FunctionalStructureLevel functionalStructureLevel : functionalStructureLevels) {
-            FunctionalStructureLevelDto functionalStructureLevelDto=functionalStructureLevelMapper.modelToDto(functionalStructureLevel);
-            functionalStructureLevelDto.setChilds(functionalStructureLevel.getChilds());
+        for (FunctionalStructureLevel level : functionalStructureLevels) {
+            FunctionalStructureLevelDto functionalStructureLevelDto=functionalStructureLevelMapper.modelToDto(level);
+            List<FunctionalStructureLevel> functionalStructureLevels1 = level.getChilds();
+            if(functionalStructureLevels1 != null){
+                List<FunctionalStructureLevelDto> functionalStructureLevelDtos1 = new ArrayList<>();
+                for (FunctionalStructureLevel level1 : functionalStructureLevels1) {
+                    FunctionalStructureLevelDto functionalStructureLevelDto1 = functionalStructureLevelMapper.modelToDto(level1);
+                    List<FunctionalStructureLevel> functionalStructureLevels2 = level1.getChilds();
+                    List<FunctionalStructureLevelDto> functionalStructureLevelDtos2 = new ArrayList<>();
+                    if (functionalStructureLevels2 != null) {
+                        for (FunctionalStructureLevel level2 : functionalStructureLevels2) {
+                            FunctionalStructureLevelDto functionalStructureLevelDto2 = functionalStructureLevelMapper.modelToDto(level2);
+                            functionalStructureLevelDtos2.add(functionalStructureLevelDto2);
+                        }
+                        functionalStructureLevelDto1.setChilds(functionalStructureLevelDtos2);
+                    }
+                    functionalStructureLevelDtos1.add(functionalStructureLevelDto1);
+                }
+                functionalStructureLevelDto.setChilds(functionalStructureLevelDtos1);
+            }
             functionalStructureLevelDtos.add(functionalStructureLevelDto);
         }
         return functionalStructureLevelDtos;

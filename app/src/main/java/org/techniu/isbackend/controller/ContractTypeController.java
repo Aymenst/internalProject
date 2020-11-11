@@ -48,13 +48,14 @@ public class ContractTypeController {
 
 
     @GetMapping("/all")
-    public List<ContractTypeDto> getAllContractTypes(){
-        return contractTypeService.getAllContractTypes();
+    public ResponseEntity getAllContractTypes(){
+        return new ResponseEntity<Response>(Response.ok().setPayload(contractTypeService.getAll()), HttpStatus.OK);
     }
 
     @GetMapping("/all-by-state/{stateCountryId}")
-    public List<ContractTypeDto> getAllByState(@PathVariable("stateCountryId") String stateCountryId){
-        return contractTypeService.getAllByState(stateCountryId);
+    public ResponseEntity getAllByState(@PathVariable("stateCountryId") String stateCountryId){
+        return new ResponseEntity<Response>(Response.ok().setPayload(contractTypeService.getAllByState(stateCountryId)), HttpStatus.OK);
+
     }
 
     @PutMapping("/update")

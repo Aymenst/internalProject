@@ -152,8 +152,8 @@ public class StaffController {
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(Staff, UPDATED)), HttpStatus.OK);
     }
 
-    @RequestMapping(path = "getById/{staffId}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Staff getStaffById(@PathVariable("staffId") String staffId){
+    @RequestMapping(path = "staff-by-id/{staffId}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public StaffDto getStaffById(@PathVariable("staffId") String staffId){
         return staffService.getStaffById(staffId);
     }
 
