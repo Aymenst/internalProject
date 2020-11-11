@@ -171,15 +171,7 @@ public class StaffController {
      * @return
      */
     @GetMapping("/all")
-    public List<StaffDto> allStaff() {
-        return staffService.getAll();
-    }
-
-    /**
-     * display all staff GET API "/api/staff/allaid"
-     */
-    @RequestMapping(method = RequestMethod.GET, value = "/allaid")
-    public ResponseEntity allstaffaid() {
+    public ResponseEntity allStaff() {
         return new ResponseEntity<Response>(Response.ok().setPayload(staffService.getAll()), HttpStatus.OK);
     }
 
