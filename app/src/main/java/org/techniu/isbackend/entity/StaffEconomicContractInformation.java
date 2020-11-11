@@ -38,7 +38,6 @@ public class StaffEconomicContractInformation implements Serializable, Cloneable
     private String companyObjectivesCostDateOut;
     private String totalCompanyCostDateGoing;
     private String totalCompanyCostDateOut;
-    private Date createdAt;
 
     public Object clone() throws CloneNotSupportedException {
         return super.clone();

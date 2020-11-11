@@ -18,6 +18,7 @@ public class StaffContractHistory implements Serializable {
     @Id
     private String staffContractHistoryId;
     private StaffContract staffContractHistory;
+    private String updatedAt;
 
     @DBRef
     private StaffContract staffContract;

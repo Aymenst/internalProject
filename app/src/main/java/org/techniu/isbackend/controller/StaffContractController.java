@@ -1,68 +1,69 @@
 package org.techniu.isbackend.controller;
 
+import org.mapstruct.factory.Mappers;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.techniu.isbackend.Response;
+import org.techniu.isbackend.controller.request.StaffAddrequest;
+import org.techniu.isbackend.controller.request.StaffContractUpdaterequest;
+import org.techniu.isbackend.dto.mapper.StaffContractMapper;
+import org.techniu.isbackend.dto.mapper.StaffMapper;
+import org.techniu.isbackend.dto.model.StaffContractDto;
+import org.techniu.isbackend.dto.model.StaffDto;
 import org.techniu.isbackend.entity.StaffContract;
+import org.techniu.isbackend.exception.EntityType;
+import org.techniu.isbackend.exception.validation.MapValidationErrorService;
 import org.techniu.isbackend.service.StaffContractService;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
+import static org.techniu.isbackend.exception.EntityType.Staff;
+import static org.techniu.isbackend.exception.ExceptionType.UPDATED;
+import static org.techniu.isbackend.exception.MainException.getMessageTemplate;
+
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/staffContract")
 @CrossOrigin("*")
 public class StaffContractController {
+
     private StaffContractService staffContractService;
-    StaffContractController(StaffContractService staffContractService){
+    private final MapValidationErrorService mapValidationErrorService;
+
+    private final StaffContractMapper staffContractMapper = Mappers.getMapper(StaffContractMapper.class);
+
+    StaffContractController(StaffContractService staffContractService, MapValidationErrorService mapValidationErrorService){
         this.staffContractService = staffContractService;
+        this.mapValidationErrorService = mapValidationErrorService;
     }
 
-    @RequestMapping(path = "staffContract-save/contractTypeId={contractTypeId}&legalCategoryTypeId={legalCategoryTypeId}",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public StaffContract saveStaffContract(@RequestPart("staffContract") StaffContract staffContract, @RequestPart("contractDoc") MultipartFile contractDoc, @RequestPart("internalRulesDoc") MultipartFile internalRulesDoc, @RequestPart("preContractDoc") MultipartFile preContractDoc,
-                                           @PathVariable("contractTypeId") String contractTypeId, @PathVariable("legalCategoryTypeId") String legalCategoryTypeId) throws IOException {
+    @PutMapping("/update")
+    public ResponseEntity update(@ModelAttribute @Valid StaffContractUpdaterequest staffContractUpdaterequest, BindingResult bindingResult,
+                                 @RequestParam("contractDoc") MultipartFile contractDoc,
+                                 @RequestParam("internalRulesDoc") MultipartFile internalRulesDoc,
+                                 @RequestParam("preContractDoc") MultipartFile preContractDoc) throws IOException {
+        if (bindingResult.hasErrors()) return mapValidationErrorService.mapValidationService(bindingResult);
+
+        StaffContractDto staffContractDto = staffContractMapper.updateRequestToDto(staffContractUpdaterequest);
         if(contractDoc.getContentType().equals("application/pdf")) {
-            staffContract.setContractDoc(contractDoc.getBytes());
+            staffContractDto.setContractDoc(contractDoc.getBytes());
             System.out.println("set contract doc");
         };
         if(internalRulesDoc.getContentType().equals("application/pdf")) {
-            staffContract.setInternalRulesDoc(internalRulesDoc.getBytes());
+            staffContractDto.setInternalRulesDoc(internalRulesDoc.getBytes());
             System.out.println("set internal doc");
         };
         if(internalRulesDoc.getContentType().equals("application/pdf")) {
-            staffContract.setPreContractDoc(preContractDoc.getBytes());
+            staffContractDto.setPreContractDoc(preContractDoc.getBytes());
             System.out.println("set contract doc");
         };
-        return staffContractService.saveStaffContract(staffContract, contractTypeId,legalCategoryTypeId );
-    }
-
-    @RequestMapping(path = "staffContract-all",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<StaffContract> getAllStaffContracts(){
-        return staffContractService.getAllStaffContracts();
-    }
-
-    @RequestMapping(path = "staffContract-update/id={staffContractId}&contractTypeId={contractTypeId}&legalCategoryTypeId={legalCategoryTypeId}",method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public StaffContract updateStaffContract(@RequestPart("staffContract") StaffContract staffContract, @RequestPart("contractDoc") MultipartFile contractDoc, @RequestPart("internalRulesDoc") MultipartFile internalRulesDoc, @RequestPart("preContractDoc") MultipartFile preContractDoc,
-                                             @PathVariable("staffContractId") String staffContractId, @PathVariable("contractTypeId") String contractTypeId, @PathVariable("legalCategoryTypeId") String legalCategoryTypeId) throws IOException {
-
-        if(contractDoc.getContentType().equals("application/pdf")) {
-            staffContract.setContractDoc(contractDoc.getBytes());
-            System.out.println("set contract doc");
-        };
-        if(internalRulesDoc.getContentType().equals("application/pdf")) {
-            staffContract.setInternalRulesDoc(internalRulesDoc.getBytes());
-            System.out.println("set internal doc");
-        };
-        if(internalRulesDoc.getContentType().equals("application/pdf")) {
-            staffContract.setPreContractDoc(preContractDoc.getBytes());
-            System.out.println("set contract doc");
-        };
-        return staffContractService.updateStaffContract(staffContractId, staffContract, contractTypeId,legalCategoryTypeId );
-    }
-
-    @RequestMapping(path = "staffContract-delete/{staffContractId}",method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void deleteStaffContract(@PathVariable("staffContractId") String staffContractId){
-        staffContractService.deleteStaffContract(staffContractId);
+        staffContractService.update(staffContractDto);
+        return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(EntityType.StaffContract, UPDATED)), HttpStatus.OK);
     }
 
 

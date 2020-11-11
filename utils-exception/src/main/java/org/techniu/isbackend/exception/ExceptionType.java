@@ -16,7 +16,8 @@ public enum ExceptionType {
     SECTOR_RELATED_TO_CLIENT("sector.already.associatedToClient"),
     CODE_SHOULD_NOT_CONTAIN_SPACES("code.should.not.contain.spaces"),
     DELETED("deleted"),
-    ASSIGNED_LEVEL_STAFF("staff.assigned.to.level");
+    ASSIGNED_LEVEL_STAFF("staff.assigned.to.level"),
+    SECTOR_RELATED_TO_CLIENT("you can't delete this sectore its already related to client");
 
     String value;
 

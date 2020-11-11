@@ -21,7 +21,7 @@ import java.util.Date;
 public class StaffContract implements Serializable {
 
     @Id
-    private String staffContractId;
+    private String _id;
     private String associateOffice;
     private String hiringCountry;
     private String townContract;
@@ -33,7 +33,6 @@ public class StaffContract implements Serializable {
     private  byte[] internalRulesDoc;
     private  byte[] contractDoc;
     private  byte[] preContractDoc;
-    private Date createdAt;
 
     @DBRef
     private FinancialCompany company;

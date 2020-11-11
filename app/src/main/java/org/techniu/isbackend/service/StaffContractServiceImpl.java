@@ -2,6 +2,7 @@ package org.techniu.isbackend.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.techniu.isbackend.dto.model.StaffContractDto;
 import org.techniu.isbackend.entity.*;
 import org.techniu.isbackend.repository.ContractTypeRepository;
 import org.techniu.isbackend.repository.LegalCategoryTypeRepository;
@@ -30,56 +31,37 @@ public class StaffContractServiceImpl implements StaffContractService {
     }
 
     @Override
-    public StaffContract saveStaffContract(StaffContract staffContract, String contractTypeId, String legalCategoryTypeId) {
-        ContractType contractType = contractTypeRepository.findById(contractTypeId).get();
-        staffContract.setContractType(contractType);
-        LegalCategoryType legalCategoryType = legalCategoryTypeRepository.findById(legalCategoryTypeId).get();
-        staffContract.setLegalCategoryType(legalCategoryType);
-        staffContract.setCreatedAt(new Date());
-        StaffContract staffContract1 = staffContractRepository.save(staffContract);
-        StaffContractHistory staffContractHistory = new StaffContractHistory();
-        staffContractHistory.setStaffContract(staffContract1);
-        staffContractHistory.setStaffContractHistory(staffContract1);
-        staffContractHistoryRepository.save(staffContractHistory);
-        return staffContract1;
-    }
+    public void update(StaffContractDto staffContractDto) {
 
-    @Override
-    public StaffContract updateStaffContract(String staffContractId, StaffContract staffContract, String contractTypeId, String legalCategoryTypeId) {
-        StaffContract staffContract1 = staffContractRepository.findById(staffContractId).get();
-        staffContract.setStaffContractId(staffContract1.getStaffContractId());
-        if(staffContract.getContractDoc() == null && staffContract1.getContractDoc() != null)  {
+        StaffContract staffContract = new StaffContract();
+        staffContract.setAssociateOffice(staffContractDto.getAssociateOffice());
+        staffContract.setHiringCountry(staffContractDto.getHiringCountry());
+        staffContract.setTownContract(staffContractDto.getTownContract());
+        staffContract.setPersonalNumber(staffContractDto.getPersonalNumber());
+        staffContract.setHighDate(staffContractDto.getHighDate());
+        staffContract.setLowDate(staffContractDto.getLowDate());
+        staffContract.setRegistrationDate(staffContractDto.getRegistrationDate());
+        staffContract.setPreContractDate(staffContractDto.getPreContractDate());
+
+        StaffContract staffContract1 = staffContractRepository.findById(staffContractDto.getStaffContractId()).get();
+        if(staffContractDto.getContractDoc() == null && staffContract1.getContractDoc() != null)  {
             staffContract.setContractDoc(staffContract1.getContractDoc());
-            System.out.println(staffContract1.getContractDoc());
-        };
-        if(staffContract.getInternalRulesDoc() == null  && staffContract1.getInternalRulesDoc() != null)  {
+        } else staffContract.setContractDoc(staffContractDto.getContractDoc());
+        if(staffContractDto.getInternalRulesDoc() == null  && staffContract1.getInternalRulesDoc() != null)  {
             staffContract.setInternalRulesDoc(staffContract1.getInternalRulesDoc());
-            System.out.println(staffContract1.getInternalRulesDoc());
-        };
-        if(staffContract.getPreContractDoc() == null  && staffContract1.getPreContractDoc() != null)  {
+        } else staffContract.setInternalRulesDoc(staffContractDto.getInternalRulesDoc());
+        if(staffContractDto.getPreContractDoc() == null  && staffContract1.getPreContractDoc() != null)  {
             staffContract.setPreContractDoc(staffContract1.getPreContractDoc());
-            System.out.println(staffContract1.getPreContractDoc());
-        };
-        ContractType contractType = contractTypeRepository.findById(contractTypeId).get();
+        } else staffContract.setPreContractDoc(staffContractDto.getPreContractDoc());
+        ContractType contractType = contractTypeRepository.findById(staffContractDto.getContractTypeId()).get();
         staffContract.setContractType(contractType);
-        LegalCategoryType legalCategoryType = legalCategoryTypeRepository.findById(legalCategoryTypeId).get();
+        LegalCategoryType legalCategoryType = legalCategoryTypeRepository.findById(staffContractDto.getLegalCategoryTypeId()).get();
         staffContract.setLegalCategoryType(legalCategoryType);
-        staffContract.setCreatedAt(new Date());
         StaffContractHistory staffContractHistory = new StaffContractHistory();
         staffContractHistory.setStaffContract(staffContract1);
         staffContractHistory.setStaffContractHistory(staffContract);
+        staffContractHistory.setUpdatedAt(staffContractDto.getUpdatedAt());
         staffContractHistoryRepository.save(staffContractHistory);
-        return staffContractRepository.save(staffContract);
-    }
-
-    @Override
-    public void deleteStaffContract(String staffContractId) {
-        StaffContract staffContract = staffContractRepository.findById(staffContractId).get();
-        staffContractRepository.delete(staffContract);
-    }
-
-    @Override
-    public List<StaffContract> getAllStaffContracts() {
-        return staffContractRepository.findAll();
+        staffContractRepository.save(staffContract);
     }
 }
