@@ -15,5 +15,6 @@ public enum EntityType {
     AbsenceType,
     ContractType,
     LegalCategoryType,
+    Contact,
     FunctionalStructureLevel
 }

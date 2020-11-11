@@ -126,7 +126,7 @@ public class StaffServiceImpl implements StaffService {
         ArrayList<StaffDto> staffDtos = new ArrayList<>();
 
         for (Staff staff : staffs) {
-            StaffDto staffDto=staffMapper.modelToDto(staff);
+            StaffDto staffDto = staffMapper.modelToDto(staff);
             // Address
             staffDto.setCityId(staff.getAddress().getCity().get_id());
             staffDto.setFullAddress(staff.getAddress().getFullAddress());
@@ -137,8 +137,10 @@ public class StaffServiceImpl implements StaffService {
             // Documentation
             staffDto.setStaffDocuments(staff.getStaffDocuments());
             // Contract
-            staffDto.setCompanyId(staff.getStaffContract().getCompany().get_id());
-            staffDto.setCompanyName(staff.getStaffContract().getCompany().getName());
+            if (staff.getStaffContract().getCompany() != null) {
+                staffDto.setCompanyId(staff.getStaffContract().getCompany().get_id());
+                staffDto.setCompanyName(staff.getStaffContract().getCompany().getName());
+            }
             staffDto.setAssociateOffice(staff.getStaffContract().getAssociateOffice());
             staffDto.setHiringCountry(staff.getStaffContract().getHiringCountry());
             staffDto.setTownContract(staff.getStaffContract().getTownContract());
@@ -147,36 +149,43 @@ public class StaffServiceImpl implements StaffService {
             staffDto.setLowDate(staff.getStaffContract().getLowDate());
             staffDto.setRegistrationDate(staff.getStaffContract().getRegistrationDate());
             staffDto.setPreContractDate(staff.getStaffContract().getPreContractDate());
-            staffDto.setContractTypeId(staff.getStaffContract().getContractType().get_id());
-            staffDto.setContractTypeName(staff.getStaffContract().getContractType().getName());
+            if (staff.getStaffContract().getContractType() != null) {
+                staffDto.setContractTypeId(staff.getStaffContract().getContractType().get_id());
+                staffDto.setContractTypeName(staff.getStaffContract().getContractType().getName());
+            }
+            if (staff.getStaffContract().getLegalCategoryType() != null) {
             staffDto.setLegalCategoryTypeId(staff.getStaffContract().getLegalCategoryType().get_id());
             staffDto.setLegelCategoryTypeName(staff.getStaffContract().getLegalCategoryType().getName());
+            }
             staffDto.setInternalRulesDoc(staff.getStaffContract().getInternalRulesDoc());
             staffDto.setContractDoc(staff.getStaffContract().getContractDoc());
             staffDto.setPreContractDoc(staff.getStaffContract().getPreContractDoc());
             staffDto.setCreatedAt(staff.getStaffContract().getCreatedAt());
+
             // Economic contract
-            staffDto.setContractSalary(staff.getStaffEconomicContractInformation().getContractSalary());
-            staffDto.setCompanyContractCost(staff.getStaffEconomicContractInformation().getCompanyContractCost());
-            staffDto.setExpenses(staff.getStaffEconomicContractInformation().getExpenses());
-           staffDto.setCompanyExpensesCost(staff.getStaffEconomicContractInformation().getCompanyExpensesCost());
-           staffDto.setObjectives(staff.getStaffEconomicContractInformation().getObjectives());
-           staffDto.setCompanyObjectivesCost(staff.getStaffEconomicContractInformation().getCompanyObjectivesCost());
-           staffDto.setTotalCompanyCost(staff.getStaffEconomicContractInformation().getTotalCompanyCost());
-           staffDto.setContractSalaryDateGoing(staff.getStaffEconomicContractInformation().getContractSalaryDateGoing());
-           staffDto.setContractSalaryDateOut(staff.getStaffEconomicContractInformation().getContractSalaryDateOut());
-           staffDto.setCompanyContractCostDateGoing(staff.getStaffEconomicContractInformation().getCompanyContractCostDateGoing());
-           staffDto.setCompanyContractCostDateOut(staff.getStaffEconomicContractInformation().getCompanyContractCostDateOut());
-           staffDto.setExpensesDateGoing(staff.getStaffEconomicContractInformation().getExpensesDateGoing());
-           staffDto.setExpensesDateOut(staff.getStaffEconomicContractInformation().getExpensesDateOut());
-           staffDto.setCompanyExpensesCostDateGoing(staff.getStaffEconomicContractInformation().getCompanyExpensesCostDateGoing());
-           staffDto.setCompanyExpensesCostDateOut(staff.getStaffEconomicContractInformation().getCompanyExpensesCostDateOut());
-           staffDto.setObjectivesDateGoing(staff.getStaffEconomicContractInformation().getObjectivesDateGoing());
-           staffDto.setObjectivesDateOut(staff.getStaffEconomicContractInformation().getObjectivesDateOut());
-           staffDto.setCompanyObjectivesCostDateGoing(staff.getStaffEconomicContractInformation().getCompanyObjectivesCostDateGoing());
-           staffDto.setCompanyObjectivesCostDateOut(staff.getStaffEconomicContractInformation().getCompanyObjectivesCostDateOut());
-           staffDto.setTotalCompanyCostDateGoing(staff.getStaffEconomicContractInformation().getTotalCompanyCostDateGoing());
-           staffDto.setTotalCompanyCostDateOut(staff.getStaffEconomicContractInformation().getTotalCompanyCostDateOut());
+            if (staff.getStaffEconomicContractInformation() != null) {
+                staffDto.setContractSalary(staff.getStaffEconomicContractInformation().getContractSalary());
+                staffDto.setCompanyContractCost(staff.getStaffEconomicContractInformation().getCompanyContractCost());
+                staffDto.setExpenses(staff.getStaffEconomicContractInformation().getExpenses());
+                staffDto.setCompanyExpensesCost(staff.getStaffEconomicContractInformation().getCompanyExpensesCost());
+                staffDto.setObjectives(staff.getStaffEconomicContractInformation().getObjectives());
+                staffDto.setCompanyObjectivesCost(staff.getStaffEconomicContractInformation().getCompanyObjectivesCost());
+                staffDto.setTotalCompanyCost(staff.getStaffEconomicContractInformation().getTotalCompanyCost());
+                staffDto.setContractSalaryDateGoing(staff.getStaffEconomicContractInformation().getContractSalaryDateGoing());
+                staffDto.setContractSalaryDateOut(staff.getStaffEconomicContractInformation().getContractSalaryDateOut());
+                staffDto.setCompanyContractCostDateGoing(staff.getStaffEconomicContractInformation().getCompanyContractCostDateGoing());
+                staffDto.setCompanyContractCostDateOut(staff.getStaffEconomicContractInformation().getCompanyContractCostDateOut());
+                staffDto.setExpensesDateGoing(staff.getStaffEconomicContractInformation().getExpensesDateGoing());
+                staffDto.setExpensesDateOut(staff.getStaffEconomicContractInformation().getExpensesDateOut());
+                staffDto.setCompanyExpensesCostDateGoing(staff.getStaffEconomicContractInformation().getCompanyExpensesCostDateGoing());
+                staffDto.setCompanyExpensesCostDateOut(staff.getStaffEconomicContractInformation().getCompanyExpensesCostDateOut());
+                staffDto.setObjectivesDateGoing(staff.getStaffEconomicContractInformation().getObjectivesDateGoing());
+                staffDto.setObjectivesDateOut(staff.getStaffEconomicContractInformation().getObjectivesDateOut());
+                staffDto.setCompanyObjectivesCostDateGoing(staff.getStaffEconomicContractInformation().getCompanyObjectivesCostDateGoing());
+                staffDto.setCompanyObjectivesCostDateOut(staff.getStaffEconomicContractInformation().getCompanyObjectivesCostDateOut());
+                staffDto.setTotalCompanyCostDateGoing(staff.getStaffEconomicContractInformation().getTotalCompanyCostDateGoing());
+                staffDto.setTotalCompanyCostDateOut(staff.getStaffEconomicContractInformation().getTotalCompanyCostDateOut());
+            }
             // Functional Structure Level
             if(staff.getLevel() != null) {
 

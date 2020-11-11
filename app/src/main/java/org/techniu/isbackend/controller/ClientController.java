@@ -71,10 +71,14 @@ public class ClientController {
     public List<Client> getClients(){
         return clientService.getAllClient();
     }*/
-
     @RequestMapping(path = "clients-by-country/{country}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Client> getClientsByCountry(@PathVariable(value = "country") String country){
         return clientService.getClientsByCountryName(country);
+    }
+
+    @RequestMapping(path = "all/{country}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getClientsByCountryName(@PathVariable(value = "country") String country){
+        return new ResponseEntity<Response>(Response.ok().setPayload(clientService.getListClientsByCountry(country)), HttpStatus.OK);
     }
     @RequestMapping(path = "clients-by-code/{code}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Client getClientByCode(@PathVariable(value = "code") String code){
