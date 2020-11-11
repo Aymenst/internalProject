@@ -13,7 +13,6 @@ public enum ExceptionType {
     APPLICATION_Type_AND_WATER_CONTRACT_CATEGORY_ARE_DIFFERENT("application.type.and.water.contract.category.are.different"),
     CONFIGURATION_DATABASE_TABLE_NAME_NOT_BLANK("configuration.table.name.can't.be.blank"),
     METER_DIAMETER_CAN_T_BE_NULL("meter.diameter.can't.be.null"),
-    SECTOR_RELATED_TO_CLIENT("sector.already.associatedToClient"),
     CODE_SHOULD_NOT_CONTAIN_SPACES("code.should.not.contain.spaces"),
     DELETED("deleted"),
     ASSIGNED_LEVEL_STAFF("staff.assigned.to.level"),
