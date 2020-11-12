@@ -17,6 +17,7 @@ public enum ExceptionType {
     DELETED("deleted"),
     ASSIGNED_LEVEL_STAFF("staff.assigned.to.level");
 
+    public static final ExceptionType SECTOR_RELATED_TO_CLIENT = null;
     String value;
 
     ExceptionType(String value) {
