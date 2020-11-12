@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.techniu.isbackend.controller.request.FunctionalStructureLevelAddrequest;
 import org.techniu.isbackend.dto.mapper.FunctionalStructureLevelMapper;
 import org.techniu.isbackend.dto.model.FunctionalStructureLevelDto;
+import org.techniu.isbackend.dto.model.StaffDto;
 import org.techniu.isbackend.entity.FunctionalStructureLevel;
 import org.techniu.isbackend.entity.Staff;
 import org.techniu.isbackend.exception.EntityType;
@@ -39,29 +40,24 @@ public class FunctionalStructureLevelServiceImpl implements FunctionalStructureL
     public Boolean save(List<Object> objects) {
         ObjectMapper mapper = new ObjectMapper();
         List<FunctionalStructureLevel> list = new ArrayList<>();
-        List<Staff> leaders  = mapper.convertValue(objects.get(0), new TypeReference<List<Staff>>() { });
+        List<StaffDto> leaders  = mapper.convertValue(objects.get(0), new TypeReference<List<StaffDto>>() { });
         for (int i=1; i < objects.size(); i++) {
             FunctionalStructureLevelAddrequest levelAddrequest = mapper.convertValue(objects.get(i), FunctionalStructureLevelAddrequest.class);
             FunctionalStructureLevelDto levelDto = functionalStructureLevelMapper.addRequestToDto(levelAddrequest);
             FunctionalStructureLevel lvl = functionalStructureLevelRepository.findByName(levelDto.getName());
             if (lvl == null) {
-                Staff staff = leaders.get(i-1);
-                staff.setIsLeader("yes");
+                StaffDto staffDto = leaders.get(i-1);
+                Staff staff1 = staffRepository.findById(staffDto.getStaffId()).get();
+                staff1.setIsLeader("yes");
                 lvl = functionalStructureLevelRepository.save(functionalStructureLevelMapper.dtoToModel(levelDto));
-                staff.setLevel(lvl);
-                staffRepository.save(staff);
+                staff1.setLevel(lvl);
+                System.out.println(staff1);
+                staffRepository.save(staff1);
             }
             list.add(lvl);
         }
         for (int i=list.size()-1; i > 0; i--) {
             FunctionalStructureLevel level = list.get(i-1);
-            System.out.println("list");
-            System.out.println(list);
-            System.out.println("level");
-            System.out.println("list.size()");
-            System.out.println(list.size());
-            System.out.println("i");
-            System.out.println(i);
             List<FunctionalStructureLevel> childs = new ArrayList<>();
             if(level.getChilds() == null){
                 childs.add(list.get(i));
@@ -182,7 +178,6 @@ public class FunctionalStructureLevelServiceImpl implements FunctionalStructureL
             }
             functionalStructureLevelDtos.add(functionalStructureLevelDto);
         }
-        System.out.println(functionalStructureLevelDtos);
         return functionalStructureLevelDtos;
     }
 
@@ -242,15 +237,11 @@ public class FunctionalStructureLevelServiceImpl implements FunctionalStructureL
     public List<FunctionalStructureLevel> getFunctionalStructureTree(String levelId) {
         FunctionalStructureLevel level = functionalStructureLevelRepository.findById(levelId).get();
         List<FunctionalStructureLevel> list = new ArrayList<>();
-        System.out.println(level.getType());
         if(level.getType().equals("Level 1")) {
             list.add(level);
         } else if(level.getType().equals("Level 2")) {
-            System.out.println("test Condtion");
             FunctionalStructureLevel level1 = functionalStructureLevelRepository.findByChildsContaining(level);
-            System.out.println(level1);
             list.add(level1);
-            System.out.println("added");
             list.add(level);
         } else if(level.getType().equals("Level 3")) {
             FunctionalStructureLevel level2 = functionalStructureLevelRepository.findByChildsContaining(level);

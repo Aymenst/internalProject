@@ -9,30 +9,26 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-public class StaffUpdaterequest {
-    // *** general information *** //
-    //
-    private String staffId;
-    private String photo;
-    // personal info
+public class ContactUpdateRequest {
     private String firstName;
     private String fatherFamilyName;
     private String motherFamilyName;
-    private String birthday;
-    private String birthCountry;
-    // contact info
-    private String personalPhone;
-    private String personalEmail;
-    private String companyPhone;
+    private String department;
+    private String position;
+    private String companyFixPhone;
     private String companyMobilePhone;
     private String companyEmail;
+    private String personalMobilePhone;
+    private String personalEmail;
     private String skype;
-    private String emergencyContactName;
-    private String emergencyContactPhone;
-    // Address
-    private String addressId;
+    private String photo;
+    // company
+    private String companyId;
+    // address
     private String cityId;
     private String fullAddress;
+    private String cityName;
+    private String stateName;
+    private String countryName;
     private String postCode;
-
 }

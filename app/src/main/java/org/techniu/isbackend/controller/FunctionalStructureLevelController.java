@@ -54,7 +54,8 @@ public class FunctionalStructureLevelController {
 
 
     @PutMapping("/update")
-    public ResponseEntity update(@RequestBody FunctionalStructureLevelUpdaterequest functionalStructureLevelUpdaterequest){
+    public ResponseEntity update(@RequestBody FunctionalStructureLevelUpdaterequest functionalStructureLevelUpdaterequest, BindingResult bindingResult){
+        if (bindingResult.hasErrors()) return mapValidationErrorService.mapValidationService(bindingResult);
         functionalStructureLevelService.update(functionalStructureLevelMapper.updateRequestToDto(functionalStructureLevelUpdaterequest), functionalStructureLevelUpdaterequest.getOldLeaderId(), functionalStructureLevelUpdaterequest.getNewLeaderId());
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(FunctionalStructureLevel, UPDATED)), HttpStatus.OK);
 

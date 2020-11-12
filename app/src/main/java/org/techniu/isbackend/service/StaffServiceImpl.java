@@ -26,6 +26,7 @@ public class StaffServiceImpl implements StaffService {
     private AddressRepository addressRepository;
     private StaffDocumentsRepository staffDocumentsRepository;
     private StaffContractRepository staffContractRepository;
+    private StaffContractHistoryRepository staffContractHistoryRepository;
     private CityRepository cityRepository;
     private ContractTypeRepository contractTypeRepository;
     private LegalCategoryTypeRepository legalCategoryTypeRepository;
@@ -40,6 +41,7 @@ public class StaffServiceImpl implements StaffService {
             FunctionalStructureLevelRepository functionalStructureLevelRepository,
             StaffDocumentsRepository staffDocumentsRepository,
             StaffContractRepository staffContractRepository,
+            StaffContractHistoryRepository staffContractHistoryRepository,
             ContractTypeRepository contractTypeRepository,
             LegalCategoryTypeRepository legalCategoryTypeRepository,
             FinancialCompanyRepository financialCompanyRepository,
@@ -51,6 +53,7 @@ public class StaffServiceImpl implements StaffService {
         this.cityRepository = cityRepository;
         this.staffEconomicContractInformationService = staffEconomicContractInformationService;
         this.staffContractRepository = staffContractRepository;
+        this.staffContractHistoryRepository = staffContractHistoryRepository;
         this.contractTypeRepository = contractTypeRepository;
         this.legalCategoryTypeRepository = legalCategoryTypeRepository;
         this.financialCompanyRepository = financialCompanyRepository;
@@ -80,8 +83,14 @@ public class StaffServiceImpl implements StaffService {
         staffContract.setCompany(financialCompanyRepository.findById(companyId).get());
         staffContract.setContractType(contractTypeRepository.findById(contractTypeId).get());
         staffContract.setLegalCategoryType(legalCategoryTypeRepository.findById(legalCategoryTypeId).get());
+        StaffContract staffContract1 = staffContractRepository.save(staffContract);
+        StaffContractHistory staffContractHistory = new StaffContractHistory();
+        staffContractHistory.setStaffContract(staffContract1);
+        staffContractHistory.setStaffContractHistory(staffContract1);
+        staffContractHistory.setUpdatedAt(staffDto.getCreatedAt());
+        staffContractHistoryRepository.save(staffContractHistory);
         staff.setAddress(addressRepository.save(address));
-        staff.setStaffContract(staffContractRepository.save(staffContract));
+        staff.setStaffContract(staffContract1);
         staff.setStaffEconomicContractInformation(staffEconomicContractInformationService.saveStaffEconomicContractInformation(staffEconomicContractInformation));
         staff.setStaffDocuments(staffDocumentsRepository.saveAll(staffDocumentsList));
         return staffRepository.save(staff);
@@ -89,11 +98,20 @@ public class StaffServiceImpl implements StaffService {
 
     @Override
     public Staff update(StaffDto staffDto, String cityId, Address address) {
-        address.setCity( cityRepository.findCityBy_id(cityId));
-        Address address1 = addressRepository.save(address);
-        Staff staff = staffMapper.dtoToModel(staffDto);
-        staff.setAddress(address1);
-        return staffRepository.save(staff);
+        System.out.println(staffDto);
+        address.setCity( cityRepository.findById(cityId).get());
+        Staff staff = staffRepository.findById(staffDto.getStaffId()).get();
+        Staff staff1 = staffMapper.dtoToModel(staffDto);
+        System.out.println(staff1);
+        staff1.setAddress(addressRepository.save(address));
+        staff1.setStaffContract(staff.getStaffContract());
+        staff1.setStaffEconomicContractInformation(staff.getStaffEconomicContractInformation());
+        staff1.setStaffDocuments(staff.getStaffDocuments());
+        staff1.setIsLeader(staff.getIsLeader());
+        if(staff.getLevel() != null) {
+            staff1.setLevel(staff.getLevel());
+        }
+        return staffRepository.save(staff1);
     }
 
     @Override
@@ -128,11 +146,10 @@ public class StaffServiceImpl implements StaffService {
         List<Staff> staffs = staffRepository.findAll();
         // Create a list of all staff dto
         ArrayList<StaffDto> staffDtos = new ArrayList<>();
+            for (Staff staff : staffs) {
 
-        for (Staff staff : staffs) {
-
-            staffDtos.add(staffToStaffDto(staff));
-        }
+                staffDtos.add(staffToStaffDto(staff));
+            }
         return staffDtos;
     }
 
@@ -178,7 +195,7 @@ public class StaffServiceImpl implements StaffService {
         // Documentation
         staffDto.setStaffDocuments(staff.getStaffDocuments());
         // Contract
-        staffDto.setStaffContractId(staff.getStaffContract().getStaffContractId());
+        staffDto.setStaffContractId(staff.getStaffContract().get_id());
         staffDto.setCompanyId(staff.getStaffContract().getCompany().get_id());
         staffDto.setCompanyName(staff.getStaffContract().getCompany().getName());
         staffDto.setAssociateOffice(staff.getStaffContract().getAssociateOffice());
@@ -200,7 +217,6 @@ public class StaffServiceImpl implements StaffService {
         staffDto.setInternalRulesDoc(staff.getStaffContract().getInternalRulesDoc());
         staffDto.setContractDoc(staff.getStaffContract().getContractDoc());
         staffDto.setPreContractDoc(staff.getStaffContract().getPreContractDoc());
-        staffDto.setCreatedAt(staff.getStaffContract().getCreatedAt());
         // Economic contract
         staffDto.setStaffEconomicContractInformationId(staff.getStaffEconomicContractInformation().getStaffEconomicContractInformationId());
         staffDto.setContractSalary(staff.getStaffEconomicContractInformation().getContractSalary());

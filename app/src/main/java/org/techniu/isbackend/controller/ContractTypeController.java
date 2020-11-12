@@ -59,7 +59,8 @@ public class ContractTypeController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity update(@RequestBody ContractTypeUpdaterequest contractTypeUpdaterequest){
+    public ResponseEntity update(@RequestBody ContractTypeUpdaterequest contractTypeUpdaterequest, BindingResult bindingResult){
+        if (bindingResult.hasErrors()) return mapValidationErrorService.mapValidationService(bindingResult);
         contractTypeService.update(contractTypeMapper.updateRequestToDto(contractTypeUpdaterequest));
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(ContractType, UPDATED)), HttpStatus.OK);
 

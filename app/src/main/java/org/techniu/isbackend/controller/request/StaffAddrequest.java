@@ -96,5 +96,7 @@ public class StaffAddrequest {
     private String companyObjectivesCostDateOut;
     private String totalCompanyCostDateGoing;
     private String totalCompanyCostDateOut;
+    // Created at
+    private String createdAt;
 
 }

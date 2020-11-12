@@ -58,7 +58,8 @@ public class LegalCategoryTypeController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity update(@RequestBody LegalCategoryTypeUpdaterequest legalCategoryTypeUpdaterequest){
+    public ResponseEntity update(@RequestBody LegalCategoryTypeUpdaterequest legalCategoryTypeUpdaterequest, BindingResult bindingResult){
+        if (bindingResult.hasErrors()) return mapValidationErrorService.mapValidationService(bindingResult);
         legalCategoryTypeService.update(legalCategoryTypeMapper.updateRequestToDto(legalCategoryTypeUpdaterequest));
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(LegalCategoryType, UPDATED)), HttpStatus.OK);
 

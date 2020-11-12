@@ -2,6 +2,7 @@ package org.techniu.isbackend.exception;
 
 public enum EntityType {
     Staff,
+    StaffContract,
     City,
     CommercialOperationStatus,
     ServiceType,
@@ -16,5 +17,6 @@ public enum EntityType {
     ContractType,
     LegalCategoryType,
     FunctionalStructureLevel,
-    FinancialContract
+    FinancialContract,
+    Contact
 }
