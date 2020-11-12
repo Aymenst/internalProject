@@ -39,9 +39,7 @@ public class ContactServiceImpl implements ContactService{
     public void save(ContactDto contactDto, String companyId, Address address, String cityId) {
         // save Client if note existe
        Client client = clientRepository.getBy_id(companyId);
-        System.out.println(cityId);
         City city =cityRepository.findCityBy_id(cityId);
-        System.out.println(city);
         Optional<Contact>  contact= Optional.ofNullable(contactRepository.findByPersonalEmail(contactDto.getPersonalEmail()));
         if (contact.isPresent()) {
             throw exception(DUPLICATE_ENTITY);

@@ -136,7 +136,13 @@ public class ValidationConstants {
     //FunctionalStructureLevel
     public final static String FUNCTIONALSTRUCTURELEVEL_NAME_NOT_BLANK = "level name can not be blank";
     public final static String FUNCTIONALSTRUCTURELEVEL_TYPE_NOT_BLANK = "level type can not be blank";
-
+    // Contact
+    public final static String CONTACT_FIRSTNAME_NOT_BLANK = "Contact first name can not be blank";
+    public final static String CONTACT_POSITION_NOT_BLANK = "Contact position can not be blank";
+    public final static String CONTACT_COMPANYEMAIL_NOT_BLANK = "Contact company email can not be blank";
+    public final static String CONTACT_PERSONALEMAIL_NOT_BLANK = "Contact personal email can not be blank";
+    public final static String CONTACT_COMPANY_NOT_BLANK = "Contact company  can not be blank";
+    public final static String CONTACT_CITY_NOT_BLANK = "Contact city  can not be blank";
     // Static messages, do not modify them
     private static HashMap<String, String> backendTranslation = new HashMap<>();
     private final static String ADDED_SENTENCE = " has been added successfully";
@@ -367,6 +373,14 @@ public class ValidationConstants {
         //LEGALCATEGORYTYPE
         backendTranslation.put(LEGALCATEGORYTYPE_NAME_NOT_BLANK, getNotBlankValue(LEGALCATEGORYTYPE_NAME_NOT_BLANK));
         backendTranslation.put(LEGALCATEGORYTYPE_FUNCTIONS_NOT_BLANK, getNotBlankValue(LEGALCATEGORYTYPE_NAME_NOT_BLANK));
+
+        //CONTACT
+        backendTranslation.put(CONTACT_FIRSTNAME_NOT_BLANK, getNotBlankValue(CONTACT_FIRSTNAME_NOT_BLANK));
+        backendTranslation.put(CONTACT_POSITION_NOT_BLANK, getNotBlankValue(CONTACT_POSITION_NOT_BLANK));
+        backendTranslation.put(CONTACT_COMPANYEMAIL_NOT_BLANK, getNotBlankValue(CONTACT_COMPANYEMAIL_NOT_BLANK));
+        backendTranslation.put(CONTACT_PERSONALEMAIL_NOT_BLANK, getNotBlankValue(CONTACT_PERSONALEMAIL_NOT_BLANK));
+        backendTranslation.put(CONTACT_COMPANY_NOT_BLANK, getNotBlankValue(CONTACT_COMPANY_NOT_BLANK));
+        backendTranslation.put(CONTACT_CITY_NOT_BLANK, getNotBlankValue(CONTACT_CITY_NOT_BLANK));
 
 
         // commercialProject
