@@ -31,8 +31,5 @@ public class ContactAddRequest {
     // address
     private String cityId;
     private String fullAddress;
-    private String cityName;
-    private String stateName;
-    private String countryName;
     private String postCode;
 }

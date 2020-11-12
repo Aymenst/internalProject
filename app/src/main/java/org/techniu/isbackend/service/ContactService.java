@@ -1,5 +1,6 @@
 package org.techniu.isbackend.service;
 import org.techniu.isbackend.dto.model.ContactDto;
+import org.techniu.isbackend.entity.Address;
 
 import java.util.List;
 
@@ -9,7 +10,7 @@ public interface ContactService {
      *
      * @param contactDto - contactDto
      */
-    void save(ContactDto contactDto);
+    void save(ContactDto contactDto, String companyId, Address address, String cityId);
     /**
      * all contactDto
      *
