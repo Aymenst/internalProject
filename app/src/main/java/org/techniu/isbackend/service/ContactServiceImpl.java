@@ -67,7 +67,6 @@ public class ContactServiceImpl implements ContactService{
         address1.setFullAddress(contactDto.getFullAddress());
         address1.setPostCode(contactDto.getPostCode());
         contact3.setAddress(addressRepository.save(address1));
-        System.out.println(contact3);
          contactRepository.save(contact3);
     }
 
