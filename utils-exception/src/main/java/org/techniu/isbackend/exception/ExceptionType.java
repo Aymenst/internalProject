@@ -18,6 +18,7 @@ public enum ExceptionType {
     ASSIGNED_LEVEL_STAFF("staff.assigned.to.level"),
     SECTOR_RELATED_TO_CLIENT("you can't delete this sectore its already related to client");
 
+    // public static final ExceptionType SECTOR_RELATED_TO_CLIENT = null;
     String value;
 
     ExceptionType(String value) {

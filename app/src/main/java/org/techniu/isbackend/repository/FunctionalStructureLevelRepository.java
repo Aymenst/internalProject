@@ -8,6 +8,8 @@ import java.util.List;
 public interface FunctionalStructureLevelRepository extends MongoRepository<FunctionalStructureLevel, String> {
     FunctionalStructureLevel findByName(String name);
 
+    FunctionalStructureLevel findBy_id(String id);
+
     List<FunctionalStructureLevel> findByType(String type);
 
     FunctionalStructureLevel findByChildsContaining(FunctionalStructureLevel level);
