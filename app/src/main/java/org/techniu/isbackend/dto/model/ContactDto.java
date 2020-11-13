@@ -34,6 +34,8 @@ public class ContactDto {
     private String companyId;
     // address
     private String cityId;
+    private String countryStateId;
+    private String countryId;
     private String fullAddress;
     private String cityName;
     private String stateName;

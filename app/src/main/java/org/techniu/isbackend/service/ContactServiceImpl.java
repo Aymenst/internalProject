@@ -51,18 +51,24 @@ public class ContactServiceImpl implements ContactService{
     }
 
     @Override
-    public void update(ContactDto contactDto) {
+    public void update(ContactDto contactDto, String companyId, Address address, String cityId) {
+        Client client = clientRepository.getBy_id(companyId);
+        City city =cityRepository.findCityBy_id(cityId);
         // save Contact if note existe
        Optional<Contact> contact1 = Optional.ofNullable(contactRepository.findBy_id(contactDto.getContactId()));
-        if (!contact1.isPresent()) {
-            throw exception(ExceptionType.ENTITY_NOT_FOUND);
-        }
         Optional<Contact> contact2 = Optional.ofNullable(contactRepository.findByPersonalEmail(contactDto.getPersonalEmail()));
-
         if (contact2.isPresent() && !(contact1.get().getPersonalEmail().equals(contactDto.getPersonalEmail())) ) {
             throw exception(DUPLICATE_ENTITY);
         }
-         contactRepository.save(contactMapper.dtoToModel(contactDto));
+        Contact contact3 = contactMapper.dtoToModel(contactDto);
+        contact3.setClient(client);
+        Address address1=contact1.get().getAddress();
+        address1.setCity(city);
+        address1.setFullAddress(contactDto.getFullAddress());
+        address1.setPostCode(contactDto.getPostCode());
+        contact3.setAddress(addressRepository.save(address1));
+        System.out.println(contact3);
+         contactRepository.save(contact3);
     }
 
     @Override
@@ -74,6 +80,15 @@ public class ContactServiceImpl implements ContactService{
 
         for (Contact contact : contacts) {
             ContactDto contactDto=contactMapper.modelToDto(contact);
+            contactDto.setContactId(contact.get_id());
+            contactDto.setCountryName(contact.getAddress().getCity().getStateCountry().getCountry().getCountryName());
+            contactDto.setCountryId(contact.getAddress().getCity().getStateCountry().getCountry().getCountryId());
+            contactDto.setStateName(contact.getAddress().getCity().getStateCountry().getStateName());
+            contactDto.setCityName(contact.getAddress().getCity().getCityName());
+            contactDto.setFullAddress(contact.getAddress().getFullAddress());
+            contactDto.setPostCode(contact.getAddress().getPostCode());
+            contactDto.setCompanyId(contact.getClient().get_id());
+            contactDto.setCountryStateId(contact.getAddress().getCity().getStateCountry().get_id());
             contactDtos.add(contactDto);
         }
         return contactDtos;

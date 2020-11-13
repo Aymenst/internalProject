@@ -22,7 +22,7 @@ public interface ContactService {
      *
      * @param contactDto - contactDto
      */
-    void update(ContactDto contactDto);
+    void update(ContactDto contactDto, String companyId, Address address, String cityId);
     /**
      * delete Contact
      *
