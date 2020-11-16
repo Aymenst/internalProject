@@ -16,7 +16,7 @@ public enum ExceptionType {
     CODE_SHOULD_NOT_CONTAIN_SPACES("code.should.not.contain.spaces"),
     DELETED("deleted"),
     ASSIGNED_LEVEL_STAFF("staff.assigned.to.level"),
-    SECTOR_RELATED_TO_CLIENT("you can't delete this sectore its already related to client");
+    SECTOR_RELATED_TO_CLIENT("this sector its already related to a client !");
 
     // public static final ExceptionType SECTOR_RELATED_TO_CLIENT = null;
     String value;

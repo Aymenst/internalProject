@@ -170,7 +170,7 @@ public class SectorCompanyServiceImpl implements SectorCompanyService {
         if(client.size() != 0){
             throw exception(SECTOR_RELATED_TO_CLIENT);
         }
-        else {
+      /*  else {
             if (!thirdSectorName.equals("null") && !secondSectorName.equals("null")) {
                 SectorCompany secondSector3 = sectorCompanyRepository.findByName(thirdSectorName);
                 SectorCompany secondSector2 = secondSector3.getParent();
@@ -212,7 +212,53 @@ public class SectorCompanyServiceImpl implements SectorCompanyService {
                 SectorCompany secondSector2 = sectorCompanyRepository.findByName(firstSectorName);
                 sectorCompanyRepository.delete(secondSector2);
             }
-        }
+        }*/
+    }
+
+    @Override
+    public void removeConfirmation(String firstSectorName, String secondSectorName, String thirdSectorName) {
+        List<Client> client=clientRepository.findBySector1OrSector2OrSector3(firstSectorName,secondSectorName,thirdSectorName);
+            if (!thirdSectorName.equals("null") && !secondSectorName.equals("null")) {
+                SectorCompany secondSector3 = sectorCompanyRepository.findByName(thirdSectorName);
+                SectorCompany secondSector2 = secondSector3.getParent();
+                //liste de sector 3
+                List<SectorCompany> sectorCompanys3 = sectorCompanyRepository.findByParent(secondSector2);
+                if (sectorCompanys3.size() == 1) {
+                    SectorCompany secondSector1 = sectorCompanys3.get(0).getParent().getParent();
+                    System.out.println("secondSector1 " + secondSector1);
+                    List<SectorCompany> sectorCompanys2 = sectorCompanyRepository.findByParent(secondSector1);
+                    if (sectorCompanys2.size() == 1) {
+                        sectorCompanyRepository.delete(secondSector3);
+                        sectorCompanyRepository.delete(secondSector2);
+                        sectorCompanyRepository.delete(secondSector1);
+                    } else {
+                        sectorCompanyRepository.delete(secondSector3);
+                    }
+                } else {
+                    sectorCompanyRepository.delete(secondSector3);
+                }
+            }
+            //when thirdSectorName is null
+            if (thirdSectorName.equals("null") && !secondSectorName.equals("null")) {
+                System.out.println(secondSectorName);
+                SectorCompany secondSector2 = sectorCompanyRepository.findByName(secondSectorName);
+                SectorCompany secondSector1 = secondSector2.getParent();
+                //liste de sector 2 ho has secondSector1 parent
+                List<SectorCompany> sectorCompanys2 = sectorCompanyRepository.findByParent(secondSector1);
+                System.out.println(sectorCompanys2.size());
+                if (sectorCompanys2.size() == 1) {
+                    sectorCompanyRepository.delete(secondSector2);
+                    sectorCompanyRepository.delete(secondSector1);
+                } else {
+                    sectorCompanyRepository.delete(secondSector2);
+                }
+            }
+            //when secondSectorName is null
+            if (secondSectorName.equals("null")) {
+                System.out.println(secondSectorName);
+                SectorCompany secondSector2 = sectorCompanyRepository.findByName(firstSectorName);
+                sectorCompanyRepository.delete(secondSector2);
+            }
     }
 
     @Override
