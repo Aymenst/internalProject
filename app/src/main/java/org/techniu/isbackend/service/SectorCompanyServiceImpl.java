@@ -21,9 +21,11 @@ import java.util.List;
 public class SectorCompanyServiceImpl implements SectorCompanyService {
     private SectorCompanyRepository sectorCompanyRepository;
     private ClientRepository clientRepository;
-    SectorCompanyServiceImpl(SectorCompanyRepository sectorCompanyRepository, ClientRepository clientRepository) {
+    private ClientService clientService;
+    SectorCompanyServiceImpl(SectorCompanyRepository sectorCompanyRepository, ClientRepository clientRepository, ClientService clientService) {
         this.sectorCompanyRepository = sectorCompanyRepository;
         this.clientRepository = clientRepository;
+        this.clientService = clientService;
     }
 
     @Override
@@ -225,39 +227,44 @@ public class SectorCompanyServiceImpl implements SectorCompanyService {
                 List<SectorCompany> sectorCompanys3 = sectorCompanyRepository.findByParent(secondSector2);
                 if (sectorCompanys3.size() == 1) {
                     SectorCompany secondSector1 = sectorCompanys3.get(0).getParent().getParent();
-                    System.out.println("secondSector1 " + secondSector1);
                     List<SectorCompany> sectorCompanys2 = sectorCompanyRepository.findByParent(secondSector1);
                     if (sectorCompanys2.size() == 1) {
+                        clientService.deleteSectorFromclient(secondSector1,secondSector2,secondSector3);
                         sectorCompanyRepository.delete(secondSector3);
                         sectorCompanyRepository.delete(secondSector2);
                         sectorCompanyRepository.delete(secondSector1);
+
                     } else {
+                        clientService.deleteSectorFromclient(null,null,secondSector3);
                         sectorCompanyRepository.delete(secondSector3);
                     }
                 } else {
+                    clientService.deleteSectorFromclient(null,null,secondSector3);
                     sectorCompanyRepository.delete(secondSector3);
                 }
             }
             //when thirdSectorName is null
             if (thirdSectorName.equals("null") && !secondSectorName.equals("null")) {
-                System.out.println(secondSectorName);
                 SectorCompany secondSector2 = sectorCompanyRepository.findByName(secondSectorName);
                 SectorCompany secondSector1 = secondSector2.getParent();
                 //liste de sector 2 ho has secondSector1 parent
                 List<SectorCompany> sectorCompanys2 = sectorCompanyRepository.findByParent(secondSector1);
-                System.out.println(sectorCompanys2.size());
                 if (sectorCompanys2.size() == 1) {
+                    clientService.deleteSectorFromclient(secondSector1,secondSector2,null);
                     sectorCompanyRepository.delete(secondSector2);
                     sectorCompanyRepository.delete(secondSector1);
                 } else {
+                    clientService.deleteSectorFromclient(null,secondSector2,null);
                     sectorCompanyRepository.delete(secondSector2);
+
                 }
             }
             //when secondSectorName is null
             if (secondSectorName.equals("null")) {
-                System.out.println(secondSectorName);
                 SectorCompany secondSector2 = sectorCompanyRepository.findByName(firstSectorName);
+                clientService.deleteSectorFromclient(null,secondSector2,null);
                 sectorCompanyRepository.delete(secondSector2);
+
             }
     }
 
@@ -266,6 +273,7 @@ public class SectorCompanyServiceImpl implements SectorCompanyService {
         ArrayList<SectorCompanyDto> sectorCompanyDtos = new ArrayList<>();
         List<SectorCompany> SectorCompanys = sectorCompanyRepository.findByParent(sectorCompanyRepository.findByName(sectorName));
         SectorCompany sectorCompanyParent = sectorCompanyRepository.findByName(sectorName);
+        System.out.println(SectorCompanys);
         for (SectorCompany sectorCompany : SectorCompanys) {
             SectorCompanyDto sectorCompanyDto = new SectorCompanyDto();
             sectorCompanyDto.setFirstSectorId(sectorCompanyParent.get_id());

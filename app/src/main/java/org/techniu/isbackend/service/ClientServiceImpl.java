@@ -201,4 +201,44 @@ public class ClientServiceImpl implements ClientService{
         }
         return clientsDtos;
     }
+
+    @Override
+    public void deleteSectorFromclient(SectorCompany sectorCompany1,SectorCompany sectorCompany2,SectorCompany sectorCompany3) {
+        //get all client that have this sector
+        System.out.println(sectorCompany1);
+        System.out.println(sectorCompany2);
+        System.out.println(sectorCompany3);
+        if(sectorCompany1 != null && sectorCompany2 != null && sectorCompany3 !=null) {
+            List<Client> client = clientRepository.findBySector1OrSector2OrSector3(sectorCompany1.getName(), sectorCompany2.getName(), sectorCompany3.getName());
+            for (Client c:client) {
+                c.setSector1("");
+                c.setSector2("");
+                c.setSector3("");
+                clientRepository.save(c);
+            }
+        }
+        if(sectorCompany1 == null && sectorCompany2 == null && sectorCompany3 !=null) {
+            List<Client> client = clientRepository.findBySector3(sectorCompany3.getName());
+            for (Client c:client) {
+                c.setSector3("");
+                clientRepository.save(c);
+            }
+        }
+        if(sectorCompany1 != null && sectorCompany2 != null && sectorCompany3 ==null) {
+            List<Client> client = clientRepository.findBySector1OrSector2(sectorCompany1.getName(), sectorCompany2.getName());
+            for (Client c:client) {
+                c.setSector1("");
+                c.setSector2("");
+                clientRepository.save(c);
+            }
+        }
+        if(sectorCompany1 == null && sectorCompany2 != null && sectorCompany3 ==null) {
+            List<Client> client = clientRepository.findBySector2(sectorCompany2.getName());
+            for (Client c:client) {
+                c.setSector2("");
+                clientRepository.save(c);
+            }
+        }
+    }
+
 }

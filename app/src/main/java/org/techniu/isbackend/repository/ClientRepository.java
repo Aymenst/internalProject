@@ -13,4 +13,7 @@ public interface ClientRepository extends MongoRepository<Client, String> {
     List<Client> findAll();
     Client findBy_id(String id);
     List<Client> findBySector1OrSector2OrSector3(String sector1,String sector2,String sector3);
+    List<Client> findBySector3(String sector3);
+    List<Client> findBySector1OrSector2(String sector1,String sector2);
+    List<Client> findBySector2(String sector2);
 }
