@@ -18,5 +18,6 @@ public enum EntityType {
     LegalCategoryType,
     FunctionalStructureLevel,
     FinancialContract,
-    Contact
+    Contact,
+    Bill
 }
