@@ -51,7 +51,11 @@ public class ContactController {
     @PostMapping("/update")
     public ResponseEntity update(@RequestBody @Valid ContactUpdateRequest contactUpdateRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) return mapValidationErrorService.mapValidationService(bindingResult);
-        contactService.update(contactMapper.updateRequestToDto(contactUpdateRequest));
+        // objet address
+        Address address =new Address()
+                .setFullAddress(contactUpdateRequest.getFullAddress())
+                .setPostCode(contactUpdateRequest.getPostCode());
+        contactService.update(contactMapper.updateRequestToDto(contactUpdateRequest),contactUpdateRequest.getCompanyId(),address,contactUpdateRequest.getCityId());
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(Contact, UPDATED)), HttpStatus.OK);
     }
 

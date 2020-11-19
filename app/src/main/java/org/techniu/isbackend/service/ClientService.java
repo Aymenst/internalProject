@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.techniu.isbackend.dto.model.ClientDto;
 import org.techniu.isbackend.entity.Address;
 import org.techniu.isbackend.entity.Client;
+import org.techniu.isbackend.entity.SectorCompany;
 
 import java.util.List;
 
@@ -18,4 +19,6 @@ public interface ClientService {
     List<ClientDto> getAllClient();
     List<Client> getClientsByCountryName(String country);
     List<ClientDto> getListClientsByCountry(String country);
+
+    void deleteSectorFromclient(SectorCompany sectorCompany1,SectorCompany sectorCompany2,SectorCompany sectorCompany3);
 }
