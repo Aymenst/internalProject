@@ -19,5 +19,6 @@ public enum EntityType {
     FunctionalStructureLevel,
     FinancialContract,
     Contact,
+    Bill,
     ContactByOperation
 }
