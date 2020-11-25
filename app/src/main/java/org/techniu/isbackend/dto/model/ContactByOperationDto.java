@@ -16,9 +16,10 @@ import java.util.List;
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ContactByOperationDto {
-    private String ContactByOperationId;
+    private String contactByOperationId;
     private String description;
     private String statusId;
     private String statusName;
-    private List<String> contactsTypes;
+    private String contactsType;
+    private List<String> mandatoryAttributes;
 }

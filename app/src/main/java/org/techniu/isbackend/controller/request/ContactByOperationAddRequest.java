@@ -16,8 +16,8 @@ import static org.techniu.isbackend.exception.ValidationConstants.*;
 @NoArgsConstructor
 @Accessors(chain = true)
 public class ContactByOperationAddRequest {
-    private String ContactByOperationId;
     private String description;
     private String statusId;
-    private List<String> contactsTypes;
+    private String contactsType;
+    private List<String> mandatoryAttributes;
 }

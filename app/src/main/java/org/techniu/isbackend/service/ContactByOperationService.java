@@ -1,5 +1,6 @@
 package org.techniu.isbackend.service;
 
+import org.springframework.web.bind.annotation.PathVariable;
 import org.techniu.isbackend.dto.model.ContactByOperationDto;
 
 import java.util.List;
@@ -26,7 +27,8 @@ public interface ContactByOperationService {
     /**
      * delete Action
      *
-     * @param id - id
+     * @param statusId - statusId
+     * @param contactTypeName - contactTypeName
      */
-    void remove(String id);
+    void remove(String statusId, String contactTypeName);
 }

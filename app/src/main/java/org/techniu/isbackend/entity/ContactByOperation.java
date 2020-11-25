@@ -23,5 +23,8 @@ public class ContactByOperation {
     private String description;
     @DBRef
     private CommercialOperationStatus status;
-    private List<String> contactsTypes;
+    //contract Type
+    private String contactsType;
+    //liste of mondatory attributes
+    private List<String> mandatoryAttributes;
 }
