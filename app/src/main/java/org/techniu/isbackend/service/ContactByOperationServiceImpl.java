@@ -30,13 +30,24 @@ public class ContactByOperationServiceImpl implements ContactByOperationService{
     @Override
     public void save(ContactByOperationDto contactByOperationDto) {
         Optional<CommercialOperationStatus>  commercialOperationStatus= Optional.ofNullable(commercialOperationStatusRepository.findBy_id(contactByOperationDto.getStatusId()));
+       /* if (!commercialOperationStatus.isPresent()) {
+            throw exception(DUPLICATE_ENTITY);
+        }*/
+        ContactByOperation contactByOperation1 =contactByOperationMapper.dtoToModel(contactByOperationDto);
+        contactByOperation1.setStatus(commercialOperationStatus.get());
+        contactByOperationRepository.save(contactByOperation1);
+    }
+    /*
+    @Override
+    public void save(ContactByOperationDto contactByOperationDto) {
+        Optional<CommercialOperationStatus>  commercialOperationStatus= Optional.ofNullable(commercialOperationStatusRepository.findBy_id(contactByOperationDto.getStatusId()));
         if (!commercialOperationStatus.isPresent()) {
             throw exception(DUPLICATE_ENTITY);
         }
         ContactByOperation contactByOperation1 =contactByOperationMapper.dtoToModel(contactByOperationDto);
         contactByOperation1.setStatus(commercialOperationStatus.get());
         contactByOperationRepository.save(contactByOperation1);
-    }
+    }*/
 
     @Override
     public void update(ContactByOperationDto contactByOperationDto) {
@@ -44,7 +55,8 @@ public class ContactByOperationServiceImpl implements ContactByOperationService{
         if (!contactByOperation1.isPresent()) {
             throw exception(ExceptionType.ENTITY_NOT_FOUND);
         }
-         contactByOperationRepository.save(contactByOperationMapper.dtoToModel(contactByOperationDto));
+
+         contactByOperationRepository.save(contactByOperation1.get().setMandatoryAttributes(contactByOperationDto.getMandatoryAttributes()));
     }
 
     @Override
@@ -61,18 +73,19 @@ public class ContactByOperationServiceImpl implements ContactByOperationService{
         return contactByOperationDtos;
     }
     /**
-     * delete Action
+     * delete ContactByOperation
      *
-     * @param id - id
+     * @param statusId - statusId
+     * @param contactTypeName - contactTypeName
      */
     @Override
-    public void remove(String id) {
-        Optional<ContactByOperation> action = Optional.ofNullable(contactByOperationRepository.findBy_id(id));
+    public void remove(String statusId, String contactTypeName) {
+        Optional<ContactByOperation> contactByOperation = Optional.ofNullable(contactByOperationRepository.findBy_idAndContactsType(statusId,contactTypeName));
         // If ContactByOperation doesn't exists
-        if (!action.isPresent()) {
+        if (!contactByOperation.isPresent()) {
             throw exception(ENTITY_NOT_FOUND);
         }
-        contactByOperationRepository.deleteById(id);
+        contactByOperationRepository.delete(contactByOperation.get());
     }
 
 

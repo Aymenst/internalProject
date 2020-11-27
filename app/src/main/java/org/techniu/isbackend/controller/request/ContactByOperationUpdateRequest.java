@@ -12,8 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Accessors(chain = true)
 public class ContactByOperationUpdateRequest {
-    private String ContactByOperationId;
-    private String description;
-    private String statusId;
-    private List<String> contactsTypes;
+    private String contactByOperationId;
+    private String contactsType;
+    private List<String> mandatoryAttributes;
 }

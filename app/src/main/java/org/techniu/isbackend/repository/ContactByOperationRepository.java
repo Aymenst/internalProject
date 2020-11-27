@@ -5,4 +5,5 @@ import org.techniu.isbackend.entity.ContactByOperation;
 
 public interface ContactByOperationRepository extends MongoRepository<ContactByOperation, String> {
     ContactByOperation findBy_id(String id);
+    ContactByOperation findBy_idAndContactsType(String id,String contactype);
 }

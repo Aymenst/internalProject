@@ -14,6 +14,8 @@ import org.techniu.isbackend.service.ContactByOperationService;
 
 import javax.validation.Valid;
 
+import java.util.List;
+
 import static org.techniu.isbackend.exception.EntityType.ContactByOperation;
 import static org.techniu.isbackend.exception.ExceptionType.*;
 import static org.techniu.isbackend.exception.MainException.getMessageTemplate;
@@ -31,11 +33,15 @@ public class ContactByOperationController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity add(@RequestBody @Valid ContactByOperationAddRequest contactByOperationAddRequest, BindingResult bindingResult) {
+    public ResponseEntity add(@RequestBody @Valid List<ContactByOperationAddRequest> contactByOperationAddRequests, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) return mapValidationErrorService.mapValidationService(bindingResult);
         // Save ContactByOperation
-        System.out.println(contactByOperationMapper.addRequestToDto(contactByOperationAddRequest));
-        contactByOperationService.save(contactByOperationMapper.addRequestToDto(contactByOperationAddRequest));
+        for (ContactByOperationAddRequest contactByOperationAddRequest:contactByOperationAddRequests)
+        {
+            contactByOperationService.save(contactByOperationMapper.addRequestToDto(contactByOperationAddRequest));
+        }
+        //System.out.println(contactByOperationMapper.addRequestToDto(contactByOperationAddRequest));
+        //contactByOperationService.save(contactByOperationMapper.addRequestToDto(contactByOperationAddRequest));
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(ContactByOperation, ADDED)), HttpStatus.OK);
     }
     /**
@@ -55,11 +61,11 @@ public class ContactByOperationController {
     /**
      * Handles the incoming DELETE API "/contactByOperation/delete"
      *
-     * @param id action delete request
+     * @param statusId action delete request
      */
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity delete(@PathVariable String id) {
-        contactByOperationService.remove(id);
+    @RequestMapping(value = "/delete/{statusId}/{contactTypeName}", method = RequestMethod.DELETE)
+    public ResponseEntity delete(@PathVariable String statusId,@PathVariable String contactTypeName) {
+        contactByOperationService.remove(statusId,contactTypeName);
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(ContactByOperation, DELETED)), HttpStatus.OK);
     }
 

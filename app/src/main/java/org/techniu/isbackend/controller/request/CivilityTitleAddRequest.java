@@ -7,17 +7,15 @@ import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotBlank;
 
-import java.util.List;
-
 import static org.techniu.isbackend.exception.ValidationConstants.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-public class ContactByOperationAddRequest {
-    private String description;
-    private String statusId;
-    private String contactsType;
-    private List<String> mandatoryAttributes;
+public class CivilityTitleAddRequest {
+    @NotBlank(message = COMMERCIALOPERATIONSTATUS_NAME_NOT_BLANK)
+    private String name;
+    @NotBlank(message = COMMERCIALOPERATIONSTATUS_CODE_NOT_BLANK)
+    private String code;
 }
