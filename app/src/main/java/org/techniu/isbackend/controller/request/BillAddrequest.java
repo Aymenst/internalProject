@@ -31,9 +31,10 @@ public class BillAddrequest {
     private List<String> descTotalUSD;
     private List<String> nbrConcepts;
 
-    private Date billingDate;
-    private Date paymentDay;
+    private Date invoiceDate;
+    private Date registerDate;
     private Date paymentDate;
+    private Date delayDate;
     private Date reelPaymentDay;
 
     private int paymentsBDDay;

@@ -101,8 +101,8 @@ public class BillServiceImpl implements BillService {
         bill.setTotalAmountEuro(billDto.getTotalAmountEuro());
         bill.setDesc(billDto.getDesc());
         bill.setDescTotalUSD(billDto.getDescTotalUSD());
-        bill.setBillingDate(billDto.getBillingDate());
-        bill.setPaymentDay(billDto.getPaymentDay());
+        bill.setDelayDate(billDto.getDelayDate());
+        bill.setRegisterDate(billDto.getRegisterDate());
         bill.setPaymentDate(billDto.getPaymentDate());
         bill.setReelPaymentDay(billDto.getReelPaymentDay());
         bill.setReelPaymentDays(billDto.getReelPaymentDays());
