@@ -20,5 +20,6 @@ public enum EntityType {
     FinancialContract,
     Contact,
     Bill,
-    ContactByOperation
+    ContactByOperation,
+    CivilityTitle
 }
