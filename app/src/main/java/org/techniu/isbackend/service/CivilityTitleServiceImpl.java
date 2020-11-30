@@ -9,7 +9,7 @@ import org.techniu.isbackend.exception.EntityType;
 import org.techniu.isbackend.exception.ExceptionType;
 import org.techniu.isbackend.exception.MainException;
 import org.techniu.isbackend.repository.CivilityTitleRepository;
-
+import static org.springframework.util.StringUtils.capitalize;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +25,7 @@ public class CivilityTitleServiceImpl implements CivilityTitleService{
     }
     @Override
     public void save(CivilityTitleDto civilityTitleDto) {
-        civilityTitleDto.setName(civilityTitleDto.getName().toLowerCase());
+        civilityTitleDto.setName(capitalize(civilityTitleDto.getName()));
         if (civilityTitleDto.getName().contains(" ")) {
              throw exception(CODE_SHOULD_NOT_CONTAIN_SPACES);
         }

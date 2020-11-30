@@ -4,10 +4,7 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
 import org.techniu.isbackend.dto.mapper.ContactMapper;
 import org.techniu.isbackend.dto.model.ContactDto;
-import org.techniu.isbackend.entity.Address;
-import org.techniu.isbackend.entity.City;
-import org.techniu.isbackend.entity.Client;
-import org.techniu.isbackend.entity.Contact;
+import org.techniu.isbackend.entity.*;
 import org.techniu.isbackend.exception.EntityType;
 import org.techniu.isbackend.exception.ExceptionType;
 import org.techniu.isbackend.exception.MainException;
@@ -15,7 +12,7 @@ import org.techniu.isbackend.repository.AddressRepository;
 import org.techniu.isbackend.repository.CityRepository;
 import org.techniu.isbackend.repository.ClientRepository;
 import org.techniu.isbackend.repository.ContactRepository;
-
+import org.techniu.isbackend.repository.CivilityTitleRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,12 +24,14 @@ public class ContactServiceImpl implements ContactService{
     private ContactRepository contactRepository;
     private ClientRepository clientRepository;
     private CityRepository cityRepository;
+    private CivilityTitleRepository civilityTitleRepository;
     private AddressRepository addressRepository;
     private final ContactMapper contactMapper = Mappers.getMapper(ContactMapper.class);
-    ContactServiceImpl(ContactRepository contactRepository, ClientRepository clientRepository, CityRepository cityRepository, AddressRepository addressRepository) {
+    ContactServiceImpl(ContactRepository contactRepository, ClientRepository clientRepository, CityRepository cityRepository, CivilityTitleRepository civilityTitleRepository, AddressRepository addressRepository) {
         this.contactRepository = contactRepository;
         this.clientRepository = clientRepository;
         this.cityRepository = cityRepository;
+        this.civilityTitleRepository = civilityTitleRepository;
         this.addressRepository = addressRepository;
     }
     @Override
@@ -40,12 +39,14 @@ public class ContactServiceImpl implements ContactService{
         // save Client if note existe
        Client client = clientRepository.getBy_id(companyId);
         City city =cityRepository.findCityBy_id(cityId);
+        CivilityTitle civilityTitle = civilityTitleRepository.findBy_id(contactDto.getCivilityId());
         Optional<Contact>  contact= Optional.ofNullable(contactRepository.findByPersonalEmail(contactDto.getPersonalEmail()));
         if (contact.isPresent()) {
             throw exception(DUPLICATE_ENTITY);
         }
         Contact contact1=contactMapper.dtoToModel(contactDto);
         contact1.setClient(client);
+        contact1.setCivilityTitle(civilityTitle);
         contact1.setAddress(addressRepository.save(address.setCity(city)));
         contactRepository.save(contact1);
     }
@@ -54,6 +55,7 @@ public class ContactServiceImpl implements ContactService{
     public void update(ContactDto contactDto, String companyId, Address address, String cityId) {
         Client client = clientRepository.getBy_id(companyId);
         City city =cityRepository.findCityBy_id(cityId);
+        CivilityTitle civilityTitle = civilityTitleRepository.findBy_id(contactDto.getCivilityId());
         // save Contact if note existe
        Optional<Contact> contact1 = Optional.ofNullable(contactRepository.findBy_id(contactDto.getContactId()));
         Optional<Contact> contact2 = Optional.ofNullable(contactRepository.findByPersonalEmail(contactDto.getPersonalEmail()));
@@ -61,6 +63,7 @@ public class ContactServiceImpl implements ContactService{
             throw exception(DUPLICATE_ENTITY);
         }
         Contact contact3 = contactMapper.dtoToModel(contactDto);
+        contact3.setCivilityTitle(civilityTitle);
         contact3.setClient(client);
         Address address1=contact1.get().getAddress();
         address1.setCity(city);
@@ -87,6 +90,8 @@ public class ContactServiceImpl implements ContactService{
             contactDto.setFullAddress(contact.getAddress().getFullAddress());
             contactDto.setPostCode(contact.getAddress().getPostCode());
             contactDto.setCompanyId(contact.getClient().get_id());
+            if(contact.getCivilityTitle()!=null){
+            contactDto.setCivilityName(contact.getCivilityTitle().getName());}
             contactDto.setCountryStateId(contact.getAddress().getCity().getStateCountry().get_id());
             contactDtos.add(contactDto);
         }

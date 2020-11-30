@@ -15,6 +15,7 @@ import static org.techniu.isbackend.exception.ValidationConstants.*;
 @Accessors(chain = true)
 public class ContactUpdateRequest {
     private String contactId;
+    private String civilityId;
     @NotBlank(message = CONTACT_FIRSTNAME_NOT_BLANK)
     private String firstName;
     private String fatherFamilyName;

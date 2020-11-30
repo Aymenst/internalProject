@@ -34,4 +34,6 @@ public class Contact {
     private Address address;
     @DBRef
     private Client client;
+    @DBRef
+    private CivilityTitle civilityTitle;
 }

@@ -18,6 +18,8 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ContactDto {
     private String contactId;
+    private String civilityId;
+    private String civilityName;
     private String firstName;
     private String fatherFamilyName;
     private String motherFamilyName;
