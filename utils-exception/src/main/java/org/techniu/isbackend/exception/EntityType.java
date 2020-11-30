@@ -3,6 +3,10 @@ package org.techniu.isbackend.exception;
 public enum EntityType {
     Staff,
     StaffContract,
+    StaffContractHistory,
+    StaffDocuments,
+    StaffEconomicContractInformation,
+    StaffEconomicContractInformationHistory,
     City,
     CommercialOperationStatus,
     ServiceType,
@@ -17,5 +21,9 @@ public enum EntityType {
     ContractType,
     LegalCategoryType,
     Contact,
-    FunctionalStructureLevel
+    FunctionalStructureLevel,
+    FunctionalStructureAssignationHistory,
+    AdministrativeStructureLevel,
+    AdministrativeStructureAssignationHistory,
+    ContractModel
 }

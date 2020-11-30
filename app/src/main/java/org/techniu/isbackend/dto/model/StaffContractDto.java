@@ -6,9 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import org.techniu.isbackend.entity.StaffDocuments;
-
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -36,7 +33,9 @@ public class StaffContractDto {
     private String contractTypeCountryId;
     private String contractTypeCountry;
     private String legalCategoryTypeId;
-    private String legelCategoryTypeName;
+    private String legalCategoryTypeName;
+    private String contractModelId;
+    private String contractModelName;
     private  byte[] internalRulesDoc;
     private  byte[] contractDoc;
     private  byte[] preContractDoc;

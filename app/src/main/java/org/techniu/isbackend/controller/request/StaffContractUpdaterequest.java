@@ -23,6 +23,7 @@ public class StaffContractUpdaterequest {
     private String preContractDate;
     private String contractTypeId;
     private String legalCategoryTypeId;
+    private String contractModelId;
     private String updatedAt;
 
 

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
@@ -16,7 +17,7 @@ import java.util.Date;
 public class StaffEconomicContractInformation implements Serializable, Cloneable {
 
     @Id
-    private String staffEconomicContractInformationId;
+    private String _id;
     private String contractSalary;
     private String companyContractCost;
     private String expenses;
@@ -39,7 +40,6 @@ public class StaffEconomicContractInformation implements Serializable, Cloneable
     private String totalCompanyCostDateGoing;
     private String totalCompanyCostDateOut;
 
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
+    @DBRef
+    private Currency currency;
 }

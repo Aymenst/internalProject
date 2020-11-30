@@ -5,16 +5,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.techniu.isbackend.dto.mapper.LegalCategoryTypeMapper;
 import org.techniu.isbackend.dto.model.LegalCategoryTypeDto;
-import org.techniu.isbackend.entity.FinancialCompany;
-import org.techniu.isbackend.entity.LegalCategoryType;
-import org.techniu.isbackend.entity.StateCountry;
+import org.techniu.isbackend.entity.*;
 import org.techniu.isbackend.exception.EntityType;
 import org.techniu.isbackend.exception.ExceptionType;
 import org.techniu.isbackend.exception.MainException;
 import org.techniu.isbackend.repository.LegalCategoryTypeRepository;
 import org.techniu.isbackend.repository.FinancialCompanyRepository;
+import org.techniu.isbackend.repository.StaffContractHistoryRepository;
+import org.techniu.isbackend.repository.StaffContractRepository;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,45 +28,78 @@ public class LegalCategoryTypeServiceImpl implements LegalCategoryTypeService {
 
     private LegalCategoryTypeRepository legalCategoryTypeRepository;
     private FinancialCompanyRepository financialCompanyRepository;
+    private StaffContractRepository staffContractRepository;
+    private StaffContractHistoryRepository staffContractHistoryRepository;
     private final LegalCategoryTypeMapper legalCategoryTypeMapper = Mappers.getMapper(LegalCategoryTypeMapper.class);
 
-    LegalCategoryTypeServiceImpl(LegalCategoryTypeRepository legalCategoryTypeRepository, FinancialCompanyRepository financialCompanyRepository) {
+    LegalCategoryTypeServiceImpl(
+            LegalCategoryTypeRepository legalCategoryTypeRepository,
+            FinancialCompanyRepository financialCompanyRepository,
+            StaffContractRepository staffContractRepository,
+            StaffContractHistoryRepository staffContractHistoryRepository) {
         this.legalCategoryTypeRepository = legalCategoryTypeRepository;
         this.financialCompanyRepository = financialCompanyRepository;
+        this.staffContractRepository = staffContractRepository;
+        this.staffContractHistoryRepository = staffContractHistoryRepository;
     }
 
     @Override
     public void save(LegalCategoryTypeDto legalCategoryTypeDto) {
         FinancialCompany financialCompany = financialCompanyRepository.findById(legalCategoryTypeDto.getFinancialCompanyId()).get();
         LegalCategoryType legalCategoryType = legalCategoryTypeMapper.dtoToModel(legalCategoryTypeDto);
-        legalCategoryType.setCompany(financialCompany);
 
-
-        Optional<LegalCategoryType>  legalCategoryType1= Optional.ofNullable(legalCategoryTypeRepository.findByName(legalCategoryTypeDto.getName()));
+        Optional<LegalCategoryType>  legalCategoryType1= Optional.ofNullable(legalCategoryTypeRepository.findByNameAndCompany(legalCategoryTypeDto.getName(), financialCompany));
         if (legalCategoryType1.isPresent()) {
             throw exception(DUPLICATE_ENTITY);
         }
 
+        legalCategoryType.setCompany(financialCompany);
         legalCategoryTypeRepository.save(legalCategoryType);
     }
 
     @Override
     public void update(LegalCategoryTypeDto legalCategoryTypeDto) {
         LegalCategoryType legalCategoryType = legalCategoryTypeRepository.findById(legalCategoryTypeDto.getLegalCategoryTypeId()).get();
+
+        Optional<LegalCategoryType>  legalCategoryType1= Optional.ofNullable(legalCategoryTypeRepository.findByNameAndCompany(legalCategoryTypeDto.getName(), legalCategoryType.getCompany()));
+        if (legalCategoryType1.isPresent()) {
+            if(!legalCategoryType1.get().get_id().equals(legalCategoryTypeDto.getLegalCategoryTypeId())) {
+                throw exception(DUPLICATE_ENTITY);
+            }
+        }
+
         legalCategoryType.setName(legalCategoryTypeDto.getName());
         legalCategoryType.setFunctions(legalCategoryTypeDto.getFunctions());
-
         legalCategoryTypeRepository.save(legalCategoryType);
     }
 
     @Override
-    public void remove(String id) {
+    public void remove(String oldId, String newId) {
 
-        Optional<LegalCategoryType> action = Optional.ofNullable(legalCategoryTypeRepository.findBy_id(id));
+        Optional<LegalCategoryType> action = Optional.ofNullable(legalCategoryTypeRepository.findBy_id(oldId));
         if (!action.isPresent()) {
             throw exception(ENTITY_NOT_FOUND);
         }
-        legalCategoryTypeRepository.deleteById(id);
+        if(!newId.equals("")){
+            List<StaffContract> staffContracts = staffContractRepository.findAllByLegalCategoryType(legalCategoryTypeRepository.findById(oldId).get());
+            LegalCategoryType newLegalCategoryType = legalCategoryTypeRepository.findById(newId).get();
+            staffContracts.forEach( contract -> {
+                contract.setLegalCategoryType(newLegalCategoryType);
+                StaffContractHistory staffContractHistory = new StaffContractHistory();
+                staffContractHistory.setStaffContract(contract);
+                staffContractHistory.setStaffContractHistory(staffContractRepository.save(contract));
+                staffContractHistory.setUpdatedAt(new Date().toInstant().toString().substring(0,10));
+                staffContractHistoryRepository.save(staffContractHistory);
+            });
+        }
+        List<StaffContractHistory> staffContractHistories = staffContractHistoryRepository.findAll();
+        staffContractHistories.forEach(staffContractHistory -> {
+            if(staffContractHistory.getStaffContractHistory().getLegalCategoryType().get_id().equals(oldId)) {
+                staffContractHistoryRepository.delete(staffContractHistory);
+            }
+        });
+
+        legalCategoryTypeRepository.deleteById(oldId);
     }
 
     @Override

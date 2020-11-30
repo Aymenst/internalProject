@@ -12,5 +12,5 @@ public interface LegalCategoryTypeRepository extends MongoRepository<LegalCatego
 
     List<LegalCategoryType> getAllByCompany(FinancialCompany financialCompany);
     LegalCategoryType findBy_id(String id);
-    LegalCategoryType findByName(String name);
+    LegalCategoryType findByNameAndCompany(String name, FinancialCompany company);
 }

@@ -137,6 +137,10 @@ public class ValidationConstants {
     public final static String FUNCTIONALSTRUCTURELEVEL_NAME_NOT_BLANK = "level name can not be blank";
     public final static String FUNCTIONALSTRUCTURELEVEL_TYPE_NOT_BLANK = "level type can not be blank";
 
+    //AdministrativeStructureLevel
+    public final static String ADMINISTRATIVESTRUCTURELEVEL_NAME_NOT_BLANK = "level name can not be blank";
+    public final static String ADMINISTRATIVESTRUCTURELEVEL_TYPE_NOT_BLANK = "level type can not be blank";
+
     // Static messages, do not modify them
     private static HashMap<String, String> backendTranslation = new HashMap<>();
     private final static String ADDED_SENTENCE = " has been added successfully";
@@ -368,6 +372,13 @@ public class ValidationConstants {
         backendTranslation.put(LEGALCATEGORYTYPE_NAME_NOT_BLANK, getNotBlankValue(LEGALCATEGORYTYPE_NAME_NOT_BLANK));
         backendTranslation.put(LEGALCATEGORYTYPE_FUNCTIONS_NOT_BLANK, getNotBlankValue(LEGALCATEGORYTYPE_NAME_NOT_BLANK));
 
+        //FUNCTIONALSTRUCTURELEVEL
+        backendTranslation.put(FUNCTIONALSTRUCTURELEVEL_NAME_NOT_BLANK, getNotBlankValue(FUNCTIONALSTRUCTURELEVEL_NAME_NOT_BLANK));
+        backendTranslation.put(FUNCTIONALSTRUCTURELEVEL_TYPE_NOT_BLANK, getNotBlankValue(FUNCTIONALSTRUCTURELEVEL_TYPE_NOT_BLANK));
+
+        //ADMINISTRATIVESTRUCTURELEVEL
+        backendTranslation.put(ADMINISTRATIVESTRUCTURELEVEL_NAME_NOT_BLANK, getNotBlankValue(ADMINISTRATIVESTRUCTURELEVEL_NAME_NOT_BLANK));
+        backendTranslation.put(ADMINISTRATIVESTRUCTURELEVEL_TYPE_NOT_BLANK, getNotBlankValue(ADMINISTRATIVESTRUCTURELEVEL_TYPE_NOT_BLANK));
 
         // commercialProject
         return backendTranslation;

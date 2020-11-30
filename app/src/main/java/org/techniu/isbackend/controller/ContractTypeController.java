@@ -66,9 +66,9 @@ public class ContractTypeController {
 
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity delete(@PathVariable("id") String id) {
-        contractTypeService.remove(id);
+    @DeleteMapping("/delete/oldId={oldId}&newId={newId}")
+    public ResponseEntity delete(@PathVariable("oldId") String oldId, @PathVariable("newId") String newId) {
+        contractTypeService.remove(oldId, newId);
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(ContractType, DELETED)), HttpStatus.OK);
     }
 

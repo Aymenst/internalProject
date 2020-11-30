@@ -6,13 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import org.springframework.data.annotation.Id;
-import org.springframework.web.multipart.MultipartFile;
-import org.techniu.isbackend.entity.StaffDocuments;
+import org.techniu.isbackend.entity.AdministrativeStructureLevel;
+import org.techniu.isbackend.entity.FunctionalStructureLevel;
+import org.techniu.isbackend.entity.StaffDocument;
 
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 @Data
@@ -50,7 +47,7 @@ public class StaffDto{
     private String countryName;
     private String postCode;
     // documentation
-    private List<StaffDocuments> staffDocuments;
+    private List<StaffDocument> staffDocuments;
     // Contract
     private String staffContractId;
     private String companyId;
@@ -70,7 +67,9 @@ public class StaffDto{
     private String contractTypeCountryId;
     private String contractTypeCountry;
     private String legalCategoryTypeId;
-    private String legelCategoryTypeName;
+    private String legalCategoryTypeName;
+    private String contractModelId;
+    private String contractModelName;
     private  byte[] internalRulesDoc;
     private  byte[] contractDoc;
     private  byte[] preContractDoc;
@@ -97,15 +96,20 @@ public class StaffDto{
     private String companyObjectivesCostDateOut;
     private String totalCompanyCostDateGoing;
     private String totalCompanyCostDateOut;
+    private String currencyId;
+    private String currencyCode;
+    private String currencyName;
+    private int currencyYear;
+    private int currencyMonth;
+    private String changeFactor;
 
     // Functional Structure Level
-    private String levelId;
-    private String levelName;
-    private String levelDescription;
-    private String levelType;
-    private String isProductionLevel;
-    private String isCommercialLevel;
-    private String isLeader;
+    private List<FunctionalStructureLevel> functionalStructureLevels;
+    private String isFunctionalLeader;
+
+    //Administrative Structure Level
+    private List<AdministrativeStructureLevel> administrativeStructureLevels;
+    private String isAdministrativeLeader;
 
     //Created at
     private String createdAt;

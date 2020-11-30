@@ -43,4 +43,7 @@ public class StaffContract implements Serializable {
     @DBRef
     LegalCategoryType legalCategoryType;
 
+    @DBRef
+    ContractModel contractModel;
+
 }

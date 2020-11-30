@@ -48,9 +48,11 @@ public class FunctionalStructureLevelServiceImpl implements FunctionalStructureL
             if (lvl == null) {
                 StaffDto staffDto = leaders.get(i-1);
                 Staff staff1 = staffRepository.findById(staffDto.getStaffId()).get();
-                staff1.setIsLeader("yes");
+                staff1.setIsFunctionalLeader("yes");
                 lvl = functionalStructureLevelRepository.save(functionalStructureLevelMapper.dtoToModel(levelDto));
-                staff1.setLevel(lvl);
+                List<FunctionalStructureLevel> levels = staff1.getFunctionalStructureLevels();
+                levels.add(lvl);
+                staff1.setFunctionalStructureLevels(levels);
                 System.out.println(staff1);
                 staffRepository.save(staff1);
             }
@@ -88,14 +90,20 @@ public class FunctionalStructureLevelServiceImpl implements FunctionalStructureL
         Staff newLeader = staffRepository.findById(newLeaderId).get();
         FunctionalStructureLevel functionalStructureLevel = functionalStructureLevelRepository.findById(functionalStructureLevelDto.getLevelId()).get();
         if(oldLeader != null) {
-            oldLeader.setLevel(null);
-            oldLeader.setIsLeader("no");
+            List<FunctionalStructureLevel> levels = oldLeader.getFunctionalStructureLevels();
+            levels.remove(functionalStructureLevel);
+            oldLeader.setFunctionalStructureLevels(levels);
+            if(levels.size() == 0) {
+                oldLeader.setIsFunctionalLeader("no");
+            }
             staffRepository.save(oldLeader);
         }
         FunctionalStructureLevel functionalStructureLevel1 = functionalStructureLevelMapper.dtoToModel(functionalStructureLevelDto);
         functionalStructureLevel1.setChilds(functionalStructureLevel.getChilds());
-        newLeader.setLevel(functionalStructureLevelRepository.save(functionalStructureLevel1));
-        newLeader.setIsLeader("yes");
+        List<FunctionalStructureLevel> levels = newLeader.getFunctionalStructureLevels();
+        levels.add(functionalStructureLevelRepository.save(functionalStructureLevel1));
+        newLeader.setFunctionalStructureLevels(levels);
+        newLeader.setIsFunctionalLeader("yes");
         staffRepository.save(newLeader);
         return null;
     }
@@ -114,31 +122,43 @@ public class FunctionalStructureLevelServiceImpl implements FunctionalStructureL
                 if(level2.getChilds() != null ) {
                     List<FunctionalStructureLevel> list2 = level2.getChilds();
                     list2.forEach(level3 -> {
-                        List<Staff> staffs = staffRepository.findAllByLevelAndIsLeader(level3, "no");
-                        staffs.addAll(staffRepository.findAllByLevelAndIsLeader(level3, "yes"));
+                        List<Staff> staffs = staffRepository.findAllByFunctionalStructureLevelsContainingAndIsFunctionalLeader(level3, "no");
+                        staffs.addAll(staffRepository.findAllByFunctionalStructureLevelsContainingAndIsFunctionalLeader(level3, "yes"));
                         staffs.forEach(staff -> {
-                            staff.setIsLeader("no");
-                            staff.setLevel(null);
+                            List<FunctionalStructureLevel> levels = staff.getFunctionalStructureLevels();
+                            levels.remove(level3);
+                            if(levels.size() == 0) {
+                                staff.setIsFunctionalLeader("no");
+                            }
+                            staff.setFunctionalStructureLevels(levels);
                             staffRepository.save(staff);
                         });
                         functionalStructureLevelRepository.delete(level3);
                     });
                 }
-                List<Staff> staffs = staffRepository.findAllByLevelAndIsLeader(level2, "no");
-                staffs.addAll(staffRepository.findAllByLevelAndIsLeader(level2, "yes"));
+                List<Staff> staffs = staffRepository.findAllByFunctionalStructureLevelsContainingAndIsFunctionalLeader(level2, "no");
+                staffs.addAll(staffRepository.findAllByFunctionalStructureLevelsContainingAndIsFunctionalLeader(level2, "yes"));
                 staffs.forEach(staff -> {
-                    staff.setIsLeader("no");
-                    staff.setLevel(null);
+                    List<FunctionalStructureLevel> levels = staff.getFunctionalStructureLevels();
+                    levels.remove(level2);
+                    if(levels.size() == 0) {
+                        staff.setIsFunctionalLeader("no");
+                    }
+                    staff.setFunctionalStructureLevels(levels);
                     staffRepository.save(staff);
                 });
                 functionalStructureLevelRepository.delete(level2);
             });
         }
-        List<Staff> staffs = staffRepository.findAllByLevelAndIsLeader(level, "no");
-        staffs.addAll(staffRepository.findAllByLevelAndIsLeader(level, "yes"));
+        List<Staff> staffs = staffRepository.findAllByFunctionalStructureLevelsContainingAndIsFunctionalLeader(level, "no");
+        staffs.addAll(staffRepository.findAllByFunctionalStructureLevelsContainingAndIsFunctionalLeader(level, "yes"));
         staffs.forEach(staff -> {
-            staff.setIsLeader("no");
-            staff.setLevel(null);
+            List<FunctionalStructureLevel> levels = staff.getFunctionalStructureLevels();
+            levels.remove(level);
+            if(levels.size() == 0) {
+                staff.setIsFunctionalLeader("no");
+            }
+            staff.setFunctionalStructureLevels(levels);
             staffRepository.save(staff);
         });
         FunctionalStructureLevel parent = functionalStructureLevelRepository.findByChildsContaining(level);

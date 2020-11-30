@@ -60,43 +60,43 @@ public class StaffController {
         Address address =new Address()
         .setFullAddress(staffAddRequest.getFullAddress())
         .setPostCode(staffAddRequest.getPostCode());
-        // staffDocumentsList
-        List<StaffDocuments> staffDocumentsList =new ArrayList();
+        // staffDocumentList
+        List<StaffDocument> staffDocumentList =new ArrayList();
         // id card
         if(!idCardDoc.getContentType().equals("application/json")) {
-            StaffDocuments staffDocumentCard= new StaffDocuments();
+            StaffDocument staffDocumentCard= new StaffDocument();
             staffDocumentCard.setDocument(idCardDoc.getBytes());
             staffDocumentCard.setDocExtension(staffAddRequest.getIdCardDocExtension());
             staffDocumentCard.setName(staffAddRequest.getIdCardName());
             staffDocumentCard.setNumber(staffAddRequest.getIdCardNumber());
-            staffDocumentsList.add(staffDocumentCard);
+            staffDocumentList.add(staffDocumentCard);
         };
         // passport
         if(!passportDoc.getContentType().equals("application/json")){
-            StaffDocuments staffDocumentPassport= new StaffDocuments();
+            StaffDocument staffDocumentPassport= new StaffDocument();
             staffDocumentPassport.setDocument(passportDoc.getBytes());
             staffDocumentPassport.setDocExtension(staffAddRequest.getPassportDocExtension());
             staffDocumentPassport.setName(staffAddRequest.getPassportName());
             staffDocumentPassport.setNumber(staffAddRequest.getPassportNumber());
-            staffDocumentsList.add(staffDocumentPassport);
+            staffDocumentList.add(staffDocumentPassport);
         }
         // professional id
         if(!professionalIdCardDoc.getContentType().equals("application/json")){
-            StaffDocuments staffDocumentProfessional= new StaffDocuments();
+            StaffDocument staffDocumentProfessional= new StaffDocument();
             staffDocumentProfessional.setDocument(professionalIdCardDoc.getBytes());
             staffDocumentProfessional.setDocExtension(staffAddRequest.getProfessionalIdCardDocExtension());
             staffDocumentProfessional.setName(staffAddRequest.getProfessionalName());
             staffDocumentProfessional.setNumber(staffAddRequest.getProfessionalIdCardNumber());
-            staffDocumentsList.add(staffDocumentProfessional);
+            staffDocumentList.add(staffDocumentProfessional);
         }
         // Health National Security
         if(!hnsCardDoc.getContentType().equals("application/json")){
-            StaffDocuments staffDocumentHns= new StaffDocuments();
+            StaffDocument staffDocumentHns= new StaffDocument();
             staffDocumentHns.setDocument(hnsCardDoc.getBytes());
             staffDocumentHns.setDocExtension(staffAddRequest.getHnsDocExtension());
             staffDocumentHns.setName(staffAddRequest.getHnsName());
             staffDocumentHns.setNumber(staffAddRequest.getHnsNumber());
-            staffDocumentsList.add(staffDocumentHns);
+            staffDocumentList.add(staffDocumentHns);
         }
 
         // Staff contract
@@ -144,7 +144,7 @@ public class StaffController {
         staffEconomicContractInformation.setTotalCompanyCostDateOut(staffAddRequest.getTotalCompanyCostDateOut());
         System.out.println(staffAddRequest.getCompanyId());
         staffService.save(staffMapper.addRequestToDto(staffAddRequest),
-                staffAddRequest.getCityId(), address, staffEconomicContractInformation, staffContract, staffAddRequest.getCompanyId(), staffAddRequest.getContractTypeId(), staffAddRequest.getLegalCategoryTypeId(), staffDocumentsList);
+                address, staffEconomicContractInformation, staffContract, staffDocumentList);
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(Staff, ADDED)), HttpStatus.OK);
     }
 
@@ -156,8 +156,7 @@ public class StaffController {
                 .setFullAddress(staffUpdaterequest.getFullAddress())
                 .setPostCode(staffUpdaterequest.getPostCode());
         System.out.println(staffUpdaterequest);
-        staffService.update(staffMapper.updateRequestToDto(staffUpdaterequest),
-                staffUpdaterequest.getCityId(), address);
+        staffService.update(staffMapper.updateRequestToDto(staffUpdaterequest), address);
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(Staff, UPDATED)), HttpStatus.OK);
     }
 
@@ -175,18 +174,48 @@ public class StaffController {
         return new ResponseEntity<Response>(Response.ok().setPayload(staffService.getAll()), HttpStatus.OK);
     }
 
-    @RequestMapping(path = "staff-no-assigned",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Staff> getNotAssignedStaff(){
-        return staffService.getAllNotAssignedStaffs();
+    @RequestMapping(path = "staff-no-assigned-functional",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<StaffDto> getFunctionalNotAssignedStaff(){
+        return staffService.getAllFunctionalNotAssignedStaffs();
     }
 
-    @RequestMapping(path = "assign-level-staff",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void assignLevelToStaff(@RequestBody List<Object> objects){
-        staffService.assignLevelToStaff(objects);
+    @RequestMapping(path = "staff-no-assigned-administrative",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<StaffDto> getAdministrativeNotAssignedStaff(){
+        return staffService.getAllAdministrativeNotAssignedStaffs();
     }
 
-    @RequestMapping(path = "get-staff-by-level/levelId={levelId}&isLeader={isLeader}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Staff> getStaffsByLevel(@PathVariable("levelId") String levelId, @PathVariable("isLeader") String isLeader){
-        return staffService.getStaffsByLevel(levelId, isLeader);
+    @RequestMapping(path = "staff-no-assigned-administrative-by-company/{companyId}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<StaffDto> getAdministrativeNotAssignedStaffByCompany(@PathVariable("companyId") String companyId){
+        return staffService.getAllAdministrativeNotAssignedStaffsByCompany(companyId);
+    }
+
+    @RequestMapping(path = "assign-functional-level-staff",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public void assignFunctionalLevelToStaff(@RequestBody List<Object> objects){
+        staffService.assignFunctionalLevelToStaff(objects);
+    }
+
+    @RequestMapping(path = "assign-administrative-level-staff",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public void assignAdministrativeLevelToStaff(@RequestBody List<Object> objects){
+        staffService.assignAdministrativeLevelToStaff(objects);
+    }
+
+    @GetMapping("get-staff-by-functional-level/levelId={levelId}&isFunctionalLeader={isFunctionalLeader}")
+    public List<StaffDto> getStaffsByFunctionalLevel(@PathVariable("levelId") String levelId, @PathVariable("isFunctionalLeader") String isFunctionalLeader){
+        return staffService.getStaffsByFunctionalLevel(levelId, isFunctionalLeader);
+    }
+
+    @GetMapping("get-staff-by-administrative-level/levelId={levelId}&isAdministrativeLeader={isAdministrativeLeader}")
+    public List<StaffDto> getStaffsByAdministrativeLevel(@PathVariable("levelId") String levelId, @PathVariable("isAdministrativeLeader") String isAdministrativeLeader){
+        return staffService.getStaffsByAdministrativeLevel(levelId, isAdministrativeLeader);
+    }
+
+    @GetMapping("get-staff-by-isFunctionalLeader/isFunctionalLeader={isFunctionalLeader}")
+    public List<StaffDto> getStaffsByIsFunctionalLeader(@PathVariable("isFunctionalLeader") String isFunctionalLeader){
+        return staffService.getStaffsByIsFunctionalLeader(isFunctionalLeader);
+    }
+
+    @GetMapping("get-staff-by-isAdministrativeLeader/isAdministrativeLeader={isAdministrativeLeader}")
+    public List<StaffDto> getStaffsByIsAdministrativeLeader(@PathVariable("isAdministrativeLeader") String isAdministrativeLeader){
+        return staffService.getStaffsByIsAdministrativeLeader(isAdministrativeLeader);
     }
 }

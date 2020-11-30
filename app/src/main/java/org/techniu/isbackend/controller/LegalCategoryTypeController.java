@@ -65,9 +65,9 @@ public class LegalCategoryTypeController {
 
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity delete(@PathVariable("id") String id) {
-        legalCategoryTypeService.remove(id);
+    @DeleteMapping("/delete/oldId={oldId}&newId={newId}")
+    public ResponseEntity delete(@PathVariable("oldId") String oldId, @PathVariable("newId") String newId) {
+        legalCategoryTypeService.remove(oldId, newId);
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(LegalCategoryType, DELETED)), HttpStatus.OK);
     }
 

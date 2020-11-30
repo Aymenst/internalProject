@@ -9,7 +9,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.io.Serializable;
 import java.util.List;
 
 @Document(value = "Staff")
@@ -35,13 +34,17 @@ public class Staff {
     private String emergencyContactName;
     private String emergencyContactPhone;
     private String photo;
-    private String isLeader;
+    private String isFunctionalLeader;
+    private String isAdministrativeLeader;
 
     @DBRef
     private Address address;
 
     @DBRef
-    private FunctionalStructureLevel level;
+    private List<FunctionalStructureLevel> functionalStructureLevels;
+
+    @DBRef
+    private List<AdministrativeStructureLevel> administrativeStructureLevels;
 
     @DBRef
     private StaffContract staffContract;
@@ -50,5 +53,5 @@ public class Staff {
     private StaffEconomicContractInformation staffEconomicContractInformation;
 
     @DBRef
-    private List<StaffDocuments> staffDocuments;
+    private List<StaffDocument> staffDocuments;
 }

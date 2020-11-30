@@ -8,7 +8,7 @@ import java.util.List;
 public interface ContractTypeService {
     void save(ContractTypeDto contractTypeDto);
     void update(ContractTypeDto contractTypeDto);
-    void remove(String id);
+    void remove(String oldId, String newId);
     List<ContractTypeDto> getAll();
     List<ContractTypeDto> getAllByState(String stateCountryId);
 }

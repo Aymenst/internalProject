@@ -2,17 +2,39 @@ package org.techniu.isbackend.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
-import org.techniu.isbackend.entity.FunctionalStructureLevel;
-import org.techniu.isbackend.entity.Staff;
-import org.techniu.isbackend.entity.StaffEconomicContractInformation;
+import org.techniu.isbackend.entity.*;
 
 import java.util.List;
 @Repository
 public interface StaffRepository extends MongoRepository<Staff, String> {
 
-    List<Staff> findAllByLevelIsNull();
+    List<Staff> findAllByFunctionalStructureLevelsEquals(List<FunctionalStructureLevel> list);
 
-    List<Staff> findAllByLevelAndIsLeader(FunctionalStructureLevel level, String isLeader);
+    List<Staff> findAllByFunctionalStructureLevelsContainingAndIsFunctionalLeader(FunctionalStructureLevel level, String isFunctionalLeader);
+
+    List<Staff> findAllByIsFunctionalLeader(String isFunctionalLeader);
+
+    List<Staff> findAllByAdministrativeStructureLevelsEquals(List<AdministrativeStructureLevel> list);
+
+    List<Staff> findAllByAdministrativeStructureLevelsContainingAndIsAdministrativeLeader(AdministrativeStructureLevel level, String isAdministrativeLeader);
+
+    List<Staff> findAllByIsAdministrativeLeader(String isAdministrativeLeader);
+
+    List<Staff> findAllByAdministrativeStructureLevelsEqualsAndStaffContract(List<AdministrativeStructureLevel> list, StaffContract staffContract);
 
     Staff findByStaffEconomicContractInformation(StaffEconomicContractInformation staffEconomicContractInformation);
+
+    Staff findByFirstNameAndFatherFamilyNameAndMotherFamilyName(String firstName, String fatherFamilyName, String motherFamilyName);
+
+    Staff findByPersonalEmail(String personalEmail);
+
+    Staff findByCompanyEmail(String companyEmail);
+
+    Staff findByCompanyMobilePhone(String companyMobilePhone);
+
+    Staff findByPersonalPhone(String personalPhone);
+
+    Staff findBySkype(String skype);
+
+    Staff findByStaffDocumentsContaining(StaffDocument staffDocument);
 }

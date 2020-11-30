@@ -6,15 +6,18 @@ import org.techniu.isbackend.entity.*;
 import java.util.List;
 
 public interface StaffService {
-    Staff saveStaff(Staff staff, City city, StaffEconomicContractInformation staffEconomicContractInformation, StaffContract staffContract, List<StaffDocuments> staffDocumentsList);
-    Staff updateStaff(String staffId, String cityId, Staff staff);
     String deleteStaff(String staffId);
-    List<Staff> getAllStaffs();
     StaffDto getStaffById( String staffId);
     List<StaffDto> getAll();
-    List<Staff> getAllNotAssignedStaffs();
-    void assignLevelToStaff(List<Object> objects);
-    List<Staff> getStaffsByLevel(String levelId, String isLeader);
-    Staff save(StaffDto staffDto, String cityId, Address address, StaffEconomicContractInformation staffEconomicContractInformation, StaffContract staffContract, String companyId, String contractTypeId, String legalCategoryTypeId, List<StaffDocuments> staffDocumentsList);
-    Staff update(StaffDto staffDto, String cityId, Address address);
+    List<StaffDto> getAllFunctionalNotAssignedStaffs();
+    List<StaffDto> getAllAdministrativeNotAssignedStaffs();
+    List<StaffDto> getAllAdministrativeNotAssignedStaffsByCompany(String companyId);
+    void assignFunctionalLevelToStaff(List<Object> objects);
+    void assignAdministrativeLevelToStaff(List<Object> objects);
+    List<StaffDto> getStaffsByFunctionalLevel(String levelId, String isFunctionalLeader);
+    List<StaffDto> getStaffsByAdministrativeLevel(String levelId, String isAdministrativeLeader);
+    List<StaffDto> getStaffsByIsFunctionalLeader(String isFunctionalLeader);
+    List<StaffDto> getStaffsByIsAdministrativeLeader(String isAdministrativeLeader);
+    Staff save(StaffDto staffDto, Address address, StaffEconomicContractInformation staffEconomicContractInformation, StaffContract staffContract, List<StaffDocument> staffDocumentList);
+    Staff update(StaffDto staffDto, Address address);
 }

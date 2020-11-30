@@ -4,23 +4,21 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 
-@Document(value = "StaffDocuments")
+@Document(value = "ContractModel")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class StaffDocuments implements Serializable {
+public class ContractModel implements Serializable {
 
     @Id
-    private String staffDocumentsId;
+    private String _id;
+    private String code;
     private String name;
-    private String number;
-    private String expeditionDate;
-    private String expirationDate;
-    private String docExtension;
-    private byte[] document;
+    private String description;
 
 }

@@ -11,6 +11,6 @@ public interface ContractTypeRepository extends MongoRepository<ContractType, St
 
     List<ContractType> getAllByState(StateCountry stateCountry);
     ContractType findBy_id(String id);
-    ContractType findByName(String name);
-    ContractType findByCode(String code);
+    ContractType findByNameAndState(String name, StateCountry state);
+    ContractType findByCodeAndState(String code, StateCountry state);
 }

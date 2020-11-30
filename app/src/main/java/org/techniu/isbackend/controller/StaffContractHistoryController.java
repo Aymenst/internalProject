@@ -1,15 +1,23 @@
 package org.techniu.isbackend.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.techniu.isbackend.Response;
 import org.techniu.isbackend.entity.Staff;
 import org.techniu.isbackend.entity.StaffContractHistory;
+import org.techniu.isbackend.exception.EntityType;
 import org.techniu.isbackend.service.StaffContractHistoryService;
 
 import java.util.List;
 
+import static org.techniu.isbackend.exception.ExceptionType.DELETED;
+import static org.techniu.isbackend.exception.ExceptionType.UPDATED;
+import static org.techniu.isbackend.exception.MainException.getMessageTemplate;
+
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/staffContractHistory")
 @CrossOrigin("*")
 public class StaffContractHistoryController {
     private StaffContractHistoryService staffContractHistoryService;
@@ -17,29 +25,24 @@ public class StaffContractHistoryController {
         this.staffContractHistoryService = staffContractHistoryService;
     }
 
-    @RequestMapping(path = "staffContractHistory-save",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public StaffContractHistory saveStaffContractHistory(@RequestBody StaffContractHistory staffContractHistory) {
-        return staffContractHistoryService.saveStaffContractHistory(staffContractHistory);
+
+    @GetMapping("/all")
+    public ResponseEntity getAllStaffContractHistory(){
+        return new ResponseEntity<Response>(Response.ok().setPayload(staffContractHistoryService.getAllStaffContractHistory()), HttpStatus.OK);
     }
 
-    @RequestMapping(path = "staffContractHistory-all",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<StaffContractHistory> getAllStaffContractHistory(){
-        return staffContractHistoryService.getAllStaffContractHistory();
+    @GetMapping("/history-by-staff/{staffContractId}")
+    public ResponseEntity getStaffContractHistoryByStaff(@PathVariable("staffContractId") String staffContractId){
+        return new ResponseEntity<Response>(Response.ok().setPayload(staffContractHistoryService.getStaffContractHistoryByStaffContract(staffContractId)), HttpStatus.OK);
+
     }
 
-    @RequestMapping(path = "staffContractHistory/{id}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<StaffContractHistory> getStaffContractHistoryByStaff(@PathVariable("id") String id){
-        return staffContractHistoryService.getStaffContractHistoryByStaff(id);
-    }
 
-    @RequestMapping(path = "staffContractHistory-update/{staffContractHistoryId}",method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Staff updateStaffContractHistory(@PathVariable("staffContractHistoryId") String staffContractHistoryId, @RequestBody StaffContractHistory staffContractHistory){
-        return staffContractHistoryService.updateStaffContractHistory(staffContractHistoryId, staffContractHistory);
-    }
-
-    @RequestMapping(path = "staffContractHistory-delete/{staffContractHistoryId}",method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void deleteStaffContractHistory(@PathVariable("staffContractHistoryId") String staffContractHistoryId){
+    @DeleteMapping("/delete/{staffContractHistoryId}")
+    public ResponseEntity deleteStaffContractHistory(@PathVariable("staffContractHistoryId") String staffContractHistoryId){
         staffContractHistoryService.deleteStaffContractHistory(staffContractHistoryId);
+        return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(EntityType.StaffContractHistory, DELETED)), HttpStatus.OK);
+
     }
 
     
