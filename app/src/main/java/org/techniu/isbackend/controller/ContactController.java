@@ -9,6 +9,7 @@ import org.techniu.isbackend.Response;
 import org.techniu.isbackend.controller.request.ContactAddRequest;
 import org.techniu.isbackend.controller.request.ContactUpdateRequest;
 import org.techniu.isbackend.dto.mapper.ContactMapper;
+import org.techniu.isbackend.entity.Address;
 import org.techniu.isbackend.exception.validation.MapValidationErrorService;
 import org.techniu.isbackend.service.ContactService;
 
@@ -33,9 +34,12 @@ public class ContactController {
     @PostMapping("/add")
     public ResponseEntity add(@RequestBody @Valid ContactAddRequest contactAddRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) return mapValidationErrorService.mapValidationService(bindingResult);
+        // objet address
+        Address address =new Address()
+                .setFullAddress(contactAddRequest.getFullAddress())
+                .setPostCode(contactAddRequest.getPostCode());
         // Save Contact
-        System.out.println(contactMapper.addRequestToDto(contactAddRequest));
-        contactService.save(contactMapper.addRequestToDto(contactAddRequest));
+        contactService.save(contactMapper.addRequestToDto(contactAddRequest),contactAddRequest.getCompanyId(),address,contactAddRequest.getCityId());
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(Contact, ADDED)), HttpStatus.OK);
     }
     /**
@@ -47,7 +51,11 @@ public class ContactController {
     @PostMapping("/update")
     public ResponseEntity update(@RequestBody @Valid ContactUpdateRequest contactUpdateRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) return mapValidationErrorService.mapValidationService(bindingResult);
-        contactService.update(contactMapper.updateRequestToDto(contactUpdateRequest));
+        // objet address
+        Address address =new Address()
+                .setFullAddress(contactUpdateRequest.getFullAddress())
+                .setPostCode(contactUpdateRequest.getPostCode());
+        contactService.update(contactMapper.updateRequestToDto(contactUpdateRequest),contactUpdateRequest.getCompanyId(),address,contactUpdateRequest.getCityId());
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(Contact, UPDATED)), HttpStatus.OK);
     }
 

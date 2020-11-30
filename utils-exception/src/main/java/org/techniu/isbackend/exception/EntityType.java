@@ -25,5 +25,9 @@ public enum EntityType {
     FunctionalStructureAssignationHistory,
     AdministrativeStructureLevel,
     AdministrativeStructureAssignationHistory,
-    ContractModel
+    ContractModel,
+    FinancialContract,
+    Bill,
+    ContactByOperation,
+    CivilityTitle
 }

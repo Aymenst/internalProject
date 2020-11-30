@@ -26,8 +26,9 @@ public enum ExceptionType {
     STAFF_DOCUMENT_DATE_EQUAL("Expedition date is the same as expiration date"),
     DELETED("deleted"),
     ASSIGNED_LEVEL_STAFF("staff.assigned.to.level"),
-    SECTOR_RELATED_TO_CLIENT("you can't delete this sector its already related to client");
+    SECTOR_RELATED_TO_CLIENT("this sector its already related to a client !");
 
+    // public static final ExceptionType SECTOR_RELATED_TO_CLIENT = null;
     String value;
 
     ExceptionType(String value) {

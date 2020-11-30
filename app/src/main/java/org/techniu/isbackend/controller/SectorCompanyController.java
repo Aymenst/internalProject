@@ -107,15 +107,28 @@ public class SectorCompanyController {
     }
 
     /**
-     * Handles the incoming DELETE API "/commercialOperationStatus/delete"
+     * Handles the incoming DELETE API "/SectorCompany/deleteVerfication"
      *
      * @param firstSectorName action delete request
      * @param secondSectorName action delete request
      * @param thirdSectorName action delete request
      */
-    @RequestMapping(value = "/delete/{firstSectorName}/{secondSectorName}/{thirdSectorName}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/deleteVerfication/{firstSectorName}/{secondSectorName}/{thirdSectorName}", method = RequestMethod.DELETE)
     public ResponseEntity delete(@PathVariable String firstSectorName,@PathVariable String secondSectorName,@PathVariable String thirdSectorName) {
          sectorCompanyService.remove(firstSectorName,secondSectorName,thirdSectorName);
+        return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(SectorCompany, DELETED)), HttpStatus.OK);
+    }
+
+    /**
+     * Handles the incoming DELETE API "/SectorCompany/deleteConfirmation"
+     *
+     * @param firstSectorName action delete request
+     * @param secondSectorName action delete request
+     * @param thirdSectorName action delete request
+     */
+    @RequestMapping(value = "/deleteConfirmation/{firstSectorName}/{secondSectorName}/{thirdSectorName}", method = RequestMethod.DELETE)
+    public ResponseEntity deleteConfermation(@PathVariable String firstSectorName,@PathVariable String secondSectorName,@PathVariable String thirdSectorName) {
+        sectorCompanyService.removeConfirmation(firstSectorName,secondSectorName,thirdSectorName);
         return new ResponseEntity<Response>(Response.ok().setPayload(getMessageTemplate(SectorCompany, DELETED)), HttpStatus.OK);
     }
 /*
