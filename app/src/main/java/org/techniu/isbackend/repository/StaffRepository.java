@@ -37,4 +37,6 @@ public interface StaffRepository extends MongoRepository<Staff, String> {
     Staff findBySkype(String skype);
 
     Staff findByStaffDocumentsContaining(StaffDocument staffDocument);
+
+    Staff findByAndFirstNameAndFatherFamilyName(String firstName,String fatherFamilyName);
 }
